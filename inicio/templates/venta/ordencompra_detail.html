@@ -1,0 +1,75 @@
+{% extends '../base.html' %}
+
+{%  block cuerpo %}
+<div class="main-card mb-3 card">
+	<div class="card-body">
+		<h5 class="card-title">Detalle de Orden de compra: {{ ordencompra }}</h5>
+		<table class="table table-hover table-fixed">
+		<tr>
+			<th>
+				Campo
+			</th>
+			<th>
+				Detalle
+			</th>
+		</tr>
+			<tr>
+				<td>Orden de compra: </td>
+				<td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
+		        </i>
+		        	{{ ordencompra }}
+		      </td>
+		      </tr>
+		      <tr>
+		      <td>Fecha de Emisión: </td>
+		      
+		      <td>
+		        {{ ordencompra.fecha_emision }}
+		      </td>
+		      </tr>
+		      
+		      <tr>
+		      <td>Cliente: </td>
+		      <td>
+		        {{ ordencompra.cliente }}
+		        </td>
+		      </tr>	
+		</table>
+	</div>
+		<div class="card-body">
+	<h5 class="card-title">Detalle Orden de compra</h5>
+	
+		<table class="table table-hover table-fixed">
+		<tr>
+		<th>Producto (Código)</th>
+		<th>Cantidad</th>
+		<th>Precio</th>
+		<th>Total</th>
+		</tr>
+		{% for lista in ordendecompramain %}
+		<tr>
+			<td>{{ lista.producto }}</td>
+			<td>{{ lista.cantidad}} </td>
+			<td>$ {{ lista.precio_unitario}}</td>
+			<td>$ {{ lista.total }}</td>
+			
+		</tr>
+			{% endfor %}
+			<tr>
+			<td></td>
+			<td><h3>Total:</h3></td>
+			<td></td>
+			<td><h5>$ {{ total_orden }}</h5>
+			</td>
+			</tr>
+        </table>
+    </div>
+</div>
+<a href="{% url 'venta:OrdenCompraList' %}">    
+<button class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
+		<i class="pe-7s-angle-left-circle">Volver</i>
+</button>
+	</a>		 
+
+
+{% endblock %}

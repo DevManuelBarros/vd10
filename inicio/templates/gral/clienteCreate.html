@@ -1,0 +1,21 @@
+{% extends '../base.html' %}
+
+{%  block cuerpo %}
+   <div class="app-page-title">
+<div class="page-title-heading">
+   <div class="page-title-icon">
+                                        <i class="pe-7s-wallet icon-gradient bg-plum-plate">
+                                        </i>
+                                    </div>
+<div>Nuevo Cliente</div>
+                                     
+                                    </div>
+</div>
+
+<form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit" value="Guardar">
+</form>
+
+
+{% endblock %}

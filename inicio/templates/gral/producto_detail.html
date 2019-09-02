@@ -1,0 +1,49 @@
+{% extends '../base.html' %}
+
+{%  block cuerpo %}
+<div class="main-card mb-3 card">
+	<div class="card-body">
+		<h5 class="card-title">Detalle de producto: {{ producto.descripcion }}</h5>
+		<table class="table table-hover table-fixed">
+		<tr>
+			<th>
+				Campo
+			</th>
+			<th>
+				Detalle
+			</th>
+		</tr>
+			<tr>
+				<td>Código: </td>
+				<td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
+		        </i>
+		        	{{producto.codigo}}
+		      </td>
+		      </tr>
+		      <tr>
+		      <td>Descripción: </td>
+		      
+		      <td>
+		        {{producto.descripcion }}
+		      </td>
+		      </tr>
+		      
+		      <tr>
+		      <td>Cliente: </td>
+		      <td>
+		       	
+		       
+		        {{producto.cliente}}
+		        </td>
+		      </tr>	
+		</table>
+	</div>
+</div>
+<a href="{% url 'gral:ProductoListView' %}">    
+<button class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
+		<i class="pe-7s-angle-left-circle">Volver</i>
+</button>
+	</a>		 
+
+
+{% endblock %}

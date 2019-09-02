@@ -1,0 +1,66 @@
+{% extends '../base.html' %}
+
+{%  block cuerpo %}
+<div class="app-page-title">
+<div class="page-title-heading">
+   <div class="page-title-icon">
+                                        <i class="pe-7s-menu icon-gradient bg-ripe-malin">
+                                        </i>
+                                    </div>
+<div>Listado de Cronograma</div>
+                                     
+                                    </div>
+</div>
+
+
+    {% if object_list %}
+<div class="main-card mb-3 card">
+	<div class="card-body">
+	<h5 class="card-title">Listado de cronogramas.</h5>
+		<table class="table table-hover table-fixed">
+		  <tr>
+		    <th>Nombre</th>
+		    <th>Fecha Inicio</th>
+		    <th>Cliente</th>
+		    <th>Ver Detalle</th>
+		  </tr>   
+		      {% for cronograma in object_list %}
+		   <tr>
+		      <td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
+		        </i>
+		        {{cronograma}}
+		      </td>
+		      <td>
+		        {{cronograma.fecha_inicio }}
+		      </td>
+		      <td>
+		        {{cronograma.cliente}}
+		      </td>
+		      <td>
+			      <a href="{% url 'venta:CronogramaDetail' pk=cronograma.id %}">
+			      	<i class="pe-7s-angle-up-circle">
+			      			Ver
+			      	</i>
+			      </a>
+		      </td>
+		    </tr>
+		      {% endfor %}
+		
+		    {% else %}
+		      <p>No hay registros para mostrar.</p>
+		    {% endif %}      
+		</table>
+	</div>
+</div>
+<a href="{% url 'inicio:abm' %}">    
+<button class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
+		<i class="pe-7s-wallet icon-gradient bg-plum-plate"></i>Ir al ABM
+</button>
+</a>	
+<a href="{% url 'venta:CronogramaCreate' %}">    
+<button class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
+		<i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes"></i>Crear Cronograma
+</button>
+</a>
+
+{% endblock %}

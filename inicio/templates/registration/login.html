@@ -1,0 +1,60 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{%  block sesion %}
+
+<div class="app-page-title">
+<div class="page-title-heading">
+   <div class="page-title-icon">
+            <i class="pe-7s-lock icon-gradient bg-malibu-beach">
+            </i>
+   </div>
+<div>Ingreso de Usuario</div>
+                                     
+     </div>
+</div>
+
+
+<div class="main-card mb-3 card">
+
+<div class="card-body">
+{% if form.errors %}
+<h5 class="card-title">El usuario o la contraseña no coinciden. Intente nuevamente.</h5>
+{% endif %}
+
+{% if next %}
+    {% if user.is_authenticated %}
+    <p>Su cuenta no tiene acceso a esta página. Para continuar,
+    inicie sesión con una cuenta que tenga el acceso permitido.</p>
+    {% else %}
+    <p>Por favor, ingrese para poder ver esta pagina.</p>
+    {% endif %}
+{% endif %}
+
+<form method="post" action="{% url 'login' %}">
+{% csrf_token %}
+<table class="text-center">
+<tr>
+<img src="{% static 'css/assets/images/image.png' %}" />
+</tr>
+<tr>
+  <td>{{ form.username.label_tag }}</td>
+  <td>{{ form.username }}</td>
+</tr>
+<tr>
+  <td>{{ form.password.label_tag }}</td>
+  <td>{{ form.password }}</td>
+</tr>
+<tr>
+  <td><input type="submit" value="Ingresar" class="btn-primary"/></td>
+  <td><input type="hidden" name="next" value="{{ next }}" /></td>
+</tr>
+
+
+</table>
+</form>
+</div>
+</div>
+
+
+{% endblock %}

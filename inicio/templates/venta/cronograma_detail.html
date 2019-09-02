@@ -1,0 +1,49 @@
+{% extends '../base.html' %}
+
+{%  block cuerpo %}
+<div class="main-card mb-3 card">
+	<div class="card-body">
+		<h5 class="card-title">Detalle de Cronograma: {{ cronograma }}</h5>
+		<table class="table table-hover table-fixed">
+		<tr>
+			<th>
+				Campo
+			</th>
+			<th>
+				Detalle
+			</th>
+		</tr>
+			<tr>
+				<td>Nombre de Campaña: </td>
+				<td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
+		        </i>
+		        	{{ cronograma }}
+		      </td>
+		      </tr>
+		      <tr>
+		      <td>Fecha de Inicio: </td>
+		      
+		      <td>
+		        {{ cronograma.fecha_inicio }}
+		      </td>
+		      </tr>
+		      
+		      <tr>
+		      <td>Cliente: </td>
+		      <td>
+		       	
+		       
+		        {{ cronograma.cliente }}
+		        </td>
+		      </tr>	
+		</table>
+	</div>
+</div>
+<a href="{% url 'venta:CronogramaList' %}">    
+<button class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
+		<i class="pe-7s-angle-left-circle">Volver</i>
+</button>
+	</a>		 
+
+
+{% endblock %}

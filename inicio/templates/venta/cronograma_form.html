@@ -1,0 +1,41 @@
+{% extends '../base.html' %}
+
+{%  block cuerpo %}
+
+<div class="app-page-title">
+<div class="page-title-heading">
+   <div class="page-title-icon">
+                                        <i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes">
+                                        </i>
+                                    </div>
+<div>Crear Cronograma</div>
+                                     
+                                    </div>
+</div>
+   
+<div class="main-card mb-3 card">
+   <div class="card-body">
+   <h5 class="card-title">Formulario Alta de Cronograma</h5>
+<form method="post">{% csrf_token %}
+<p>
+    {{ form.nombre.label_tag }}
+    {{ form.nombre }}
+</p>
+<p>   
+    {{ form.cliente.label_tag }}
+    {{ form.cliente }}
+</p>
+<p>
+    {{ form.fecha_inicio.label_tag }}
+            
+  {{ form.fecha_inicio }}
+
+</p>
+
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+</div>
+</div>
+{% endblock %}
+
+
