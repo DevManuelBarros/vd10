@@ -1,1 +1,1 @@
-web: gunicorn vd.wgsi --log-file -
+web: gunicorn vd.wsgi --log-file -
