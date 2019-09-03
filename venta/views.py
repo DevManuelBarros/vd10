@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 #Imports de la aplicación.
-from .models import Cronograma, OrdenCompra, ProductoLineasOC, Remito
+from .models import Cronograma, OrdenCompra, ProductoLineasOC, Remito, ProductoLineasRM
 from .forms  import (CronogramaCreateForm,
 					 OrdenCompraCabecera,
 					 ProductoLineasOCForm,
@@ -109,7 +109,28 @@ class OrdenCompraCompletoView(LoginRequiredMixin, CreateView):
 #
 ##
 
-class RemitoView(LoginRequiredMixin, ListView):
+################### DETAIL
+
+class RemitoDetail(LoginRequiredMixin, DetailView):
+	model = Remito
+	#form_class = OrdenCompraCabecera
+	template_name = 'venta/remito_detail.html'
+
+	
+	def get_context_data(self, **kwargs):
+		instance = super(RemitoDetail, self).get_context_data(**kwargs)
+		lineasRM = ProductoLineasRM.objects.filter(remito=instance['object'].pk)
+		instance['remito_linea'] = lineasRM
+		return instance
+
+
+
+
+
+
+################### LIST
+
+class RemitoListView(LoginRequiredMixin, ListView):
 	model = Remito
 
 

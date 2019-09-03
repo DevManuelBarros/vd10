@@ -1,15 +1,60 @@
 {% extends '../base.html' %}
 {% load static %}
 
+
+
 {%  block cuerpo %}
 
-<div class="col-md-4">
-    <form action="" method="post">{% csrf_token %}
-    <div id="main-form">
-        {{ form.as_p }}
-    </div>
-            <input type="button" id="confirm-data" value="Confirmar Datos" />
+<div class="app-page-title">
+<div class="page-title-heading">
+   <div class="page-title-icon">
+                                        <i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes">
+                                        </i>
+                                    </div>
+<div>Crear Remito</div>
+                                     
+                                    </div>
+</div>
+   
+<div class="main-card mb-3 card">
+   <div class="card-body">
+   <h5 class="card-title">Formulario Crear Remito</h5>
+<div id="cabecera">
+    <form action="" class="needs-validation" method="post">{% csrf_token %}
+    <div class="form-row">
+    	<div class="col-md-4 mb-3">
+        {{ form.referencia_externa.label_tag }}
+        {{ form.referencia_externa}}
+        </div>
+		<div class="col-md-4 mb-3">	
+        {{ form.cliente.label_tag }}
+        {{ form.cliente}}
+		</div>
+		<div class="col-md-4 mb-3">	
+        {{ form.cronograma.label_tag }}
+        {{ form.cronograma}}
+		</div>
+		<div class="col-md-4 mb-3">	
+        {{ form.ordencompra.label_tag }}
+        {{ form.ordencompra}}
+		</div>
+</div>
+	<div class="form-row">
+		<div class="col-md-4 mb-3">
+		{{ form.fecha_emision.label_tag }}
+		{{ form.fecha_emision }}
+		</div> 
+		<div class="col-md-4 mb-3">
+		{{ form.formato_de_impresion.label_tag }}
+		{{ form.formato_de_impresion }}
+		</div>    
+	</div>
+</div>
+ <input type="button" class="btn btn-primary" id="confirm-data" value="Confirmar Datos" />
     
+ 	<div class="card-body">
+	<h5 class="card-title">Detalle Temito</h5>
+	   
 <div style="visibility : hidden;" id="second-form">
         <table class="table">
             {{ remitomain.management_form }}
@@ -43,7 +88,7 @@
         <input type="button" id="comprobador-concordancia" value="Controlar todos los datos" />
         <input id="button-submit" type="submit" value="Guardar"/>
         <br />
-         <a href="{% url 'index' %}">Volver al listado</a>
+        </div>
     </form>
     </div>
 </div>
@@ -64,6 +109,7 @@
 		$("input[id$='-total_unidades']").prop('disabled', true);
 		$("#button-submit").prop("disabled", true);
         $("#comprobador-concordancia").on("click", autorizarRemito);
+        $('#id_formato_de_impresion').on("change", controlarNumeracion)
 		
     });
 	
@@ -76,7 +122,7 @@
 			}
 		    var request = $.ajax({
                 type: "GET",
-                url: "{% url 'get_datos' %}",
+                url: "{% url 'venta:get_datos' %}",
                 data: {
                     "id_cliente": clienteId,
                 },
@@ -103,13 +149,13 @@
 		if(comprobarValoresCabecera()){
 		if($(this).val()=='Confirmar Datos'){
 		//alert($(this).text());
-		$("#main-form *").css('display','none');
+		$("#cabecera").css('display','none');
 		$("#second-form").css('visibility', 'visible');
 		$(this).val("Modificar Cabecera");
 		//$(this).tigger("onclick");
 		getDatosProducts(0);
 		}else{
-			$("#main-form *").css('display', 'inline');
+			$("#cabecera").css('display', 'inline');
 			$("#second-form").css('visibility', 'hidden');
 			$(this).val("Confirmar Datos");
 		};
@@ -175,7 +221,7 @@
 
 			    var request = $.ajax({
                  type: "GET",
-                 url: "{% url 'get_productos' %}",
+                 url: "{% url 'venta:get_productos' %}",
                  data: {
                      "id_ordencompra": ordencompraId,
                  },
@@ -202,6 +248,16 @@
 };
          }
 	}
+	 
+	 function controlarNumeracion()
+	 {
+		 //El id de Punto2 es 3.
+		 if($(this).val() == 3)
+		 {
+			
+		 }
+		 
+	 }
 
 </script>
 {% endblock %}

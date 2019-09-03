@@ -10,7 +10,9 @@ from    .views import (CronogramaCreate,
                        OrdenCompraCompletoView,
                        OrdenCompraList,
                        OrdenCompraDetail,
-                       RemitoCompletoView)
+                       RemitoCompletoView,
+                       RemitoListView,
+                       RemitoDetail)
 
 urlpatterns = [
     #Cronograma
@@ -23,7 +25,11 @@ urlpatterns = [
     path('ordencompra/crear/', OrdenCompraCompletoView.as_view(), name='OrdenCompraCompleto'),
     path('ventas/remitopdf/<id_remito>', remito, name='remito'),
     #Remito
-    path('remito/', RemitoCompletoView.as_view(), name='RemitoCompleto'),
+    path('remito/crear/', RemitoCompletoView.as_view(), name='RemitoCrear'),
+    path('remito/listar/', RemitoListView.as_view(), name='RemitoListar'),
+    path('remito/detall/<int:pk>', RemitoDetail.as_view(), name='RemitoDetail'),
+
+
     #Ajax    
     path('ajax/get_cronogramas', get_cronogramas, name='get_cronogramas'),
     path('ajax/get_productos', get_productos, name='get_productos'),
