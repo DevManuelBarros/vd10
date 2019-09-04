@@ -199,7 +199,7 @@
 	function autorizarRemito()
 	{
 		$("input[id$='-total_unidades']").prop('disabled', false);
-		$("#main-form *").css('display', 'inline');
+		$("#cabecera").css('display', 'inline');
 		$("#button-submit").prop("disabled", false);
 
 	}
@@ -255,6 +255,17 @@
 		 if($(this).val() == 3)
 		 {
 			
+			 var request = $.ajax({
+                 type: "GET",
+                 url: "{% url 'venta:get_numeracionRM' %}",
+             });
+
+             request.done(function(response) {
+            	 $("#id_referencia_externa").val(response.next); 
+             });			 
+		 }else{
+			 //Si no es el Punto2 Debe eliminar lo escrito
+			 $("#id_referencia_externa").val("");
 		 }
 		 
 	 }

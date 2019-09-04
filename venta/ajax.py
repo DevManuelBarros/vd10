@@ -1,6 +1,9 @@
 from django.http import JsonResponse
 
-from .models import Cronograma, OrdenCompra, ProductoLineasOC
+from .models import (Cronograma, 
+                     OrdenCompra, 
+                     ProductoLineasOC, 
+                     Remito)
 from gral.models import Cliente
 from gral.models import Producto
 
@@ -44,7 +47,6 @@ def get_ordenesdecompra(request):
     return JsonResponse(response)
 
 def get_productos(request):
-    print("entro")
     ordencompra_id = request.GET.get('id_ordencompra')
     lineasOC = ProductoLineasOC.objects.all()
     productos = Producto.objects.all()
@@ -53,7 +55,6 @@ def get_productos(request):
     if ordencompra_id:
         ordencompra = lineasOC.filter(OrdenCompra = ordencompra_id)
     for productoOC in ordencompra:
-        print(productoOC.producto_id)
         linea = productos.filter(pk = productoOC.producto_id)
         for item in linea:
             options += '<option value="%s">%s</option>' % (
@@ -63,4 +64,23 @@ def get_productos(request):
 
     response = {}
     response['productos'] = options
+    return JsonResponse(response)
+
+def get_nextNumberRemito(request):
+    remitos = Remito.objects.filter(referencia_externa__startswith='99-').last()
+    response = {}
+    if remitos:
+        numeracion = remitos.referencia_externa.split('-')[1]
+        index = 0
+        for n in numeracion:
+            if n == 0:
+                index += 1
+            else:
+                break
+        tmp = int(numeracion[index:])
+        tmp = str(tmp + 1)
+        tmp = tmp.zfill(6)
+        response['next'] =  '99-' + tmp
+    else:
+        response['next'] = '99-000001'
     return JsonResponse(response)

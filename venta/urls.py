@@ -2,7 +2,10 @@ from django.urls import path, include
 
 
 from venta.reportesPDF import remito
-from venta.ajax import get_cronogramas, get_ordenesdecompra, get_productos
+from venta.ajax import (get_cronogramas, 
+                        get_ordenesdecompra, 
+                        get_productos, 
+                        get_nextNumberRemito)
 
 from    .views import (CronogramaCreate, 
                        CronogramaList,
@@ -28,10 +31,9 @@ urlpatterns = [
     path('remito/crear/', RemitoCompletoView.as_view(), name='RemitoCrear'),
     path('remito/listar/', RemitoListView.as_view(), name='RemitoListar'),
     path('remito/detall/<int:pk>', RemitoDetail.as_view(), name='RemitoDetail'),
-
-
     #Ajax    
     path('ajax/get_cronogramas', get_cronogramas, name='get_cronogramas'),
     path('ajax/get_productos', get_productos, name='get_productos'),
     path('ajax/get_datos', get_ordenesdecompra, name='get_datos'),
+    path('ajax/get_numeracion', get_nextNumberRemito, name='get_numeracionRM')
 ]
