@@ -5,6 +5,8 @@ from django.db import models
 #Imports de la aplición
 from gral.models import Cliente, Producto
 
+
+
 class FormatodeImpresion(models.Model):
 	nombre 			= models.CharField(max_length=20, unique=True)
 	
@@ -35,6 +37,7 @@ class Remito(models.Model):
 	ordencompra 			= models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
 	fecha_emision			= models.DateField(null=True, blank=True)
 	formato_de_impresion 	= models.ForeignKey(FormatodeImpresion, default=1, null=False, blank=False, on_delete=models.CASCADE)
+	conformado				= models.BooleanField(default=False)
 
 	def __str__(self):
 		return "Remito: " + self.referencia_externa

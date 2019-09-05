@@ -109,7 +109,26 @@
 		$("input[id$='-total_unidades']").prop('disabled', true);
 		$("#button-submit").prop("disabled", true);
         $("#comprobador-concordancia").on("click", autorizarRemito);
-        $('#id_formato_de_impresion').on("change", controlarNumeracion)
+        $('#id_formato_de_impresion').on("change", controlarNumeracion);
+        $("#id_referencia_externa").keyup(function(event){
+            console.log(event.which);
+            var cache = $(this).val();
+            var presiona = String.fromCharCode(event.which);
+
+            if((event.which > 47 && event.which < 58) ){
+                $(this).val(cache);
+            }else
+            {
+                var tmp = cache.substring(0, cache.length-1);
+                $(this).val(tmp);
+            }
+
+            if ($(this).val().length == 2)
+            {
+                $(this).val($(this).val() + "-");
+            }
+        });
+
 		
     });
 	

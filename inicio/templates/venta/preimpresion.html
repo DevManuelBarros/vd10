@@ -1,0 +1,79 @@
+{% extends '../base.html' %}
+
+{%  block cuerpo %}
+<div class="main-card mb-3 card">
+	<div class="card-body">
+		<h5 class="card-title">Detalle de Orden de compra: {{ remito }}</h5>
+		<table class="table table-hover table-fixed">
+		<tr>
+			<th>
+				Campo
+			</th>
+			<th>
+				Detalle
+			</th>
+		</tr>
+		<tr>
+				<td>Referencia Externa: </td>
+				<td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
+		        </i>
+		        	{{ remito }}
+		      </td>
+		      </tr>
+			<tr>
+		      <td>Orden de Compra: </td>
+		      
+		      <td>
+		        {{ remito.ordencompra }}
+		      </td>
+		      </tr>
+			
+		      <tr>
+		      <td>Fecha de Emisión: </td>
+		      
+		      <td>
+		        {{ remito.fecha_emision }}
+		      </td>
+		      </tr>
+		      
+		      <tr>
+		      <td>Cliente: </td>
+		      <td>
+		        {{ remito.cliente }}
+		        </td>
+		      </tr>
+		      <tr>
+		      <td>Formato Impresion: </td>
+		      <td>
+		        {{ remito.formato_de_impresion }}
+		        </td>
+		      </tr>
+		      
+		      <tr>
+		      <td>Imprimir Etiquetas: </td>
+		      <td>
+		        <input type="checkbox" name="imprimir_etiquetas" checked>
+		        </td>
+		      </tr>
+		      <tr>
+		      <td>
+		      	<a href="#" ><input type="button" class="btn btn-primary" value="Imprimir"></a>
+			  	<a href="#"><input type="button" class="btn btn-primary" value="Modificar Remito"></a>
+				<a href="#"><input type="button" class="btn btn-primary" value="Ver Detalles"></a>
+			<td>
+				</tr>
+		</table>
+		
+		
+		
+		
+	</div>
+</div>
+<a href="{% url 'venta:RemitoListar' %}">    
+<button class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
+		<i class="pe-7s-angle-left-circle">Volver</i>
+</button>
+	</a>		 
+
+
+{% endblock %}

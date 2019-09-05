@@ -106,7 +106,7 @@ class OrdenCompraCompletoView(LoginRequiredMixin, CreateView):
 ##
 #
 # REMITO
-#
+#	
 ##
 
 ################### DETAIL
@@ -143,9 +143,9 @@ class lineaProductoRMList(LoginRequiredMixin, ListView):
 
 class RemitoCompletoView(LoginRequiredMixin, CreateView):
 	form_class = RemitoCabecera
-	success_url = reverse_lazy('index')
+	#success_url = reverse_lazy()
 	template_name = 'venta/remito_form.html'
-    
+
 	def get_context_data(self, **kwargs):
 		data = super(RemitoCompletoView, self).get_context_data(**kwargs)
 		if self.request.POST:
@@ -163,6 +163,15 @@ class RemitoCompletoView(LoginRequiredMixin, CreateView):
 				remitomain.instance = self.object
 				remitomain.save()
 		return super(RemitoCompletoView, self).form_valid(form)
+	
+	def get_success_url(self):
+		return reverse_lazy('venta:Preimpresion', kwargs={'id_remito': self.object.pk})
 
 #class RemitoCreate(CreateView):
 #	form_class = RemitoCabecera
+######################### PAGINA PRE-IMPRESIÓN.
+
+def PreImpresion(request, id_remito):
+	model = Remito.objects.filter(pk=id_remito).last()
+	return render(request, 'venta/preimpresion.html', {'remito' : model} ) 
+	
