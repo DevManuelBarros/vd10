@@ -57,7 +57,7 @@
 		      </tr>
 		      <tr>
 		      <td>
-		      	<a href="#" ><input type="button" class="btn btn-primary" value="Imprimir"></a>
+		      	<a href="{% url 'venta:remitoPDF' id_remito=remito.pk etiqueta=1  %}" ><input type="button" class="btn btn-primary" value="Imprimir"></a>
 			  	<a href="#"><input type="button" class="btn btn-primary" value="Modificar Remito"></a>
 				<a href="#"><input type="button" class="btn btn-primary" value="Ver Detalles"></a>
 			<td>

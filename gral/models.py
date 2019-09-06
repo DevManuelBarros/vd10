@@ -30,7 +30,6 @@ class Cliente(models.Model):
 	direccion_fiscal  = models.CharField(max_length=250)
 	direccion_entrega = models.CharField(max_length=250)
 	observaciones     = models.TextField(blank=True)
-
 	def __str__(self):
 		return self.nombre_corto
 

@@ -173,5 +173,5 @@ class RemitoCompletoView(LoginRequiredMixin, CreateView):
 
 def PreImpresion(request, id_remito):
 	model = Remito.objects.filter(pk=id_remito).last()
-	return render(request, 'venta/preimpresion.html', {'remito' : model} ) 
+	return render(request, 'venta/preimpresion.html', {'remito' : model}) 
 	

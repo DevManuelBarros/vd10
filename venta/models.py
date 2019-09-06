@@ -4,6 +4,7 @@ from django.db import models
 
 #Imports de la aplición
 from gral.models import Cliente, Producto
+from django.template.defaultfilters import default
 
 
 
@@ -38,6 +39,7 @@ class Remito(models.Model):
 	fecha_emision			= models.DateField(null=True, blank=True)
 	formato_de_impresion 	= models.ForeignKey(FormatodeImpresion, default=1, null=False, blank=False, on_delete=models.CASCADE)
 	conformado				= models.BooleanField(default=False)
+	anulado					= models.BooleanField(default=False)
 
 	def __str__(self):
 		return "Remito: " + self.referencia_externa

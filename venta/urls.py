@@ -28,7 +28,7 @@ urlpatterns = [
     path('ordencompra/detalle/<int:pk>', OrdenCompraDetail.as_view(), name='OrdenCompraDetail'),
     path('ordencompra/crear/', OrdenCompraCompletoView.as_view(), name='OrdenCompraCompleto'),
     path('ventas/preimpresion/<int:id_remito>', PreImpresion, name='Preimpresion'),
-    path('ventas/remitopdf/<int:id_remito>', remito, name='remito'),
+    path('ventas/remitopdf/<int:id_remito>/<int:etiqueta>', remito, name='remitoPDF'),
     #Remito
     path('remito/crear/', RemitoCompletoView.as_view(), name='RemitoCrear'),
     path('remito/listar/', RemitoListView.as_view(), name='RemitoListar'),
