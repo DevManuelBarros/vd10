@@ -20,7 +20,7 @@ from .models import (Cronograma,
 class CronogramaCreateForm(forms.ModelForm):
 	class Meta:
 		model = Cronograma
-		fields = ['nombre', 'cliente', 'fecha_inicio']
+		fields = ['nombre', 'cliente',  'fecha_inicio']
 		widgets = 	{
             'nombre': forms.TextInput(attrs={'class': 'form-control'}),
             'cliente' : forms.Select(attrs={'class' : 'form-control'}),

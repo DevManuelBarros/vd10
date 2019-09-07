@@ -189,6 +189,7 @@
                 if (hideAddButton) addButton.hide();
             }
             addButton.click(function() {
+            	
                 var formCount = parseInt(totalForms.val()),
                     row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
                     buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this),
@@ -199,7 +200,9 @@
                 row.find(childElementSelector).each(function() {
                     updateElementIndex($(this), options.prefix, formCount);
 				
-				if(options.instancia=='ordencompra'){
+                });
+				
+                if(options.instancia=='ordencompra'){
 				getCronograma(formCount);
 				}else
 				{
@@ -208,7 +211,6 @@
 					$("input[id$='-total_unidades']").prop('disabled', true);
 
 				}
-                });
                 totalForms.val(formCount + 1);
                 // Check if we're above the minimum allowed number of forms -> show all delete link(s)
                 if (showDeleteLinks()){

@@ -76,7 +76,8 @@ class lineaProductoOCList(LoginRequiredMixin, ListView):
 
 class OrdenCompraCompletoView(LoginRequiredMixin, CreateView):
     form_class = OrdenCompraCabecera
-    success_url = reverse_lazy('venta:CronogramaList')
+    #model = OrdenCompra
+    success_url = reverse_lazy('venta:OrdenCompraList')
     template_name = 'venta/ordencompra_form.html'
     
     def get_context_data(self, **kwargs):
@@ -92,8 +93,9 @@ class OrdenCompraCompletoView(LoginRequiredMixin, CreateView):
         with transaction.atomic():
             self.object = form.save()
             if ordendecompramain.is_valid():
-                ordendecompramain.instance = self.object
-                ordendecompramain.save()
+            	print(ordendecompramain)
+            	ordendecompramain.instance = self.object
+            	ordendecompramain.save()
         return super(OrdenCompraCompletoView, self).form_valid(form)
 
 
@@ -160,6 +162,7 @@ class RemitoCompletoView(LoginRequiredMixin, CreateView):
 		with transaction.atomic():
 			self.object = form.save()
 			if remitomain.is_valid():
+				print(remitomain)
 				remitomain.instance = self.object
 				remitomain.save()
 		return super(RemitoCompletoView, self).form_valid(form)

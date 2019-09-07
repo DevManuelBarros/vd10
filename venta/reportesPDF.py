@@ -11,6 +11,12 @@ from gral.models import Cliente, Producto
 from django.http import HttpResponse
 
 def remito(request, id_remito, etiqueta):
+	#Variables
+	size_font = 11
+	linea_pos = 480
+	sangria_inicial = 30
+	type_font = 'Helvetica'
+	
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachament; filename=prueba.pdf'
 	buffer = BytesIO()
@@ -22,9 +28,8 @@ def remito(request, id_remito, etiqueta):
 	
 	#Fecha
 	
-	
 	#Cabecera
-	c.setFont('Helvetica', 11)
+	c.setFont(type_font, size_font)
 	#razon social
 	c.drawString(180,660, datos_cliente.razon_social)
 	c.drawString(180,620, "Responsable Inscripto")
@@ -34,44 +39,26 @@ def remito(request, id_remito, etiqueta):
 	
 	#Cuerpo del Remito...
 	
-	lineas_remito = ProductoLineasRM.objects.filter(pk = datos_remito.pk)
+	lineas_remito = ProductoLineasRM.objects.filter(remito = datos_remito)
 	
+	bultos = 0
 	for linea in lineas_remito:
-		c.drawString(30,480, str(linea.cajas))
-		c.drawString(50,480, "x")
-		c.drawString(70,480, str(linea.cantidad))
-		producto = Producto.objects.filter(pk = 5).last()
-		c.drawString(120,480, producto.codigo)
-		c.drawString(190, 480, producto.descripcion)
-	
-
-	
-	
-	
-	
-	#c.setLineWidth(.3)
-	#c.setFont('Helvetica', 22)
-	#c.drawString(30,750, str(datos_remito.referencia_externa))
-	#c.setFont('Helvetica', 12)
-	#c.drawString(30, 735, 'reporte')
-	
-	
-	
-	
-	#Numerando
-	#c.setFont('Helvetica', 4)
-	#for i in range(2, 598, 12):
-	#	c.drawString(i, 840, str(i))
-	#	
-	#for i in range(2, 840, 12):
-	#	c.drawString(2, i, str(i))
-	#-----------------------------------
+		c.drawString(sangria_inicial,linea_pos, str(linea.cajas))
+		bultos += linea.cajas
+		c.drawString(sangria_inicial + 20,linea_pos, "x")
+		c.drawString(sangria_inicial + 40,linea_pos, str(linea.cantidad))
+		tmp = str(linea.producto)
+		tmp = tmp.split('Cod: ')[1].replace(')', '')
+		producto = Producto.objects.filter(codigo = tmp).last()
+		c.drawString(sangria_inicial + 90, linea_pos, producto.codigo)
+		c.drawString(sangria_inicial + 160, linea_pos, producto.descripcion)
+		linea_pos -= size_font + 2
 		
-	#Numerando2
-	#c.setFont('Helvetica',4)
-	#for i in range(2, 590,12):
-	#	c.drawString(i, 483, str(i))
-	#
+	
+	c.drawString(sangria_inicial + 190, 80, str(datos_remito.ordencompra))
+	c.drawString(sangria_inicial + 190, 60, 'Total Bultos: ' + str(bultos))	
+	c.drawString(sangria_inicial + 190, 40, 'Se entrega en: ' + datos_cliente.direccion_entrega)
+
 	
 	c.save()
 	pdf = buffer.getvalue()
