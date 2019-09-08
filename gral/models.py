@@ -1,53 +1,93 @@
 from django.db import models
 
 
-##
-#Insumos.
-#
-#####################
- 
+""" Insumos.
+Todas las clases referentes a insumos.
+"""
 class Peso(models.Model):
-    nombre = models.CharField(max_length=50, blank=False, unique=True)
-    abreviatura = models.CharField(max_length=5, blank=False, unique=True)
-    es_principal = models.BooleanField(default=False)
-    relacion_de_medida = models.IntegerField()
+    """Peso
+    Es la clase que permite representar distintas formas
+    de peso y crear relaciones entre si.
+    
+    
+    Attributes:
+        nombre (CharField) : 
+    
+    
+    Returns:
+            __str__:
+            return self.abreviatura
+    """
+    nombre              = models.CharField(max_length=50, blank=False, unique=True)
+    abreviatura         = models.CharField(max_length=5, blank=False, unique=True)
+    es_principal        = models.BooleanField(default=False)
+    relacion_de_medida  = models.IntegerField()
     def __str__(self):
         return self.abreviatura
  
+
 class Medicion(models.Model):
-    nombre = models.CharField(max_length=50, blank=False, unique=True)
+    """Medicion
+    Indica las formas de medidas aceptadas pueden utilizarse en el programa
+    para definir la forma de clasificación de los insumos. Ejemplo: cm, metro, etc.
+    
+    Returns:
+        __str__:
+            self.nombre
+    """
+    nombre      = models.CharField(max_length=50, blank=False, unique=True)
     abreviatura = models.CharField(max_length=5, blank=False, unique=True)
     def __str__(self):
-        return nombre
- 
- 
+        return self.nombre
+  
 class Cuerpos(models.Model):
-    nombre = models.CharField(max_length=50, blank=False, unique=True)
-    abreviatura = models.CharField(max_length=5, blank=False, unique=True)
-    cantidad_medidas = models.IntegerField()
-    medicion_id = models.ForeignKey('Medicion', blank=False, on_delete=models.CASCADE)
+    """Cuerpos
+    Cuerpos es para definir la forma de un insumo, por ejemplo: se puede considerar
+    un circulo que compone una sola medida: diametro. En el caso de un Ovalo, serían
+    dos medidas. Cuadrado puede ser uno solo, ya que el alto y lado son lo mismo. 
+    Rectangulo dos medidas.
+    
+    Returns:
+        __str__:
+            self.abreviatura
+    """
+    nombre              = models.CharField(max_length=50, blank=False, unique=True)
+    abreviatura         = models.CharField(max_length=5, blank=False, unique=True)
+    cantidad_medidas    = models.IntegerField()
+    medicion_id         = models.ForeignKey('Medicion', blank=False, on_delete=models.CASCADE)
     def __str__(self):
         return self.abreviatura
  
  
 class FamiliaInsumos(models.Model):
-    nombre = models.CharField(max_length=50, blank=False, unique=True)
-    observaciones = models.TextField(max_length=255, blank=True)
+    """FamiliInsumos
+    Familia de insumo permite crear una categorización de forma general. Esta asociado
+    posteriormente a LineaInsumos.
+    
+    Returns:
+        __str__:
+            self.nombre.
+    """
+    nombre          = models.CharField(max_length=50, blank=False, unique=True)
+    observaciones   = models.TextField(max_length=255, blank=True)
     def __str__(self):
         return self.nombre
  
 class LineaInsumos(models.Model):
-    nombre = models.CharField(max_length=50, blank=False, unique=True)
-    observaciones = models.TextField(max_length=255, blank=True)
-    familiainsumos_id = models.ForeignKey('FamiliaInsumos', blank=False, on_delete=models.CASCADE )
-    peso = models.DecimalField(decimal_places=2, max_digits=5)
-    peso_id = models.ForeignKey('Peso', blank=True, on_delete=models.CASCADE)
-    medida1 = models.DecimalField(decimal_places=2, max_digits=5)
-    medida2 = models.DecimalField(decimal_places=2, max_digits=5)
-    medida3 = models.DecimalField(decimal_places=2, max_digits=5)
-    medida3 = models.DecimalField(decimal_places=2, max_digits=5)
+    """LineaInsumos
+    
+    """
+    nombre              = models.CharField(max_length=50, blank=False, unique=True)
+    observaciones       = models.TextField(max_length=255, blank=True)
+    familiainsumos_id   = models.ForeignKey('FamiliaInsumos', blank=False, on_delete=models.CASCADE )
+    peso                = models.DecimalField(decimal_places=2, max_digits=5)
+    peso_id             = models.ForeignKey('Peso', blank=True, on_delete=models.CASCADE)
+    medida1             = models.DecimalField(decimal_places=2, max_digits=5)
+    medida2             = models.DecimalField(decimal_places=2, max_digits=5)
+    medida3             = models.DecimalField(decimal_places=2, max_digits=5)
+    medida3             = models.DecimalField(decimal_places=2, max_digits=5)
     def __str__(self):
-        return nombre
+        return self.nombre
  
  
  
@@ -81,7 +121,6 @@ class Etiqueta(models.Model):
 	
 	def __str__(self):
 		return self.nombre
-
 
 class Cliente(models.Model):
 	razon_social      = models.CharField(max_length=150, unique=True)

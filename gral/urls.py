@@ -1,11 +1,8 @@
-from django.urls import path, include
+from django.urls import path
 from gral.views import (ProductoCreate, 
                         ClienteCreate, 
                         ProductoListView, 
                         ProductoDetailView)
-
-
-
 
 urlpatterns = [
     path('producto/crear/', ProductoCreate.as_view(), name='ProductoCreate'),

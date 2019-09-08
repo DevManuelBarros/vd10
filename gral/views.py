@@ -10,10 +10,8 @@ from .models import Producto, Cliente
 
 
 class ProductoCreate(LoginRequiredMixin, CreateView):
-	#model = Producto
 	form_class = ProductoCreateForm
 	template_name = 'gral/productoCreate.html'
-	#fields = ['codigo', 'descripcion', 'cliente']
 	success_url = reverse_lazy('gral:ProductoListView')
 
 class ClienteCreate(LoginRequiredMixin, CreateView):

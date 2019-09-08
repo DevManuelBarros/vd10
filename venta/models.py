@@ -1,7 +1,6 @@
 #Imports de Django
 from django.db import models
 
-
 #Imports de la aplición
 from gral.models import Cliente, Producto
 from django.template.defaultfilters import default
