@@ -19,7 +19,7 @@ def get_cronogramas(request):
     for cronograma in cronogramas:
         options += '<option value="%s">%s</option>' % (
             cronograma.pk,
-            cronograma
+            cronograma.nombre_completo
         )
     for producto in productos:
         options_producto +='<option value="%s">%s</option>' % (

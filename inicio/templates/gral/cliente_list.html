@@ -1,0 +1,58 @@
+{% extends '../base.html' %}
+
+{%  block cuerpo %}
+<div class="app-page-title">
+	<div class="page-title-heading">
+		<div class="page-title-icon">
+			<i class="pe-7s-menu icon-gradient bg-ripe-malin"> </i>
+		</div>
+		<div>Listado de Clientes</div>
+
+	</div>
+</div>
+
+
+{% if object_list %}
+<div class="main-card mb-3 card">
+	<div class="card-body">
+		<h5 class="card-title">Cliente.</h5>
+		<table class="table table-hover table-fixed">
+			<tr>
+				<th>Razon Social</th>
+				<th>Nombre Corto</th>
+				<th>Cuit</th>
+				<th>Ver Detalle</th>
+			</tr>
+			{% for cliente in object_list %}
+			<tr>
+				<td>
+					<i class="pe-7s-box2 icon-gradient bg-amy-crisp"></i>
+					{{cliente.razon_social}}
+				</td>
+				<td>{{cliente.nombre_corto }}</td>
+				<td>{{cliente.cuit}}</td>
+				<td><a href="{% url 'gral:ClienteDetail' pk=cliente.id %}">
+						<i class="pe-7s-angle-up-circle"> Ver </i>
+				</a></td>
+			</tr>
+			{% endfor %} {% else %}
+			<p>No hay registros para mostrar.</p>
+			{% endif %}
+		</table>
+	</div>
+</div>
+<a href="{% url 'inicio:abm' %}">
+	<button
+		class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
+		<i class="pe-7s-wallet icon-gradient bg-plum-plate"></i>Ir al ABM
+	</button>
+</a>
+<a href="{% url 'gral:ProductoCreate' %}">
+	<button
+		class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
+		<i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes"></i>Crear
+		Producto
+	</button>
+</a>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends '../base.html' %}
+{%  block cuerpo %}
+
+<div class="app-page-title">
+	<div class="page-title-heading">
+		<div class="page-title-icon">
+			<i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes"> </i>
+		</div>
+		<div>Crear Producto</div>
+	</div>
+</div>
+
+
+	<div class="main-card mb-3 card">
+		<div class="card-body">
+			<h5 class="card-title">Formulario Alta de Cliente</h5>
+			    <form class="needs-validation" action="" method="post">{% csrf_token %}
+			        <div class="form-row">
+			        	<div class="col-md-4 mb-3">
+			        		{{ form.as_p }}
+			        	</div>
+			    	</div>
+					<button type="submit" class="btn btn-primary">Guardar</button>
+				</form>
+		</div>
+	</div>
+{% endblock %}

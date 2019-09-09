@@ -5,7 +5,8 @@ from .models import (   Peso,
                         Cuerpos, 
                         FamiliaInsumos, 
                         LineaInsumos, 
-                        Insumo,
+                        Insumos,
+                        Cliente,
                         Producto)
  
 """ 
@@ -62,6 +63,26 @@ class InsumoListForm(forms.ModelForm):
 
 """
 ################### FIN INSUMOS
+
+
+
+class ClienteCreateForm(forms.ModelForm):
+    class Meta:
+            model = Cliente
+            fields = ('__all__')
+            class_control = {'class' : 'form-control'}
+            widgets =   {
+                        'razon_social'      :   forms.TextInput(attrs=class_control),
+                        'nombre_corto'      :   forms.TextInput(attrs=class_control),
+                        'cuit'              :   forms.TextInput(attrs=class_control),
+                        'direccion_fiscal'  :   forms.TextInput(attrs=class_control),
+                        'direccion_entrega' :   forms.TextInput(attrs=class_control),
+                        'condicion_iva'     :   forms.TextInput(attrs=class_control),
+                        'observaciones'     :   forms.Textarea(attrs=class_control),
+                        }
+            
+
+
 
 class ProductoCreateForm(forms.ModelForm):
     class Meta:

@@ -26,5 +26,6 @@ urlpatterns = [
     path('gral/', include(('gral.urls', 'gral'), namespace='gral')),
     path('venta/', include(('venta.urls', 'venta'), namespace='venta')),
     path('configuraciones/', include(('configuraciones.urls', 'configuraciones'), namespace='configuraciones')),
+     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls, name='admin'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

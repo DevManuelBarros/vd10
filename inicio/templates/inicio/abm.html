@@ -1,0 +1,37 @@
+{% extends '../base.html' %}
+
+{% block cuerpo %}
+
+<div class="app-page-title">
+	<div class="page-title-heading">
+		<div class="page-title-icon">
+        	<i class="pe-7s-wallet icon-gradient bg-plum-plate"></i>
+        </div>
+		<div>Dashboard ABM</div>
+	</div>
+</div>
+
+{%for titulo, valores in context.items %}
+	<!--  Listado para: {{ titulo }} -->
+	 <h5>{{ titulo }}</h5>
+	 <div class="row">
+	 {% for boton, detalles in valores.items %}
+	 		<!-- comienza boton: {{ boton }} -->
+			<div class="col-lg-6 col-xl-4">
+				<div class="card mb-3 widget-content bg-night-fade">
+					<a href="{{ detalles.url }}">
+						<div class="widget-content-wrapper text-white">
+							<div class="widget-content-left">
+								<div class="widget-heading">{{ boton }}</div>
+								<div class="widget-subheading">{{ detalles.descripcion}}</div>
+							</div>
+						</div>
+					</a>
+				</div>
+			</div>
+	<!-- termina boton: {{ boton }} -->
+	 {% endfor %}
+	 </div>
+	 <!--  Termina listado para {{ titulo }} -->
+{% endfor %}
+{% endblock %}

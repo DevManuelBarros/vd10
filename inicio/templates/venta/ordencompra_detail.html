@@ -48,7 +48,7 @@
 		</tr>
 		{% for lista in ordendecompramain %}
 		<tr>
-			<td>{{ lista.producto }}</td>
+			<td><a href="{% url 'gral:ProductoDetail' lista.producto.pk%}">{{ lista.producto.nombre_completo }}</a></td>
 			<td>{{ lista.cantidad}} </td>
 			<td>$ {{ lista.precio_unitario}}</td>
 			<td>$ {{ lista.total }}</td>
