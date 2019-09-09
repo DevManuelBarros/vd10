@@ -1,0 +1,16 @@
+	{% for campo in form %} 
+					{% if forloop.first %}
+						<div class=row>
+					{% endif %}
+					{% if forloop.counter0|divisibleby:"2" %}
+						</div>
+						<div class="row">
+					{% endif %}
+						<div class="col-md-4 mb-3">
+							{{campo.label_tag}}
+							{{campo}}
+						</div>
+					{% if forloop.last%}
+					</div>
+					{% endif %}
+				{% endfor %}

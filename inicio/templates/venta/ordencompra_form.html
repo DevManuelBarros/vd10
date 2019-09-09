@@ -18,27 +18,7 @@
 <div class="card-body">
 <h5 class="card-title">Formulario de Orden de Compra</h5>
     <form class="needs-validation" action="" method="post">{% csrf_token %}
-    <div class="form-row">
-    	<div class="col-md-4 mb-3">
-        {{ form.referencia_externa.label_tag }}
-        {{ form.referencia_externa}}
-        </div>
-		<div class="col-md-4 mb-3">	
-        {{ form.cliente.label_tag }}
-        {{ form.cliente}}
-		</div>
-	</div>
-	<div class="form-row">
-		<div class="col-md-4 mb-3">	
-        {{ form.cronograma.label_tag }}
-        {{ form.cronograma }}
-		</div>
-		<div class="col-md-4 mb-3">
-		{{ form.fecha_emision.label_tag }}
-		{{ form.fecha_emision }}
-		</div>    
-	</div>
-
+    {% include '../utils/form_cabecera.html' %}
 	<h5 class="card-title">Detalle Orden de compra</h5>
 	
         <table class="mb-0 table table-hover">

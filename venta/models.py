@@ -8,8 +8,7 @@ from django.template.defaultfilters import default
 
 
 class FormatodeImpresion(models.Model):
-	nombre 			= models.CharField(max_length=20, unique=True)
-	
+	nombre 			= models.CharField(max_length=20, unique=True)	
 	def __str__(self):
 		return self.nombre
 
@@ -59,11 +58,9 @@ class ProductoLineasOC(models.Model):
 	cantidad = models.IntegerField()
 	precio_unitario = models.DecimalField(max_digits=9, decimal_places=2)
 	OrdenCompra = models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
-	
 	@property
 	def total(self):
 		return self.cantidad * self.precio_unitario
-	
 	def __str__(self):
 		return str(self.OrdenCompra)
 

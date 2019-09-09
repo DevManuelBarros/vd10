@@ -1,11 +1,13 @@
 from django.urls import path
-from .views import (fuentesCreate, 
+from .views import (FuentesCreate, 
                     EmpresaUpdate,
-                    config_impresion_remitoCreate,
-                    config_impresion_remitoUpdate)
+                    ConfigImpresionRemitoCreate,
+                    ConfigImpresionRemitoUpdate,
+                    configuracionesIndex)
 
 
 
 urlpatterns = [
-    
+    path('configuraciones/', configuracionesIndex, name='configuraciones'),
+    path('configimpresionremito/crear/', ConfigImpresionRemitoCreate.as_view(), name='ConfigImpresionRemitoCreate'),
     ]

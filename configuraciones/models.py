@@ -1,11 +1,11 @@
 from django.db import models
 
-class fuentes(models.Model):
+class Fuentes(models.Model):
     nombre = models.CharField(max_length=150)
     def __str__(self):
         return self.nombre
 
-class empresa(models.Model):
+class Empresa(models.Model):
     razon_social    = models.CharField(max_length=150, unique=True, blank=False)
     cuit            = models.CharField(max_length=50, unique=True, blank=False)
     direccion_fiscal    = models.CharField(max_length=255)
@@ -14,7 +14,7 @@ class empresa(models.Model):
     def __str__(self):
         return self.razon_social
     
-class config_impresion_remito(models.Model):
+class ConfigImpresionRemito(models.Model):
     nombre                  = models.CharField(max_length=150, unique=True, blank=False)
     size_font_cabecera      = models.IntegerField()
     type_font_cabecera      = models.ForeignKey('fuentes', related_name='fuenteCabecera', blank=True, on_delete=models.CASCADE)

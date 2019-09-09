@@ -1,19 +1,19 @@
 from django import forms
 
-from .models import (fuentes, empresa, config_impresion_remito)
+from .models import (Fuentes, Empresa, ConfigImpresionRemito)
 
 
-class fuentesForm(forms.ModelForm):
+class FuentesForm(forms.ModelForm):
     class Meta:
-        model = fuentes
+        model = Fuentes
         fields = '__all__'
         widgets =   { 
                     'nombre'            : forms.TextInput(attrs={'class' : 'form-control'}),
                     }
         
-class empresaForm(forms.ModelForm):
+class EmpresaForm(forms.ModelForm):
     class Meta:
-        model = empresa
+        model = Empresa
         fields = '__all__'
         class_control = {'class' : 'form-control'} 
         widgets =   {
@@ -24,9 +24,9 @@ class empresaForm(forms.ModelForm):
                     'ingresos_brutos'   :   forms.TextInput(attrs=class_control),
                     }
     
-class config_impresion_remitoForm(forms.ModelForm):
+class ConfigImpresionRemitoForm(forms.ModelForm):
     class Meta:
-        model = config_impresion_remito
+        model = ConfigImpresionRemito
         fields = '__all__'  
         class_control = {'class' : 'form-control'}
         class_controlInt = {'class' : 'form-control', 'type' : 'number'}
