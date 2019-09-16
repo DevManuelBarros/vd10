@@ -16,6 +16,7 @@ from .forms  import (CronogramaCreateForm,
 					 ProductoLineasRMFormSet,
 					 RemitoCabecera)
 					 
+from configuraciones.models import ConfigImpresionRemito
 ##
 #
 # CRONOGRAMA
@@ -176,5 +177,6 @@ class RemitoCompletoView(LoginRequiredMixin, CreateView):
 
 def PreImpresion(request, id_remito):
 	model = Remito.objects.filter(pk=id_remito).last()
-	return render(request, 'venta/preimpresion.html', {'remito' : model}) 
+	impresoras = ConfigImpresionRemito.objects.all()
+	return render(request, 'venta/preimpresion.html', {'remito' : model, 'impresoras' : impresoras}) 
 	

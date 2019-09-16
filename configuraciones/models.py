@@ -32,11 +32,13 @@ class ConfigImpresionRemito(models.Model):
     pos_y_direccion_f       = models.IntegerField()
     pos_x_cuit              = models.IntegerField()
     pos_y_cuit              = models.IntegerField()
-    pos_y_comiezo_cuerpo    = models.IntegerField()
+    pos_y_comienzo_cuerpo    = models.IntegerField()
     pos_x_comienzo_cuerpo   = models.IntegerField()
     pos_y_bultos            = models.IntegerField()
     pos_x_bultos            = models.IntegerField()
     pos_y_direccion_entrega = models.IntegerField()
     pos_x_direccion_entrega = models.IntegerField()
     pos_y_ordencompra       = models.IntegerField()
-    pos_x_ordencompra       = models.IntegerField()     
+    pos_x_ordencompra       = models.IntegerField()
+    def __str__(self):
+        return self.nombre

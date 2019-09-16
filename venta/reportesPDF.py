@@ -4,18 +4,20 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4	
 
+from configuraciones.models import ConfigImpresionRemito
 from .models import Remito, ProductoLineasRM, OrdenCompra
 from gral.models import Cliente, Producto
 
 
 from django.http import HttpResponse
 
-def remito(request, id_remito, etiqueta):
-	#Variables
-	size_font = 11
-	linea_pos = 480
-	sangria_inicial = 30
-	type_font = 'Helvetica'
+def remito(request, id_remito, etiqueta, impresion):
+	#recogemos la configuración de la impresion.
+	configImp = ConfigImpresionRemito.objects.filter(pk = impresion).last()
+	
+	#Variables Cabecera
+	linea_pos = configImp.pos_y_comienzo_cuerpo
+	sangria_inicial = configImp.pos_x_comienzo_cuerpo
 	
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachament; filename=prueba.pdf'
@@ -26,10 +28,11 @@ def remito(request, id_remito, etiqueta):
 	datos_cliente = Cliente.objects.filter(nombre_corto = datos_remito.cliente).last()
 	
 	
-	#Fecha
-	
 	#Cabecera
-	c.setFont(type_font, size_font)
+	c.setFont(configImp.type_font_cabecera.nombre, configImp.size_font_cabecera)
+	
+	#Fecha
+	print(datos_remito.fecha_emision)
 	#razon social
 	c.drawString(180,660, datos_cliente.razon_social)
 	c.drawString(180,620, "Responsable Inscripto")
@@ -38,7 +41,7 @@ def remito(request, id_remito, etiqueta):
 	c.drawString(456,620, datos_cliente.cuit )
 	
 	#Cuerpo del Remito...
-	
+	c.setFont(configImp.type_font_cuerpo.nombre, configImp.size_font_cuerpo)
 	lineas_remito = ProductoLineasRM.objects.filter(remito = datos_remito)
 	
 	bultos = 0
@@ -47,13 +50,14 @@ def remito(request, id_remito, etiqueta):
 		bultos += linea.cajas
 		c.drawString(sangria_inicial + 20,linea_pos, "x")
 		c.drawString(sangria_inicial + 40,linea_pos, str(linea.cantidad))
-		tmp = str(linea.producto)
-		tmp = tmp.split('Cod: ')[1].replace(')', '')
-		producto = Producto.objects.filter(codigo = tmp).last()
+		producto = Producto.objects.filter(codigo = linea.producto).last()
 		c.drawString(sangria_inicial + 90, linea_pos, producto.codigo)
 		c.drawString(sangria_inicial + 160, linea_pos, producto.descripcion)
-		linea_pos -= size_font + 2
+		linea_pos -= configImp.size_font_cuerpo + 2
 		
+	
+	#Pie de remito
+	c.setFont(configImp.type_font_pie.nombre, configImp.size_font_pie)
 	
 	c.drawString(sangria_inicial + 190, 80, str(datos_remito.ordencompra))
 	c.drawString(sangria_inicial + 190, 60, 'Total Bultos: ' + str(bultos))	
