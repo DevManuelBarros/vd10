@@ -7,14 +7,23 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 #Imports de la aplicación.
-from .models import Cronograma, OrdenCompra, ProductoLineasOC, Remito, ProductoLineasRM
+from .models import (Cronograma, 
+					 OrdenCompra, 
+					 ProductoLineasOC, 
+					 Remito, 
+					 ProductoLineasRM, 
+					 ProductoLineasOT, 
+					 OrdenTraslado)
 from .forms  import (CronogramaCreateForm,
 					 OrdenCompraCabecera,
 					 ProductoLineasOCForm,
 					 ProductoLineasOCFormSet,
 					 ProductoLineasRMForm,
 					 ProductoLineasRMFormSet,
-					 RemitoCabecera)
+					 ProductoLineasOTForm,
+					 ProductoLineasOTFormSet,
+					 RemitoCabecera,
+					 OrdenTrasladoCabecera)
 					 
 from configuraciones.models import ConfigImpresionRemito
 ##
@@ -146,7 +155,6 @@ class lineaProductoRMList(LoginRequiredMixin, ListView):
 
 class RemitoCompletoView(LoginRequiredMixin, CreateView):
 	form_class = RemitoCabecera
-	#success_url = reverse_lazy()
 	template_name = 'venta/remito_form.html'
 
 	def get_context_data(self, **kwargs):
@@ -163,7 +171,6 @@ class RemitoCompletoView(LoginRequiredMixin, CreateView):
 		with transaction.atomic():
 			self.object = form.save()
 			if remitomain.is_valid():
-				print(remitomain)
 				remitomain.instance = self.object
 				remitomain.save()
 		return super(RemitoCompletoView, self).form_valid(form)
@@ -180,3 +187,48 @@ def PreImpresion(request, id_remito):
 	impresoras = ConfigImpresionRemito.objects.all()
 	return render(request, 'venta/preimpresion.html', {'remito' : model, 'impresoras' : impresoras}) 
 	
+
+###
+#
+# ORDEN DE TRASLADO
+#	
+###
+
+
+################### LIST
+
+class OrdenTrasladoListView(LoginRequiredMixin, ListView):
+	model = OrdenTraslado
+
+
+###################### VIEW
+
+class lineaProductoOTList(LoginRequiredMixin, ListView):
+	model = OrdenTrasladoCabecera
+
+##################### CREATE
+
+class OrdenTrasladoCompletoView(LoginRequiredMixin, CreateView):
+	form_class = OrdenTrasladoCabecera
+	template_name = 'venta/ordentraslado_form.html'
+
+	def get_context_data(self, **kwargs):
+		data = super(OrdenTrasladoCompletoView, self).get_context_data(**kwargs)
+		if self.request.POST:
+			data['ordentrasladomain'] = ProductoLineasOTFormSet(self.request.POST)
+		else:
+			data['ordentrasladomain'] = ProductoLineasOTFormSet()
+		return data
+       
+	def form_valid(self, form):
+		context = self.get_context_data()
+		ordentrasladomain = context['ordentrasladomain']
+		with transaction.atomic():
+			self.object = form.save()
+			if ordentrasladomain.is_valid():
+				ordentrasladomain.instance = self.object
+				ordentrasladomain.save()
+		return super(OrdenTrasladoCompletoView, self).form_valid(form)
+	
+	def get_success_url(self):
+		return reverse_lazy('venta:Preimpresion', kwargs={'id_remito': self.object.pk})

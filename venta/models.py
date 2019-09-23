@@ -39,7 +39,7 @@ class OrdenTraslado(models.Model):
 	conformado				= models.BooleanField(default=False)
 	anulado					= models.BooleanField(default=False)
 	def __str__(self):
-		return "Remito: " + self.referencia
+		return "Orden de traslado: " + self.referencia
 
 
 class Remito(models.Model):
