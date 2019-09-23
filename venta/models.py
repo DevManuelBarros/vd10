@@ -30,6 +30,18 @@ class OrdenCompra(models.Model):
 		return "O.C: " + self.referencia_externa + " || Campaña: " + str(self.cronograma) 
 
 
+class OrdenTraslado(models.Model):
+	referencia 				= models.CharField(max_length=50, unique=True)
+	cliente 				= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
+	ordencompra 			= models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
+	fecha_emision			= models.DateField(null=True, blank=True)
+	formato_de_impresion 	= models.ForeignKey(FormatodeImpresion, default=1, null=False, blank=False, on_delete=models.CASCADE)
+	conformado				= models.BooleanField(default=False)
+	anulado					= models.BooleanField(default=False)
+	def __str__(self):
+		return "Remito: " + self.referencia
+
+
 class Remito(models.Model):
 	referencia_externa 		= models.CharField(max_length=50, unique=True)
 	cliente 				= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
@@ -41,6 +53,16 @@ class Remito(models.Model):
 
 	def __str__(self):
 		return "Remito: " + self.referencia_externa
+
+
+class ProductoLineasOT(models.Model):
+	producto = models.ForeignKey(Producto, null=False, blank=False, on_delete=models.CASCADE)
+	cajas = models.IntegerField()
+	cantidad = models.IntegerField()
+	ordentraslado = models.ForeignKey(OrdenTraslado, null=False, blank=False, on_delete=models.CASCADE)
+	total_unidades = models.IntegerField()
+	def __str__(self):
+		return str(self.remito)
 
 class ProductoLineasRM(models.Model):
 	producto = models.ForeignKey(Producto, null=False, blank=False, on_delete=models.CASCADE)
