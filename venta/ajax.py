@@ -24,7 +24,7 @@ def get_cronogramas(request):
     for producto in productos:
         options_producto +='<option value="%s">%s</option>' % (
             producto.pk,
-            producto
+            producto.nombre_completo
             )
     response = {}
     response['cronogramas'] = options
@@ -59,7 +59,7 @@ def get_productos(request):
         for item in linea:
             options += '<option value="%s">%s</option>' % (
                 item.pk,
-                item
+                item.nombre_completo
             )
 
     response = {}
