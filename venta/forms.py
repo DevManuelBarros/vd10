@@ -119,12 +119,13 @@ ProductoLineasOCFormSet = inlineformset_factory(OrdenCompra, ProductoLineasOC,
 class OrdenTrasladoCabecera(forms.ModelForm):
 	class Meta:
 		model = OrdenTraslado
-		fields = ['referencia', 'cliente', 'ordencompra', 'fecha_emision']
+		fields = ['referencia', 'cliente', 'ordencompra', 'fecha_emision', 'formato_de_impresion']
 		widgets = {
 					'referencia' : forms.TextInput(attrs={'class' : 'form-control', 'type': 'text'}),
 					'cliente' : forms.Select(attrs={'class' : 'form-control'}),
 					'ordencompra' : forms.Select(attrs={'class' : 'form-control'}),
 					'fecha_emision' : forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
+					'formato_de_impresion' : forms.Select(attrs={'class' : 'form-control'}),
 					}
 
 class ProductoLineasOTForm(forms.ModelForm):
@@ -152,12 +153,13 @@ ProductoLineasOTFormSet = inlineformset_factory(OrdenTraslado, ProductoLineasOT,
 class RemitoCabecera(forms.ModelForm):
 	class Meta:
 		model = Remito
-		fields = ['referencia_externa', 'cliente', 'ordencompra', 'fecha_emision']
+		fields = ['referencia_externa', 'cliente', 'ordencompra', 'fecha_emision', 'formato_de_impresion']
 		widgets = {
 					'referencia_externa' : forms.TextInput(attrs={'class' : 'form-control', 'type': 'text'}),
 					'cliente' : forms.Select(attrs={'class' : 'form-control'}),
 					'ordencompra' : forms.Select(attrs={'class' : 'form-control'}),
 					'fecha_emision' : forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
+					'formato_de_impresion' : forms.Select(attrs={'class' : 'form-control'}),
 					}
 
 

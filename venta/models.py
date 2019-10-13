@@ -81,6 +81,7 @@ class OrdenTraslado(models.Model):
 	referencia 				= models.CharField(max_length=50, unique=True)
 	cliente 				= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
 	ordencompra 			= models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
+	formato_de_impresion 	= models.ForeignKey(FormatodeImpresion, default=1, null=False, blank=False, on_delete=models.CASCADE)
 	fecha_emision			= models.DateField(null=True, blank=True)
 	conformado				= models.BooleanField(default=False)
 	anulado					= models.BooleanField(default=False)
@@ -105,6 +106,7 @@ class Remito(models.Model):
 	cliente 				= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
 	ordencompra 			= models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
 	fecha_emision			= models.DateField(null=True, blank=True)
+	formato_de_impresion 	= models.ForeignKey(FormatodeImpresion, default=1, null=False, blank=False, on_delete=models.CASCADE)
 	conformado				= models.BooleanField(default=False)
 	anulado					= models.BooleanField(default=False)
 	def __str__(self):
