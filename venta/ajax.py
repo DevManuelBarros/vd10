@@ -84,3 +84,4 @@ def get_nextNumberRemito(request):
     else:
         response['next'] = '99-000001'
     return JsonResponse(response)
+
