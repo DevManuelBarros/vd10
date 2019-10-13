@@ -85,3 +85,14 @@ def get_nextNumberRemito(request):
         response['next'] = '99-000001'
     return JsonResponse(response)
 
+def get_clientes(request):
+    clientes = Cliente.objects.all()
+    options = '<option value="" selected="selected">---------</option>'
+    for cliente in clientes:
+        options += '<option value="%s">%s</option>' % (
+                cliente.pk,
+                cliente.nombre_corto
+            )
+    response = {}
+    response['clientes'] = options 
+    return JsonResponse(response)

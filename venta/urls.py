@@ -5,7 +5,8 @@ from venta.reportesPDF import remito
 from venta.ajax import (get_cronogramas, 
                         get_ordenesdecompra, 
                         get_productos, 
-                        get_nextNumberRemito)
+                        get_nextNumberRemito,
+                        get_clientes)
 
 from    .views import (CronogramaCreate, 
                        CronogramaList,
@@ -40,5 +41,6 @@ urlpatterns = [
     path('ajax/get_cronogramas', get_cronogramas, name='get_cronogramas'),
     path('ajax/get_productos', get_productos, name='get_productos'),
     path('ajax/get_datos', get_ordenesdecompra, name='get_datos'),
-    path('ajax/get_numeracion', get_nextNumberRemito, name='get_numeracionRM')
+    path('ajax/get_numeracion', get_nextNumberRemito, name='get_numeracionRM'),
+    path('ajax/get_clientes', get_clientes, name='get_clientes')
 ]

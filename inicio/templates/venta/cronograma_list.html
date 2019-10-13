@@ -9,7 +9,15 @@
                                     </div>
 <div>Listado de Cronograma</div>
                                      
+
+
                                     </div>
+<div>
+Filtros
+<input type="text" class="form-control" id="filtroNombre" onkeyup="filtroNombre()" placeholder="Ingrese una Campaña...">
+<select id="clientes_select" class="form-control"></select>
+
+</div>
 </div>
 
 
@@ -17,7 +25,7 @@
 <div class="main-card mb-3 card">
 	<div class="card-body">
 	<h5 class="card-title">Listado de cronogramas.</h5>
-		<table class="table table-hover table-fixed">
+		<table class="table table-hover table-fixed" id="tablaResultado">
 		  <tr>
 		    <th>Nombre</th>
 		    <th>Fecha Inicio</th>
@@ -60,7 +68,11 @@
 <a href="{% url 'venta:CronogramaCreate' %}">    
 <button class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
 		<i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes"></i>Crear Cronograma
-</button>
+</button> 
 </a>
 
+
+{% include "./js/cronograma_list.js" %}
+
 {% endblock %}
+
