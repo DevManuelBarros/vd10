@@ -1,4 +1,3 @@
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="{% static 'formset/jquery.formset.js' %}"></script>
 <script type="text/javascript">
 	//Formset Row.... cargamos la funcion

@@ -2,26 +2,35 @@
 
 {%  block cuerpo %}
 <div class="app-page-title">
-<div class="page-title-heading">
-   <div class="page-title-icon">
-                                        <i class="pe-7s-menu icon-gradient bg-ripe-malin">
-                                        </i>
-                                    </div>
-<div>Listado de Cronograma</div>
-                                     
-
-
-                                    </div>
-<div>
-Filtros
-<input type="text" class="form-control" id="filtroNombre" onkeyup="filtroNombre()" placeholder="Ingrese una Campaña...">
-<select id="clientes_select" class="form-control"></select>
-
+	<div class="page-title-heading">
+		<div class="page-title-icon">
+			<i class="pe-7s-menu icon-gradient bg-ripe-malin"> </i>
+		</div>
+		<div>Listado de Cronograma</div>
+	</div>
+	<br /> <br />
+	<div class="main-card mb-2 card">
+		<div class="card-body">
+			<h5 class="card-title">Filtros</h5>
+			<table class="table table-hover table-fixed">
+				<tr>
+					<td>
+					<label for="filtroNombre">Nombre de Campaña:</label>
+					<input type="text" class="form-control" id="filtroNombre"
+						onkeyup="filtroNombreCliente()"
+						placeholder="Ingrese una Campaña..."></td>
+					<td>
+					<label for="clientes_select">Cliente:</label>
+					<select id="clientes_select" class="form-control"
+						onchange="filtroNombreCliente()"></select></td>
+				</tr>
+			</table>
+		</div>
+	</div>
 </div>
-</div>
 
 
-    {% if object_list %}
+{% if object_list %}
 <div class="main-card mb-3 card">
 	<div class="card-body">
 	<h5 class="card-title">Listado de cronogramas.</h5>

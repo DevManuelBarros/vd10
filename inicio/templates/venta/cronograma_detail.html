@@ -31,12 +31,17 @@
 		      <tr>
 		      <td>Cliente: </td>
 		      <td>
-		       	
-		       
 		        {{ cronograma.cliente }}
 		        </td>
+		      </tr>
+		      <tr>
+		      <td>Terminada:</td>
+		      <td>
+		      	{{ cronograma.terminada }}
+		      </td>
 		      </tr>	
 		</table>
+		<input type="button" value="Cambiar Estado" class="btn btn-primary" onclick="cambiarEstado()">
 	</div>
 </div>
 <a href="{% url 'venta:CronogramaList' %}">    
@@ -45,5 +50,6 @@
 </button>
 	</a>		 
 
+{% include "./js/cronograma_detail.js" %}
 
 {% endblock %}
