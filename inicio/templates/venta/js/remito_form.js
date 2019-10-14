@@ -16,69 +16,59 @@
         $("input[id^='id_productolineasrm_set-']").on("change", calcularTotal);
 		$("input[id$='-total_unidades']").prop('disabled', true);
 		$("#button-submit").prop("disabled", true);
-        $("#comprobador-concordancia").on("click", autorizarRemito);
-        $('#id_formato_de_impresion').on("change", controlarNumeracion);
-        $("#id_referencia_externa").keyup(function(event){
-
-            var cache = $(this).val();
-            var presiona = String.fromCharCode(event.which);
-
-            if((event.which > 47 && event.which < 58) ){
-                $(this).val(cache);
-            }else
-            {
-                var tmp = cache.substring(0, cache.length-1);
-                $(this).val(tmp);
-            }
-
-            if ($(this).val().length == 2)
-            {
-                $(this).val($(this).val() + "-");
-            }
-        });
-
-		
+        $("#comprobador-concordancia").on("click", autorizarRemito);	
     });
 	
 	
 	//getDatos trae los datos de los clientes y lo agrega mediante ajax.
+	//Esta asociado el evento: "change" en el select->#id_cliente
 	function getDatos(valor) {
+		// Obtenes el valor del cliente seleccionado.
         var clienteId = $("#id_cliente").val();
+       //Comprobamos que la variable clienteId contenga algún valor.
         if (clienteId) {
 			if(valor=='[object Object]'){
+			// Eliminamos las opciones anteriores del select
 			$("#id_ordencompra").html("");
-			                // Eliminamos las opciones anteriores del select
-			}
+					   }
+
+			//Agregamos un llamado ajax.
+			// el tipo es GET
+			// la url según lo que se determina en la documentación
+			// data: pasamos el valor del cliente.
 		    var request = $.ajax({
                 type: "GET",
                 url: "{% url 'venta:get_datos' %}",
-                data: {
-                    "id_cliente": clienteId,
-                },
+                data: {"id_cliente": clienteId,},
             });
 
+		    //Luego de haber realizado la llamada mediante Ajax, 
+		    //trabajamos con los valores devueltos.
             request.done(function(response) {
-                // Agregamos los resultados al select
+            // Agregamos los resultados al select
 			if(valor=='[object Object]'){		
 				$("#id_ordencompra").html(response.ordenesdecompra);
 				$("#id_ordencompra").trigger("change", [false]);
 				 
 				}             
-            });
-        } else {
-			if(valor=='[object Object]'){
-            $("#id_ordencompra").html("<option value='' selected='selected'>---------</option>");
-            $("#id_ordencompra").trigger("change", [false]);
-};
-        }
-}
+            							});
+        	} else {
+				if(valor=='[object Object]'){
+            		$("#id_ordencompra").html("<option value='' selected='selected'>---------</option>");
+            		$("#id_ordencompra").trigger("change", [false]);
+											};
+        		    }
+			}
+
+	
 
 	function getProductos()
 	{
 		if(comprobarValoresCabecera()){
 		if($(this).val()=='Confirmar Datos'){
-		//alert($(this).text());
-		$("#cabecera").css('display','none');
+		$('#cabecera').find('input, textarea, button, select').attr('disabled','disabled');
+		//$("#cabecera").css('display','none');
+
 		$("#second-form").css('visibility', 'visible');
 		$(this).val("Modificar Cabecera");
 		//$(this).tigger("onclick");
@@ -198,5 +188,4 @@
 		 }
 		 
 	 }
-
 </script>
