@@ -8,13 +8,20 @@ from gral.models import Cliente
 from gral.models import Producto
 
 def get_cronogramas(request):
+    """get_cronogramas
+    Retorna cronogramas y clientes en un JsonResponse, los filtros son 
+    cliente.pk y cronogramas que esten en terminada = False
+    Returns:
+        JsonResponse(response) : response.cronogramas && response.productos.
+
+    """
     cliente_id = request.GET.get('id_cliente')
     cronogramas = Cronograma.objects.all()
     productos = Producto.objects.all()
     options = '<option value="" selected="selected">---------</option>'
     options_producto = '<option value="" selected="selected">---------</option>'
     if cliente_id:
-        cronogramas = cronogramas.filter(cliente = cliente_id)
+        cronogramas = cronogramas.filter(cliente = cliente_id, terminada = False)
         productos = productos.filter(cliente = cliente_id)
     for cronograma in cronogramas:
         options += '<option value="%s">%s</option>' % (
@@ -61,7 +68,6 @@ def get_productos(request):
                 item.pk,
                 item.nombre_completo
             )
-
     response = {}
     response['productos'] = options
     return JsonResponse(response)
@@ -105,5 +111,4 @@ def cambiarValor(request):
     registro.save()
     response = {}
     response['valor'] = str(registro.terminada)
-    return JsonResponse(response)
-    
+    return JsonResponse(response) 

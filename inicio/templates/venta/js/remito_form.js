@@ -1,3 +1,4 @@
+{% load static %}
 <script src="{% static 'formset/jquery.formset.js' %}"></script>
 <script type="text/javascript">
 	//Formset Row.... cargamos la funcion
