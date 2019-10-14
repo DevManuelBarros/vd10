@@ -96,3 +96,14 @@ def get_clientes(request):
     response = {}
     response['clientes'] = options 
     return JsonResponse(response)
+
+def cambiarValor(request):
+    print("entra")
+    id_cronograma = request.GET.get('pk')
+    registro = Cronograma.objects.filter(pk = id_cronograma).last()
+    registro.terminada = not registro.terminada
+    registro.save()
+    response = {}
+    response['valor'] = str(registro.terminada)
+    return JsonResponse(response)
+    

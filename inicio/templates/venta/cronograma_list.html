@@ -39,6 +39,7 @@
 		    <th>Nombre</th>
 		    <th>Fecha Inicio</th>
 		    <th>Cliente</th>
+		    <th>Terminada</th>
 		    <th>Ver Detalle</th>
 		  </tr>   
 		      {% for cronograma in object_list %}
@@ -52,6 +53,9 @@
 		      </td>
 		      <td>
 		        {{cronograma.cliente}}
+		      </td>
+		      <td>
+		        {{ cronograma.terminada }}
 		      </td>
 		      <td>
 			      <a href="{% url 'venta:CronogramaDetail' pk=cronograma.id %}">

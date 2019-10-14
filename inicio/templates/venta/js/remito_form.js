@@ -18,7 +18,7 @@
         $("#comprobador-concordancia").on("click", autorizarRemito);
         $('#id_formato_de_impresion').on("change", controlarNumeracion);
         $("#id_referencia_externa").keyup(function(event){
-            console.log(event.which);
+
             var cache = $(this).val();
             var presiona = String.fromCharCode(event.which);
 
@@ -157,7 +157,6 @@
 
              request.done(function(response) {
                  // Agregamos los resultados al select
-                 alert(valor);
 				if(valor=='[object Object]'){		
 					$("select[id^='id_productolineasrm_set']").each(function(index){
 						$(this).html(response.productos);
