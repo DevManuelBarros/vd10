@@ -11,19 +11,14 @@ from .models import (Cronograma,
 					 OrdenCompra, 
 					 ProductoLineasOC, 
 					 Remito, 
-					 ProductoLineasRM, 
-					 ProductoLineasOT, 
-					 OrdenTraslado)
+					 ProductoLineasRM)
 from .forms  import (CronogramaCreateForm,
 					 OrdenCompraCabecera,
 					 ProductoLineasOCForm,
 					 ProductoLineasOCFormSet,
 					 ProductoLineasRMForm,
 					 ProductoLineasRMFormSet,
-					 ProductoLineasOTForm,
-					 ProductoLineasOTFormSet,
-					 RemitoCabecera,
-					 OrdenTrasladoCabecera)
+					 RemitoCabecera)
 					 
 from configuraciones.models import ConfigImpresionRemito
 ##
@@ -166,7 +161,6 @@ class RemitoCompletoView(LoginRequiredMixin, CreateView):
 	def form_valid(self, form):
 		context = self.get_context_data()
 		remitomain = context['remitomain']
-		print(remitomain)
 		with transaction.atomic():
 			self.object = form.save()
 			if remitomain.is_valid():
@@ -186,48 +180,3 @@ def PreImpresion(request, id_remito):
 	impresoras = ConfigImpresionRemito.objects.all()
 	return render(request, 'venta/preimpresion.html', {'remito' : model, 'impresoras' : impresoras}) 
 	
-
-###
-#
-# ORDEN DE TRASLADO
-#	
-###
-
-
-################### LIST
-
-class OrdenTrasladoListView(LoginRequiredMixin, ListView):
-	model = OrdenTraslado
-
-
-###################### VIEW
-
-class lineaProductoOTList(LoginRequiredMixin, ListView):
-	model = OrdenTrasladoCabecera
-
-##################### CREATE
-
-class OrdenTrasladoCompletoView(LoginRequiredMixin, CreateView):
-	form_class = OrdenTrasladoCabecera
-	template_name = 'venta/ordentraslado_form.html'
-
-	def get_context_data(self, **kwargs):
-		data = super(OrdenTrasladoCompletoView, self).get_context_data(**kwargs)
-		if self.request.POST:
-			data['ordentrasladomain'] = ProductoLineasOTFormSet(self.request.POST)
-		else:
-			data['ordentrasladomain'] = ProductoLineasOTFormSet()
-		return data
-       
-	def form_valid(self, form):
-		context = self.get_context_data()
-		ordentrasladomain = context['ordentrasladomain']
-		with transaction.atomic():
-			self.object = form.save()
-			if ordentrasladomain.is_valid():
-				ordentrasladomain.instance = self.object
-				ordentrasladomain.save()
-		return super(OrdenTrasladoCompletoView, self).form_valid(form)
-	
-	def get_success_url(self):
-		return reverse_lazy('venta:Preimpresion', kwargs={'id_remito': self.object.pk})

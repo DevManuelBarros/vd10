@@ -9,7 +9,11 @@ CIRCUITO_CHOICE = (
 					('Facturar', 'Facturar'),
 					('Consignacion', 'Consignacion')
 				  )
+DOCUMENTOS_CHOICES = (
+					('Remito','Remito'),
+					('OrdenTraslado', 'Orden de Traslado')
 
+					)
 class FormatodeImpresion(models.Model):
 	"""FormatodeImpresion
 	
@@ -68,29 +72,6 @@ class OrdenCompra(models.Model):
 		return "O.C: " + self.referencia_externa + " || Campaña: " + str(self.cronograma) 
 
 
-class OrdenTraslado(models.Model):
-	"""OrdenTraslado
-	Attributes:
-		referencia (CharField) : Número de referencia de la orden de translado.
-		cliente (ForeignKey) : Campo de referncia al cliente.
-		ordencompra (ForeignKey) : Relacionado a una orden de compra.
-		fecha_de_emision (DataField) : Fecha de emision.
-		confomado (BooleanField) : Si la orden de translado esta completada, es decir conformada y lista para facturar.
-		anulado (BooleanField) : si la orden de translado es anulada.
-	Returns:
-		__str__:
-			returns "Orden de traslado: " + self.refencia
-		
-	"""
-	referencia 				= models.CharField(max_length=50, unique=True)
-	cliente 				= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
-	ordencompra 			= models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
-	formato_de_impresion 	= models.ForeignKey(FormatodeImpresion, default=1, null=False, blank=False, on_delete=models.CASCADE)
-	fecha_emision			= models.DateField(null=True, blank=True)
-	conformado				= models.BooleanField(default=False)
-	anulado					= models.BooleanField(default=False)
-	def __str__(self):
-		return "Orden de traslado: " + self.referencia
 
 
 class Remito(models.Model):
@@ -108,6 +89,7 @@ class Remito(models.Model):
 	"""
 	referencia_externa 		= models.CharField(max_length=50, unique=True)
 	cliente 				= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
+	tipo_documento			= models.CharField(max_length=50, choices=DOCUMENTOS_CHOICES, default='')
 	ordencompra 			= models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
 	fecha_emision			= models.DateField(null=True, blank=True)
 	formato_de_impresion 	= models.ForeignKey(FormatodeImpresion, default=1, null=False, blank=False, on_delete=models.CASCADE)
@@ -117,24 +99,7 @@ class Remito(models.Model):
 		return "Remito: " + self.referencia_externa
 
 
-class ProductoLineasOT(models.Model):
-	"""ProductoLineasOT
-	Attributtes:
-		producto (ForeignKey) : Campo relacionado con productos.
-		cajas (IntergerField) : Campo que indica la cantidad de cajas.
-		cantidad (IntegerField) : Cantidad de unicades que contiene cada caja.
-		total_unidades (IntegerField) : Cantidad total de unidades (cajas * cantidad)
-	Returns:
-		__str__:
-			return str(self.remito)
-	"""
-	producto = models.ForeignKey(Producto, null=False, blank=False, on_delete=models.CASCADE)
-	cajas = models.IntegerField()
-	cantidad = models.IntegerField()
-	ordentraslado = models.ForeignKey(OrdenTraslado, null=False, blank=False, on_delete=models.CASCADE)
-	total_unidades = models.IntegerField()
-	def __str__(self):
-		return str(self.remito)
+
 
 class ProductoLineasRM(models.Model):
 	"""ProductoLineasRM

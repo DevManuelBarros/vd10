@@ -18,8 +18,7 @@ from    .views import (CronogramaCreate,
                        RemitoCompletoView,
                        RemitoListView,
                        RemitoDetail,
-                       PreImpresion,
-                       OrdenTrasladoCompletoView)
+                       PreImpresion)
 
 urlpatterns = [
     #Cronograma
@@ -32,8 +31,6 @@ urlpatterns = [
     path('ordencompra/crear/', OrdenCompraCompletoView.as_view(), name='OrdenCompraCompleto'),
     path('preimpresion/<int:id_remito>', PreImpresion, name='Preimpresion'),
     path('remitopdf/<int:id_remito>/<int:etiqueta>/<int:impresion>', remito, name='remitoPDF'),
-    #Orden de Traslado
-    path('ordentraslado/crear/', OrdenTrasladoCompletoView.as_view(), name='OrdenTrasladoCrear'),
     #Remito
     path('remito/crear/', RemitoCompletoView.as_view(), name='RemitoCrear'),
     path('remito/listar/', RemitoListView.as_view(), name='RemitoListar'),
