@@ -124,11 +124,8 @@ class OrdenCompraCompletoView(LoginRequiredMixin, CreateView):
 ################### DETAIL
 
 class RemitoDetail(LoginRequiredMixin, DetailView):
-	model = Remito
-	#form_class = OrdenCompraCabecera
+	model = Remito #Impotsmod rl mofrlo
 	template_name = 'venta/remito_detail.html'
-
-	
 	def get_context_data(self, **kwargs):
 		instance = super(RemitoDetail, self).get_context_data(**kwargs)
 		lineasRM = ProductoLineasRM.objects.filter(remito=instance['object'].pk)
@@ -154,11 +151,12 @@ class lineaProductoRMList(LoginRequiredMixin, ListView):
 ##################### CREATE
 
 class RemitoCompletoView(LoginRequiredMixin, CreateView):
-	form_class = RemitoCabecera
-	template_name = 'venta/remito_form.html'
-
+	form_class = RemitoCabecera #Utilizamos el form_class
+	template_name = 'venta/remito_form.html' #definimos el template_name
+	#Con el get_context_data vamos a pasar el formulario y controlar.
 	def get_context_data(self, **kwargs):
-		data = super(RemitoCompletoView, self).get_context_data(**kwargs)
+		data = super(RemitoCompletoView, self).get_context_data(**kwargs) #Utilizamos el super para 
+																		  #llamar a la función
 		if self.request.POST:
 			data['remitomain'] = ProductoLineasRMFormSet(self.request.POST)
 		else:
