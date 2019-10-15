@@ -87,12 +87,14 @@ class CronogramaCreateForm(forms.ModelForm):
 class OrdenCompraCabecera(forms.ModelForm):
 	class Meta:
 		model = OrdenCompra
-		fields = ['referencia_externa', 'cliente', 'cronograma', 'fecha_emision']
+		fields = ['referencia_externa', 'cliente', 'cronograma', 'fecha_emision', 'circuito']
 		widgets = {
 					'referencia_externa' : forms.TextInput(attrs={'class' : 'form-control', 'type': 'text'}),
 					'cliente' : forms.Select(attrs={'class' : 'form-control'}),
 					'cronograma' : forms.Select(attrs={'class' : 'form-control'}),
-					'fecha_emision' : forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),}
+					'fecha_emision' : forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
+					'circuito' : forms.Select(attrs={'class' : 'form-control'}),}
+
 
 
 class ProductoLineasOCForm(forms.ModelForm):

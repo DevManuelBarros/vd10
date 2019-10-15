@@ -207,8 +207,8 @@
 				}else
 				{
 					getDatosProducts(formCount);
-			        $("input[id^='id_productolineasrm_set-']").on("change", calcularTotal);
-					$("input[id$='-total_unidades']").prop('disabled', true);
+			        $("input[id^='id_" + options.prefix + "-']").on("change", calcularTotal);
+					$("input[id$='-total_unidades']").prop('readonly', 'readonly');
 
 				}
                 totalForms.val(formCount + 1);

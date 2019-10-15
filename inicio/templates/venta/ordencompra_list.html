@@ -22,6 +22,7 @@
 		    <th>Referencia</th>
 		    <th>Fecha Emision</th>
 		    <th>Cliente</th>
+		    <th>Circuito</th>
 		    <th>Ver Detalle</th>
 		  </tr>   
 		      {% for ordencompra in object_list %}
@@ -35,6 +36,9 @@
 		      </td>
 		      <td>
 		        {{ordencompra.cliente}}
+		      </td>
+		      <td>
+		      	{{ordencompra.circuito}}
 		      </td>
 		      <td>
 			      <a href="{% url 'venta:OrdenCompraDetail' pk=ordencompra.id %}">

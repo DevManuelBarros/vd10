@@ -166,6 +166,7 @@ class RemitoCompletoView(LoginRequiredMixin, CreateView):
 	def form_valid(self, form):
 		context = self.get_context_data()
 		remitomain = context['remitomain']
+		print(remitomain)
 		with transaction.atomic():
 			self.object = form.save()
 			if remitomain.is_valid():

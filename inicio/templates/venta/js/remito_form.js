@@ -71,7 +71,7 @@ $(document).ready()
 			{
 				type: "GET",
 				url: "{% url 'venta:get_datos' %}",
-				data: {"id_cliente": clienteId,},
+				data: {"id_cliente": clienteId,'circuito': 'Facturar'},
 			});
 
 			//Luego de haber realizado la llamada mediante Ajax, 

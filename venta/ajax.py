@@ -40,10 +40,11 @@ def get_cronogramas(request):
 
 def get_ordenesdecompra(request):
     cliente_id = request.GET.get('id_cliente')
+    circuito = request.GET.get('circuito')
     ordenes_de_compra = OrdenCompra.objects.all()
     options = '<option value="" selected="selected">---------</option>'
     if cliente_id:
-        ordenes_de_compra = ordenes_de_compra.filter(cliente=cliente_id)
+        ordenes_de_compra = ordenes_de_compra.filter(cliente=cliente_id, circuito=circuito)
     for ordendecompra in ordenes_de_compra:
         options += '<option value="%s">%s</option>' % (
             ordendecompra.pk,
