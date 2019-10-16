@@ -14,14 +14,13 @@ function comprobarValoresCabecera();
 function obtenerNumeroRegistros();
 function restablecerValores();
 function getDatosProducts(valor);
-
+function controlarNumeracion();
 
 Asignaciones:
 $('.formset_row').formset();
 $(document).ready() 
 
 ***/
-
 	//variables Globales:
 
 	prefix_global = 'productolineasrm_set';
@@ -46,6 +45,9 @@ $(document).ready()
         $("input[id^='id_" + prefix_global + "-']").on("change", calcularTotal);
 		$("input[id$='-total_unidades']").prop('readonly', 'readonly');
 		$("#button-submit").on("click", actDatos);
+		$("#get_today").on("click", get_today);
+		$("#id_tipo_documento").on("change",controlarNumeracion);
+		vaciarSelectOC();
     });
 	
 	
@@ -55,6 +57,7 @@ $(document).ready()
 	{
 		// Obtenes el valor del cliente seleccionado.
 		var clienteId = $("#id_cliente").val();
+		var circuito = $("#id_tipo_documento").val();
 		//Comprobamos que la variable clienteId contenga algún valor.
 		if (clienteId) 
 		{
@@ -71,7 +74,7 @@ $(document).ready()
 			{
 				type: "GET",
 				url: "{% url 'venta:get_datos' %}",
-				data: {"id_cliente": clienteId,'circuito': 'Facturar'},
+				data: {"id_cliente": clienteId,'circuito': circuito},
 			});
 
 			//Luego de haber realizado la llamada mediante Ajax, 
@@ -90,13 +93,20 @@ $(document).ready()
 			{
 				if(valor=='[object Object]')
 				{
-				$("#id_ordencompra").html("<option value='' selected='selected'>---------</option>");
-				$("#id_ordencompra").trigger("change", [false]);
+					vaciarSelectOC();
 				}
 			}		
 		}
 
-		
+		//Cargar por defecto la selección del option y dejarlo limpio, esto se puede usar al principio
+		//de la carga del formulario y cuando 
+		function vaciarSelectOC()
+		{
+				$("#id_ordencompra").html("<option value='' selected='selected'>---------</option>");
+				$("#id_ordencompra").trigger("change", [false]);
+		}
+
+
 		// Trae información de los productos seleccionados y bloquea la cabecera.
 		function getProductos()
 		{
@@ -242,8 +252,46 @@ $(document).ready()
 		
 	}
 	
+	//Función para activar los datos y poder guardarlos correctamente.
 	function actDatos()
 	{
 		$('#cabecera').find('input, textarea, button, select').prop('disabled',false);
 	}
+
+
+	//Númeración automatica de la orden de traslado.
+	function controlarNumeracion()
+	 {
+		 
+		 if($(this).val() == 'OrdenTraslado')
+		 {
+			
+			 var request = $.ajax(
+			 {
+                 type: "GET",
+                 url: "{% url 'venta:get_numeracionRM' %}",
+             });
+             
+             request.done(function(response) 
+             {
+            	 $("#id_referencia_externa").val(response.next);
+            	 $("#id_referencia_externa").prop("readonly", "readonly");
+             });			 
+		 	}
+		 	else
+		 	{
+				 //Si no es el Punto2 Debe eliminar lo escrito
+				 $("#id_referencia_externa").val("");
+				 $("#id_referencia_externa").prop("readonly", false);
+		 	}
+		 vaciarSelectOC();
+	 }
+
+	 //Colocamos la fecha del día y la colocamos en fecha de emisión.
+	 function get_today()
+	 {
+	 	var f = new Date();
+		var today = f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+		$("#id_fecha_emision").val(today);
+	 }
 </script>

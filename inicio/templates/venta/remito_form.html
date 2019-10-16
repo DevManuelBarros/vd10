@@ -1,7 +1,6 @@
 {% extends '../base.html' %}
 
 {%  block cuerpo %}
-
 <div class="app-page-title">
 	<div class="page-title-heading">
    		<div class="page-title-icon">
@@ -11,43 +10,43 @@
 		<div>Crear Remito</div>                                 
 	</div>
 </div>
+
 <div class="main-card mb-3 card">
 	<div class="card-body">
 		<h5 class="card-title">Formulario Crear Remito</h5>
 			<form action="" class="needs-validation" method="post" id="formulario-remito">{% csrf_token %}
-		
 			<div id="cabecera">
 					<div class="form-row">
 						<div class="col-md-4 mb-3">	
-						{{ form.tipo_documento.label_tag }}
-						{{ form.tipo_documento }}
+							{{ form.tipo_documento.label_tag }}
+							{{ form.tipo_documento }}
 						</div>
 				    	<div class="col-md-4 mb-3">
-				        {{ form.referencia_externa.label_tag }}
-				        {{ form.referencia_externa}}
+					        {{ form.referencia_externa.label_tag }}
+					        {{ form.referencia_externa}}
 				        </div>
 						<div class="col-md-4 mb-3">	
-				        {{ form.cliente.label_tag }}
-				        {{ form.cliente}}
+					        {{ form.cliente.label_tag }}
+					        {{ form.cliente}}
 						</div>
 						<div class="col-md-4 mb-3">	
-				        {{ form.ordencompra.label_tag }}
-				        {{ form.ordencompra}}
+					        {{ form.ordencompra.label_tag }}
+					        {{ form.ordencompra}}
 						</div>
 						<div class="col-md-4 mb-3">	
-						{{ form.fecha_emision.label_tag }}
-						{{ form.fecha_emision }}
+							{{ form.fecha_emision.label_tag }}
+							{{ form.fecha_emision }}
+							<a href="#" id="get_today">Hoy</a>
 						</div>
 					</div>
 						
 			</div>
-				<input type="button" class="btn btn-primary" id="confirm-data" value="Confirmar Datos" /> 
+
+			<input type="button" class="btn btn-primary" id="confirm-data" value="Confirmar Datos" /> 
 	   
-			<div style="visibility : hidden;" id="second-form">
-		
+			<div style="visibility : hidden;" id="second-form">		
         		<table class="table">
             		{{ remitomain.management_form }}
-
             		{% for form in remitomain.forms %}
                 		{% if forloop.first %}
                     <thead>
@@ -79,6 +78,5 @@
 		</form>       
 	</div>
 </div>
-
 {% include "./js/remito_form.js" %}
 {% endblock %}

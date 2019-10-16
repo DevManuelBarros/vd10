@@ -66,7 +66,7 @@ class OrdenCompra(models.Model):
 	referencia_externa 	= models.CharField(max_length=20, unique=True)
 	cliente 			= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
 	cronograma 			= models.ForeignKey(Cronograma, null=False, blank=False, on_delete=models.CASCADE)
-	fecha_emision 		= models.DateField(null=True, blank=True)
+	fecha_emision 		= models.DateField(null=False, blank=False)
 	circuito 			= models.CharField(max_length=12, choices=CIRCUITO_CHOICE, default='Facturar')
 	def __str__(self):
 		return "O.C: " + self.referencia_externa + " || Campaña: " + str(self.cronograma) 

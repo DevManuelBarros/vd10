@@ -41,6 +41,11 @@ def get_cronogramas(request):
 def get_ordenesdecompra(request):
     cliente_id = request.GET.get('id_cliente')
     circuito = request.GET.get('circuito')
+    #Asignamos el tipo de circuito al que corresponde.
+    if circuito == 'OrdenTraslado':
+        circuito = 'Consignacion'
+    if circuito == 'Remito':
+        circuito ='Facturar'
     ordenes_de_compra = OrdenCompra.objects.all()
     options = '<option value="" selected="selected">---------</option>'
     if cliente_id:
@@ -92,6 +97,7 @@ def get_nextNumberRemito(request):
         response['next'] = '99-000001'
     return JsonResponse(response)
 
+
 def get_clientes(request):
     clientes = Cliente.objects.all()
     options = '<option value="" selected="selected">---------</option>'
@@ -104,8 +110,9 @@ def get_clientes(request):
     response['clientes'] = options 
     return JsonResponse(response)
 
+
+
 def cambiarValor(request):
-    print("entra")
     id_cronograma = request.GET.get('pk')
     registro = Cronograma.objects.filter(pk = id_cronograma).last()
     registro.terminada = not registro.terminada
