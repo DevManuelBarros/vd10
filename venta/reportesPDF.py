@@ -14,11 +14,10 @@ from django.http import HttpResponse
 def remito(request, id_remito, etiqueta, impresion):
 	#recogemos la configuración de la impresion.
 	configImp = ConfigImpresionRemito.objects.filter(pk = impresion).last()
-	
 	#Variables Cabecera
 	linea_pos = configImp.pos_y_comienzo_cuerpo
 	sangria_inicial = configImp.pos_x_comienzo_cuerpo
-	
+
 	response = HttpResponse(content_type='application/pdf')
 	response['Content-Disposition'] = 'attachament; filename=prueba.pdf'
 	buffer = BytesIO()
@@ -32,13 +31,18 @@ def remito(request, id_remito, etiqueta, impresion):
 	c.setFont(configImp.type_font_cabecera.nombre, configImp.size_font_cabecera)
 	
 	#Fecha
-	print(datos_remito.fecha_emision)
+	fechaString = str(datos_remito.fecha_emision).split("-")
+	print(fechaString[2] + "-" + fechaString[1] + "-" + fechaString[0])
+	strFecha = fechaString[2] + "-" + fechaString[1] + "-" + fechaString[0]
+	c.drawString(configImp.pos_x_fecha, configImp.pos_y_fecha, strFecha)
+
+
 	#razon social
-	c.drawString(180,660, datos_cliente.razon_social)
-	c.drawString(180,620, "Responsable Inscripto")
+	c.drawString(configImp.pos_x_razon_social,configImp.pos_y_razon_social, datos_cliente.razon_social)
+	c.drawString(configImp.pos_x_condicion, configImp.pos_y_condicion, "Responsable Inscripto")
 	
-	c.drawString(456,660, datos_cliente.direccion_fiscal)
-	c.drawString(456,620, datos_cliente.cuit )
+	c.drawString(configImp.pos_x_direccion_f, configImp.pos_y_direccion_f, datos_cliente.direccion_fiscal)
+	c.drawString(configImp.pos_x_cuit, configImp.pos_y_cuit, datos_cliente.cuit )
 	
 	#Cuerpo del Remito...
 	c.setFont(configImp.type_font_cuerpo.nombre, configImp.size_font_cuerpo)
@@ -59,9 +63,9 @@ def remito(request, id_remito, etiqueta, impresion):
 	#Pie de remito
 	c.setFont(configImp.type_font_pie.nombre, configImp.size_font_pie)
 	
-	c.drawString(sangria_inicial + 190, 80, str(datos_remito.ordencompra))
-	c.drawString(sangria_inicial + 190, 60, 'Total Bultos: ' + str(bultos))	
-	c.drawString(sangria_inicial + 190, 40, 'Se entrega en: ' + datos_cliente.direccion_entrega)
+	c.drawString(configImp.pos_x_ordencompra, configImp.pos_y_ordencompra, str(datos_remito.ordencompra))
+	c.drawString(configImp.pos_x_bultos, configImp.pos_y_bultos, 'Total Bultos: ' + str(bultos))	
+	c.drawString(configImp.pos_x_direccion_entrega, configImp.pos_y_direccion_entrega,'Se entrega en: ' + datos_cliente.direccion_entrega)
 
 	
 	c.save()

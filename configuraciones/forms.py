@@ -49,7 +49,7 @@ class ConfigImpresionRemitoForm(forms.ModelForm):
                     'pos_y_direccion_f'       : forms.TextInput(attrs=class_controlInt),
                     'pos_x_cuit'              : forms.TextInput(attrs=class_controlInt),
                     'pos_y_cuit'              : forms.TextInput(attrs=class_controlInt),
-                    'pos_y_comiezo_cuerpo'    : forms.TextInput(attrs=class_controlInt),
+                    'pos_y_comienzo_cuerpo'   : forms.TextInput(attrs=class_controlInt),
                     'pos_x_comienzo_cuerpo'   : forms.TextInput(attrs=class_controlInt),
                     'pos_y_bultos'            : forms.TextInput(attrs=class_controlInt),
                     'pos_x_bultos'            : forms.TextInput(attrs=class_controlInt),

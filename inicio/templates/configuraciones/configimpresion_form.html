@@ -16,6 +16,7 @@
 			<form method="post" >{% csrf_token %}
 				{% include '../utils/form_cabecera.html'%}
 	    <button type="submit" class="btn btn-primary">Guardar</button>
+	    <a href="{% url 'configuraciones:blankpdf' %}"><input type="button" class="btn btn-danger" value="Imprimir Plantilla"></a>
 	    </form>
 	    </div>
 	</div>
