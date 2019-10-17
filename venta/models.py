@@ -89,7 +89,7 @@ class Remito(models.Model):
 	"""
 	referencia_externa 		= models.CharField(max_length=50, unique=True)
 	cliente 				= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
-	tipo_documento			= models.CharField(max_length=50, choices=DOCUMENTOS_CHOICES, default='')
+	tipo_documento			= models.CharField(max_length=50, choices=DOCUMENTOS_CHOICES, blank=False, null=False, default='Remito')
 	ordencompra 			= models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
 	fecha_emision			= models.DateField(null=True, blank=True)
 	formato_de_impresion 	= models.ForeignKey(FormatodeImpresion, default=1, null=False, blank=False, on_delete=models.CASCADE)
@@ -97,9 +97,6 @@ class Remito(models.Model):
 	anulado					= models.BooleanField(default=False)
 	def __str__(self):
 		return "Remito: " + self.referencia_externa
-
-
-
 
 class ProductoLineasRM(models.Model):
 	"""ProductoLineasRM
