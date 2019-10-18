@@ -53,7 +53,7 @@ class CronogramaCreateForm(forms.ModelForm):
 		model = Cronograma
 		fields = ['nombre', 'cliente',  'fecha_inicio', 'fecha_finalizacion']
 		widgets = 	{
-            'nombre'				: forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre'				: forms.TextInput(attrs={'class': 'form-control', 'placeholder' : 'Ingrese un nombre, ejemplo: C14-2019'}),
             'cliente' 				: forms.Select(attrs={'class' : 'form-control'}),
             'fecha_inicio' 			: forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
             'fecha_finalizacion' 	: forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
