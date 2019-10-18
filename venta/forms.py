@@ -51,11 +51,12 @@ class CronogramaCreateForm(forms.ModelForm):
 	
 	class Meta:
 		model = Cronograma
-		fields = ['nombre', 'cliente',  'fecha_inicio']
+		fields = ['nombre', 'cliente',  'fecha_inicio', 'fecha_finalizacion']
 		widgets = 	{
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'cliente' : forms.Select(attrs={'class' : 'form-control'}),
-            'fecha_inicio' : forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
+            'nombre'				: forms.TextInput(attrs={'class': 'form-control'}),
+            'cliente' 				: forms.Select(attrs={'class' : 'form-control'}),
+            'fecha_inicio' 			: forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
+            'fecha_finalizacion' 	: forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
         	   		}
 	def clean(self):
 		"""clean
