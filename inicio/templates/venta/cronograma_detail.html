@@ -56,6 +56,7 @@
 		      </tr>	
 		</table>
 		<input type="button" value="Cambiar Estado" class="btn btn-primary" onclick="cambiarEstado()">
+		<a href="{% url 'venta:CronogramaUpdate' pk=cronograma.pk %}"><input type="button" value="Actualizar Cronograma" class="btn btn-primary"></a>
 	</div>
 </div>
 <a href="{% url 'venta:CronogramaList' %}">    

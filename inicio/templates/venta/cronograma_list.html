@@ -15,14 +15,23 @@
 			<table class="table table-hover table-fixed">
 				<tr>
 					<td>
-					<label for="filtroNombre">Nombre de Campaña:</label>
-					<input type="text" class="form-control" id="filtroNombre"
-						onkeyup="filtroNombreCliente()"
-						placeholder="Ingrese una Campaña..."></td>
+						<label for="filtroNombre">Nombre de Campaña:</label>
+						<input type="text" class="form-control" id="filtroNombre"
+							onkeyup="filtroNombreCliente()"
+							placeholder="Ingrese una Campaña..." /></td>
 					<td>
-					<label for="clientes_select">Cliente:</label>
-					<select id="clientes_select" class="form-control"
-						onchange="filtroNombreCliente()"></select></td>
+						<label for="clientes_select">Cliente:</label>
+						<select id="clientes_select" class="form-control"
+							onchange="filtroNombreCliente()" />
+					</td>
+					<td>
+						<label for="filtroEstado">Estados</label>
+						<select class="form-control" id="filtroEstado">
+							<option value="*">Todos</option>
+							<option value="False">Activas</option>
+							<option value="True">Terminadas</option>
+						</select>
+					</td>
 				</tr>
 			</table>
 		</div>

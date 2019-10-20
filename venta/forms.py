@@ -10,6 +10,7 @@ from .models import (Cronograma,
 					ProductoLineasOC,
 					Remito,
 					ProductoLineasRM)
+from django.conf.global_settings import DATE_INPUT_FORMATS
 
 ###
 #
@@ -47,8 +48,21 @@ def nombreCronogramaFecha(fecha, nombre):
         
 
 ###FORMULARIOS
+
+class CronogramaUpdateForm(forms.ModelForm):
+	class Meta:
+		model = Cronograma
+		fields = ['nombre', 'cliente',  'fecha_inicio', 'fecha_finalizacion', 'terminada']
+		widgets = 	{
+            'nombre'				: forms.TextInput(attrs={'class': 'form-control', 'placeholder' : 'Ingrese un nombre, ejemplo: C14-2019'}),
+            'cliente' 				: forms.Select(attrs={'class' : 'form-control'}),
+            'fecha_inicio' 			: forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
+            'fecha_finalizacion' 	: forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
+            'terminada'				: forms.NullBooleanSelect(attrs={'class' : 'form-control'}),
+													  
+        	   		}
+
 class CronogramaCreateForm(forms.ModelForm):
-	
 	class Meta:
 		model = Cronograma
 		fields = ['nombre', 'cliente',  'fecha_inicio', 'fecha_finalizacion']
@@ -56,7 +70,8 @@ class CronogramaCreateForm(forms.ModelForm):
             'nombre'				: forms.TextInput(attrs={'class': 'form-control', 'placeholder' : 'Ingrese un nombre, ejemplo: C14-2019'}),
             'cliente' 				: forms.Select(attrs={'class' : 'form-control'}),
             'fecha_inicio' 			: forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
-            'fecha_finalizacion' 	: forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
+            'fecha_finalizacion' 	: forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'})
+													  
         	   		}
 	def clean(self):
 		"""clean

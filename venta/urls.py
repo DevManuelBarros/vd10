@@ -11,7 +11,8 @@ from venta.ajax import (get_cronogramas,
 
 from    .views import (CronogramaCreate, 
                        CronogramaList,
-                       CronogramaDetail,  
+                       CronogramaDetail,
+                       CronogramaUpdate,  
                        OrdenCompraCompletoView,
                        OrdenCompraList,
                        OrdenCompraDetail,
@@ -25,6 +26,7 @@ urlpatterns = [
     path('cronograma/crear/', CronogramaCreate.as_view(), name='CronogramaCreate'),
     path('cronograma/listar/', CronogramaList.as_view(), name='CronogramaList'),
     path('cronograma/detalle/<int:pk>', CronogramaDetail.as_view(), name='CronogramaDetail'),
+    path('cronograma/actualizar/<int:pk>', CronogramaUpdate.as_view(), name='CronogramaUpdate'),
     #Orden de compra
     path('ordencompra/listar/', OrdenCompraList.as_view(), name='OrdenCompraList'),
     path('ordencompra/detalle/<int:pk>', OrdenCompraDetail.as_view(), name='OrdenCompraDetail'),

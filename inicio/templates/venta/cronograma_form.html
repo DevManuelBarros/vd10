@@ -7,7 +7,13 @@
    <div class="page-title-icon">
          <i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes"></i>
     </div>
-		<div>Crear Cronograma</div>
+		<div>{% if form.nombre.value|length > 0  %} 
+					Actualizar
+			 {% else %}
+			 		Crear
+			 {% endif%}
+			  Conograma
+			 </div>
                                      
 </div>
 </div>
@@ -35,8 +41,23 @@
     {{ form.fecha_finalizacion.label_tag }}
     {{ form.fecha_finalizacion }}
 </p>
-    <button type="submit" class="btn btn-primary">Guardar</button>
+
+	{% if form.nombre.value|length > 0  %} 
+	<p>
+	{{ form.terminada.label_tag }}
+	{{ form.terminada }}
+	</p>
+	{% endif %}
+
+    <button type="submit" class="btn btn-primary">
+			{% if form.nombre.value|length > 0  %} 
+					Actualizar
+			 {% else %}
+			 		Guardar
+			 {% endif%}
+	</button>
 </form>
 </div>
 </div>
+{% include './js/cronograma_form.js'%}
 {% endblock %}

@@ -1,7 +1,7 @@
 #imports Django
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, FormView, DetailView
+from django.views.generic import CreateView, ListView, FormView, DetailView, UpdateView
 from django.db import DatabaseError, transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,6 +13,7 @@ from .models import (Cronograma,
 					 Remito, 
 					 ProductoLineasRM)
 from .forms  import (CronogramaCreateForm,
+					 CronogramaUpdateForm,
 					 OrdenCompraCabecera,
 					 ProductoLineasOCForm,
 					 ProductoLineasOCFormSet,
@@ -41,6 +42,11 @@ class CronogramaList(LoginRequiredMixin, ListView):
 class CronogramaDetail(LoginRequiredMixin, DetailView):
 	model = Cronograma
 	
+class CronogramaUpdate(LoginRequiredMixin, UpdateView):
+	model= Cronograma
+	template_name = 'venta/cronograma_form.html'
+	form_class = CronogramaUpdateForm
+	success_url = reverse_lazy('venta:CronogramaList')
 
 ##
 #

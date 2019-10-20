@@ -16,8 +16,8 @@ CIRCUITO_CHOICE = (
 DOCUMENTOS_CHOICES = (
 					('Remito','Remito'),
 					('OrdenTraslado', 'Orden de Traslado')
-
 					)
+
 class FormatodeImpresion(models.Model):
 	"""FormatodeImpresion
 	
@@ -48,8 +48,8 @@ class Cronograma(models.Model):
 	"""
 	nombre  				= models.CharField(max_length=20)
 	cliente 				= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
-	fecha_inicio 			= models.DateField(null=True, blank=True)
-	fecha_finalizacion		= models.DateField(null=True, blank=True)
+	fecha_inicio 			= models.DateField(default='1983-01-17')
+	fecha_finalizacion		= models.DateField(default='1983-01-17')
 	terminada 				= models.BooleanField(default=False)
 
 			

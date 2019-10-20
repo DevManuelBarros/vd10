@@ -110,6 +110,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
+DATE_INPUT_FORMATS = ('%d-%m-%Y')
+
 LANGUAGE_CODE = 'es-AR'
 
 TIME_ZONE = 'UTC'
