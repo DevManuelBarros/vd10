@@ -22,11 +22,12 @@
 					<td>
 						<label for="clientes_select">Cliente:</label>
 						<select id="clientes_select" class="form-control"
-							onchange="filtroNombreCliente()" />
+							onchange="filtroNombreCliente()">
 					</td>
 					<td>
 						<label for="filtroEstado">Estados</label>
-						<select class="form-control" id="filtroEstado">
+						<select class="form-control" id="filtroEstado"
+							onchange="filtroNombreCliente()">
 							<option value="*">Todos</option>
 							<option value="False">Activas</option>
 							<option value="True">Terminadas</option>

@@ -25,6 +25,10 @@
 		  input2 = document.getElementById("clientes_select");
 		  input2 = input2.options[input2.selectedIndex].text;
 		  filter2 = input2.toUpperCase();
+		  //levantamos los datos de estado del cronograma.
+		  input3 = document.getElementById("filtroEstado");
+		  input3 = input3.options[input3.selectedIndex].text;
+		  filter3 = input3.toUpperCase();
 		  //tomamos todos los datos de la tabla
 		  table = document.getElementById("tablaResultado");
 		  tr = table.getElementsByTagName("tr");
@@ -33,6 +37,8 @@
 		    //Tomamos cada columna necesaria
 			td = tr[i].getElementsByTagName("td")[0];
 		    td2 = tr[i].getElementsByTagName("td")[3];
+		    td3 = tr[i].getElementsByTagName("td")[4];
+		    
 		    //Si de los dos campos obtenemos algo continua la comprabacion
 		    if (td && td2) {
 		      //Obtenemos los valores segun corresponda.
