@@ -55,9 +55,11 @@
 		  </tr>   
 		      {% for cronograma in object_list %}
 		   <tr>
-		      <td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
+		      <td> <a href="{% url 'venta:CronogramaDetail' pk=cronograma.id %}">
+		      	<i class="pe-7s-box2 icon-gradient bg-amy-crisp">
 		        </i>
 		        {{cronograma}}
+		    </a>
 		      </td>
 		      <td>
 		        {{cronograma.fecha_inicio }}
