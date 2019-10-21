@@ -22,5 +22,10 @@ def abm(request):
 				'Cliente' : {'Crear Cliente' : {'descripcion' : 'Permite dar de alta clientes.',
 												'url' : reverse_lazy('gral:ClienteCreate')},
 							},
+				'Condiciones de Pago' : {'Crear Tipo de Valores' : {'descripcion': 'Crear tipo de valores: Cheques, Efectivo, etc.',
+											'url' : reverse_lazy('gral:ClienteCreate')},
+										 'Crear Condiciones de Pago' : {'descripcion' : 'Creación de condiciones de pago.',
+										    'url' : reverse_lazy('gral:ClienteCreate')},
+							},
 				}
 	return render(request, 'inicio/abm.html', {'context' : context})

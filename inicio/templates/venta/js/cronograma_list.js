@@ -12,7 +12,7 @@
 	    	$("#clientes_select").html(response.clientes);
 	    	});
 	});
-	
+
 	
 	function filtroNombreCliente() 
 	{

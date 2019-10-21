@@ -283,3 +283,16 @@ class Producto(models.Model):
         return self.codigo
 
 ##########  FIN PRODUCTOS.
+
+########## Valores Generales
+class ValoresEconomicos(models.Model):
+    nombre         = models.CharField(max_length=150, unique=True, blank=False)
+    observacioens  = models.TextField()
+    def __str__(self):
+        return self.nombre
+
+class CondicionDePago(models.Model):
+    nombre = models.CharField(max_length=150, unique=True, blank=False)
+    valor  = models.ForeignKey(ValoresEconomicos, related_name='ValoresEconomicos_CondicionPago', blank=False, default=1, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.nombre

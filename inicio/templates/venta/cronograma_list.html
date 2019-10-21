@@ -51,7 +51,6 @@
 		    <th>Fecha Finalización</th>
 		    <th>Cliente</th>
 		    <th>Terminada</th>
-		    <th>Ver Detalle</th>
 		  </tr>   
 		      {% for cronograma in object_list %}
 		   <tr>
@@ -72,13 +71,6 @@
 		      </td>
 		      <td>
 		        {{ cronograma.terminada }}
-		      </td>
-		      <td>
-			      <a href="{% url 'venta:CronogramaDetail' pk=cronograma.id %}">
-			      	<i class="pe-7s-angle-up-circle">
-			      			Ver
-			      	</i>
-			      </a>
 		      </td>
 		    </tr>
 		      {% endfor %}
@@ -102,6 +94,5 @@
 
 
 {% include "./js/cronograma_list.js" %}
-
 {% endblock %}
 
