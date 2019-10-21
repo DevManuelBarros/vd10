@@ -1,19 +1,23 @@
 #Imports de Django
 from django.db import models
 
-#Imports de la aplición
+#Imports de la aplicación
 from gral.models import Cliente, Producto
 from django.template.defaultfilters import default
 
+#Determina un circuito que dara cual sera el tipo de documento a 
+#realizar.
 CIRCUITO_CHOICE = (
 					('Facturar', 'Facturar'),
 					('Consignacion', 'Consignacion')
 				  )
+
+#Determina el tipo de documento.
 DOCUMENTOS_CHOICES = (
 					('Remito','Remito'),
 					('OrdenTraslado', 'Orden de Traslado')
-
 					)
+
 class FormatodeImpresion(models.Model):
 	"""FormatodeImpresion
 	
@@ -36,15 +40,17 @@ class Cronograma(models.Model):
 		nombre (CharField) 				: Nombre del cronograma.
 		cliente (ForeignKey) 			: Asociado a un cliente.
 		fecha_de_inicio (DataField) 	: Fecha de Inicio del Cronograma.
+		fecha_finalizacion (DataField)  : Fecha de finalización del cronograma.
 		terminada (BooleanField)		: Si la campaña esta terminada para poder cancelarla.
 	Returns:
 		__str__:
 			self.nombre
 	"""
-	nombre  		= models.CharField(max_length=20)
-	cliente 		= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
-	fecha_inicio 	= models.DateField(null=True, blank=True)
-	terminada 		= models.BooleanField(default=False)
+	nombre  				= models.CharField(max_length=20)
+	cliente 				= models.ForeignKey(Cliente, null=False, blank=False, on_delete=models.CASCADE)
+	fecha_inicio 			= models.DateField(default='1983-01-17')
+	fecha_finalizacion		= models.DateField(default='1983-01-17')
+	terminada 				= models.BooleanField(default=False)
 
 			
 	

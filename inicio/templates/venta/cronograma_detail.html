@@ -33,13 +33,21 @@
 		        {{ cronograma.fecha_inicio }}
 		      </td>
 		      </tr>
-		      
+		       <tr>
+		      <td>
+		      Fecha finalización
+		      </td>
+		      <td>
+		      	{{ cronograma.fecha_finalizacion }}
+		      </td>
+		      </tr>
 		      <tr>
 		      <td>Cliente: </td>
 		      <td>
 		        {{ cronograma.cliente }}
 		        </td>
 		      </tr>
+		     
 		      <tr>
 		      <td>Terminada:</td>
 		      <td id="id_estado">
@@ -48,6 +56,7 @@
 		      </tr>	
 		</table>
 		<input type="button" value="Cambiar Estado" class="btn btn-primary" onclick="cambiarEstado()">
+		<a href="{% url 'venta:CronogramaUpdate' pk=cronograma.pk %}"><input type="button" value="Actualizar Cronograma" class="btn btn-primary"></a>
 	</div>
 </div>
 <a href="{% url 'venta:CronogramaList' %}">    

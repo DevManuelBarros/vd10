@@ -15,14 +15,24 @@
 			<table class="table table-hover table-fixed">
 				<tr>
 					<td>
-					<label for="filtroNombre">Nombre de Campaña:</label>
-					<input type="text" class="form-control" id="filtroNombre"
-						onkeyup="filtroNombreCliente()"
-						placeholder="Ingrese una Campaña..."></td>
+						<label for="filtroNombre">Nombre de Campaña:</label>
+						<input type="text" class="form-control" id="filtroNombre"
+							onkeyup="filtroNombreCliente()"
+							placeholder="Ingrese una Campaña..." /></td>
 					<td>
-					<label for="clientes_select">Cliente:</label>
-					<select id="clientes_select" class="form-control"
-						onchange="filtroNombreCliente()"></select></td>
+						<label for="clientes_select">Cliente:</label>
+						<select id="clientes_select" class="form-control"
+							onchange="filtroNombreCliente()">
+					</td>
+					<td>
+						<label for="filtroEstado">Estados</label>
+						<select class="form-control" id="filtroEstado"
+							onchange="filtroNombreCliente()">
+							<option value="*">Todos</option>
+							<option value="False">Activas</option>
+							<option value="True">Terminadas</option>
+						</select>
+					</td>
 				</tr>
 			</table>
 		</div>
@@ -38,6 +48,7 @@
 		  <tr>
 		    <th>Nombre</th>
 		    <th>Fecha Inicio</th>
+		    <th>Fecha Finalización</th>
 		    <th>Cliente</th>
 		    <th>Terminada</th>
 		    <th>Ver Detalle</th>
@@ -50,6 +61,9 @@
 		      </td>
 		      <td>
 		        {{cronograma.fecha_inicio }}
+		      </td>
+		      <td>
+		        {{cronograma.fecha_finalizacion }}
 		      </td>
 		      <td>
 		        {{cronograma.cliente}}
