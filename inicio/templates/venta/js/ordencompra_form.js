@@ -7,7 +7,7 @@ Asociado : formito_form.html
 
 Metodos y funciones contenidos:
 getCreonograma();
-
+get_today();
 Asignaciones:
 $('.formset_row').formset();
 $(document).ready() 
@@ -23,6 +23,17 @@ $(document).ready()
 
 	$(document).ready(function() {
             $("#id_cliente").on("change", getCronograma);
+            //$(".col-md-4 mb-3").html("<a href='#' id='get_today'>Hoy</a>");
+            
+/*            $('.col-md-4 mb-3').each(function(indice, elemento) {
+  					console.log(elemento);
+  					
+				});*/
+            
+            $("#get_today").on("click", get_today);
+            //Vaciamos los select que traen valores por defecto.
+            $("select#id_productolineasoc_set-0-producto").html("<option value='' selected='selected'>---------</option>");
+            $("#id_cronograma").html("<option value='' selected='selected'>---------</option>");
         });
 
 	
@@ -79,5 +90,11 @@ $(document).ready()
             }
 	}
 
-
+	 //Colocamos la fecha del día y la colocamos en fecha de emisión.
+	 function get_today()
+	 {
+	 	var f = new Date();
+		var today = f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
+		$("#id_fecha_emision").val(today);
+	 }
 </script>
