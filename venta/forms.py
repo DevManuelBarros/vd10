@@ -34,18 +34,6 @@ def existeCronograma(ncliente, snombre):
     return bool(comp)
 
 
-def nombreCronogramaFecha(fecha, nombre):
-    """nombreCronogramaFecha
-       Compara el año de la fecha y los últimos cuatro números
-       del nombre, que deben coincidir.
-       Arguments:
-           fecha (str)  : Fecha en formato str.
-           nombre (str) : Nombre completo del campo.
-    """
-    if fecha[:4] ==  nombre[-4:]:
-        return True
-    return False
-        
 
 ###FORMULARIOS
 
@@ -82,9 +70,6 @@ class CronogramaCreateForm(forms.ModelForm):
 		cleaned_data = super().clean()
 		cliente = cleaned_data.get('cliente')
 		nombre = cleaned_data.get('nombre')
-		fecha = str(cleaned_data.get('fecha_inicio'))
-		if not nombreCronogramaFecha(fecha, nombre):
-			raise forms.ValidationError('El nombre correcto sería algo como: C14-2019, el final coincidir con el año de fecha de inicio de la campaña')
 		if existeCronograma(cliente, nombre):
 			raise forms.ValidationError('Este nombre de campaña existe para este cliente, pruebe otro.')
 		return cleaned_data

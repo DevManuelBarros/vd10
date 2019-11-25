@@ -7,3 +7,7 @@ https://docs.google.com/document/d/1B-T3ClDc4v1N54doOWbrV5dNOGa0uAenZ1-9sYft9NM/
 #para desarrolladores:
 https://docs.google.com/document/d/1B-T3ClDc4v1N54doOWbrV5dNOGa0uAenZ1-9sYft9NM/edit?usp=sharing
 
+
+#Ventanas modales:
+
+https://pypi.org/project/django-bootstrap-modal-forms/

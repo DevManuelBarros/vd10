@@ -17,10 +17,13 @@
 <div class="main-card mb-3 card">
 <div class="card-body">
 <h5 class="card-title">Formulario de Orden de Compra</h5>
+
     <form class="needs-validation" action="" method="post">{% csrf_token %}
     {% include '../utils/form_cabecera.html' %}
 	<h5 class="card-title">Detalle Orden de compra</h5>
-	
+	<hr/>
+        <button class="signup-btn btn btn-primary" type="button" name="button">Crear Producto</button>
+    <hr/>
         <table class="mb-0 table table-hover">
             {{ ordendecompramain.management_form }}
 
@@ -55,6 +58,18 @@
         <input type="submit" value="Guardar" class="mb-2 mr-2 btn btn-primary"/> <a href="{% url 'venta:CronogramaList' %}">Volver al listado</a>
      </form>
     </div>
+    
 	</div>   
+
+
+<script src="{% static 'formset/jquery.formset.js' %}"></script>
 {% include "./js/ordencompra_form.js" %}
+
+{% endblock %}
+{% block footer %}
+<div class="modal fade" tabindex="-1" role="dialog" id="modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content"></div>
+  </div>
+</div>
 {% endblock %}

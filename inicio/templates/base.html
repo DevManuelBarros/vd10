@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
     {% include "./utils/base_cabecera.html" %}
+    {% include "./utils/base_pie.html" %}
 </head>
 
 <body>
@@ -219,5 +220,8 @@
     </div>
         </div>
     </div>
+    {% block footer %}
+    {% endblock footer %}
 </body>
+
 </html>

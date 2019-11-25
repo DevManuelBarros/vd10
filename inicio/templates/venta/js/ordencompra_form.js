@@ -1,5 +1,4 @@
-{% load static %}
-<script src="{% static 'formset/jquery.formset.js' %}"></script>
+
 <script type="text/javascript">
 /***
 Archivo: remito_form.js
@@ -22,6 +21,12 @@ $(document).ready()
     });
 
 	$(document).ready(function() {
+			$(".signup-btn").modalForm({
+				formURL: "{% url 'gral:ProductoCreatePartial' %}"
+			});
+
+
+
             $("#id_cliente").on("change", getCronograma);
             //$(".col-md-4 mb-3").html("<a href='#' id='get_today'>Hoy</a>");
             
@@ -97,4 +102,6 @@ $(document).ready()
 		var today = f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
 		$("#id_fecha_emision").val(today);
 	 }
+		
+
 </script>

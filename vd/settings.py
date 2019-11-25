@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'venta',
     'inicio',
     'configuraciones',
+    'bootstrap_modal_forms',
 
 ]
 

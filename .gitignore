@@ -3,3 +3,5 @@ venta/__pycache__/*
 configuraciones/__pycache__/*
 inicio/__pycache__/*
 gral/__pycache__/*
+vdenv/*
+.vscode/*

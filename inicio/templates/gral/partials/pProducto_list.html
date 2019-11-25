@@ -1,0 +1,39 @@
+   {% if object_list %}
+<div class="main-card mb-3 card">
+	<div class="card-body">
+	<h5 class="card-title">Listado de produtos.</h5>
+		<table class="table table-hover table-fixed">
+		  <tr>
+		    <th>Código</th>
+		    <th>Descripción</th>
+		    <th>Cliente</th>
+		    <th>Ver Detalle</th>
+		  </tr>   
+		      {% for producto in object_list %}
+		   <tr>
+		      <td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
+		        </i>
+		        {{producto.codigo}}
+		      </td>
+		      <td>
+		        {{producto.descripcion }}
+		      </td>
+		      <td>
+		        {{producto.cliente}}
+		      </td>
+		      <td>
+			      <a href="{% url 'gral:ProductoDetail' pk=producto.id %}">
+			      	<i class="pe-7s-angle-up-circle">
+			      			Ver
+			      	</i>
+			      </a>
+		      </td>
+		    </tr>
+		      {% endfor %}
+		
+		    {% else %}
+		      <p>No hay registros para mostrar.</p>
+		    {% endif %}      
+		</table>
+	</div>
+</div>

@@ -19,6 +19,7 @@ class ClienteListView(LoginRequiredMixin, ListView):
 	model 			= Cliente
 	template_name 	= 'gral/cliente_list.html'
 
+
 class ClienteDetailView(LoginRequiredMixin, DetailView):
 	model = Cliente
 
@@ -32,10 +33,17 @@ class ProductoCreate(LoginRequiredMixin, CreateView):
 	template_name = 'gral/producto_form.html'
 	success_url = reverse_lazy('gral:ProductoListView')
 
+class ProductoCreatePartial(LoginRequiredMixin, CreateView):
+	form_class = ProductoCreateForm
+	template_name = 'gral/partials/pProducto_form.html'
+	success_url = None
+
+
 
 class ProductoListView(LoginRequiredMixin, ListView):
 	model = Producto
-	template_name = 'gral/producto_list.html'
+	template_name = 'gral/partials/pProducto_list.html'
+	context_object_name = 'producto'
 
 
 class ProductoDetailView(LoginRequiredMixin, DetailView):
