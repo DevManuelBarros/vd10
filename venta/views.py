@@ -125,7 +125,7 @@ class OrdenCompraCompletoView(LoginRequiredMixin, CreateView):
 ################### DETAIL
 
 class RemitoDetail(LoginRequiredMixin, DetailView):
-	model = Remito #Impotsmod rl mofrlo
+	model = Remito #Importamos el modelo
 	template_name = 'venta/remito_detail.html'
 	def get_context_data(self, **kwargs):
 		instance = super(RemitoDetail, self).get_context_data(**kwargs)

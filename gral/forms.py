@@ -1,5 +1,5 @@
 from django import forms
-
+from bootstrap_modal_forms.forms import BSModalForm
 from .models import (   Peso, 
                         Medicion, 
                         Cuerpos, 
@@ -95,3 +95,13 @@ class ProductoCreateForm(forms.ModelForm):
 
             }
 
+
+class ProductoCreateBS(BSModalForm):
+    class Meta:
+        model = Producto
+        fields = ['codigo', 'cliente', 'descripcion']
+        widgets = {
+            'codigo' : forms.TextInput(attrs={'class' : 'form-control'}),
+            'cliente' : forms.Select(attrs={'class' : 'form-control'}),
+            'descripcion' : forms.TextInput(attrs={'class' : 'form-control'}),
+            }

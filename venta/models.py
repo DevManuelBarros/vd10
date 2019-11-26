@@ -102,7 +102,7 @@ class Remito(models.Model):
 	conformado				= models.BooleanField(default=False)
 	anulado					= models.BooleanField(default=False)
 	def __str__(self):
-		return "Remito: " + self.referencia_externa
+		return self.referencia_externa
 
 class ProductoLineasRM(models.Model):
 	"""ProductoLineasRM
@@ -145,4 +145,11 @@ class ProductoLineasOC(models.Model):
 		return self.cantidad * self.precio_unitario
 	def __str__(self):
 		return str(self.OrdenCompra)
+
+class ConsolidadorRemito(models.Model):
+	remito_id = models.ForeignKey(Remito, null=False, on_delete=models.CASCADE)
+	producto = models.ForeignKey(Producto, null=False, on_delete=models.CASCADE)
+	cantidad_aceptada =  models.IntegerField()
+	def __str___(self):
+		return self.producto
 

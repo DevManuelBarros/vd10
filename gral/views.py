@@ -2,8 +2,9 @@ from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from bootstrap_modal_forms.generic import BSModalCreateView
 
-from .forms import (ProductoCreateForm, ClienteCreateForm)
+from .forms import (ProductoCreateForm, ClienteCreateForm, ProductoCreateBS)
 from .models import (Producto, Cliente)
 
 
@@ -49,3 +50,10 @@ class ProductoListView(LoginRequiredMixin, ListView):
 class ProductoDetailView(LoginRequiredMixin, DetailView):
 	model = Producto
 ################### FIN PRODUCTO
+
+
+class ProductoCreateBS(BSModalCreateView):
+	template_name = 'gral/partials/pProducto_form.html'
+	form_class = ProductoCreateBS
+	success_message = 'Producto Creado.'
+	success_url = reverse_lazy('venta:OrdenCompraCompleto')

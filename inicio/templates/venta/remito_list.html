@@ -11,26 +11,59 @@
                                      
                                     </div>
 </div>
-
+<hr/>
+	<div class="main-card mb-2 card">
+		<div class="card-body">
+			<h5 class="card-title">Filtros</h5>
+			<table class="table table-hover table-fixed">
+				<tr>
+					<td>
+						<label for="filtroNombre">Referencia Remito:</label>
+						<input type="text" class="form-control" id="filtroNombre"
+							onkeyup="filtroNombreCliente()"
+							placeholder="Ingrese referencia de Remito..." /></td>
+					<td>
+						<label for="clientes_select">Cliente:</label>
+						<select id="clientes_select" class="form-control"
+							onchange="filtroNombreCliente()">
+					</td>
+					<td>
+						<label for="filtroEstado">Estados</label>
+						<select class="form-control" id="filtroEstado"
+							onchange="filtroNombreCliente()">
+							<option value="*">Todos</option>
+							<option value="False">SIN</option>
+							<option value="True">CONFORMADO</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
 
     {% if object_list %}
 <div class="main-card mb-3 card">
 	<div class="card-body">
 	<h5 class="card-title">Listado de Remitos.</h5>
-		<table class="table table-hover table-fixed">
+		<table class="table table-hover table-fixed" id="tablaResultado">
 		  <tr>
 		    <th>Referencia</th>
 		    <th>Tipo de Documento</th>
 		    <th>Fecha Emision</th>
 		    <th>Cliente</th>
+			<th>Conformado</th>
 		    <th>Ver Detalle</th>
 		  </tr>   
 		      {% for remito in object_list %}
 		   <tr>
-		      <td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
+		      <td>
+			  <a href="{% url 'venta:RemitoDetail' pk=remito.id %}">
+			  <i class="pe-7s-box2 icon-gradient bg-amy-crisp">
 		        </i>
 		        {{remito}}
 		      </td>
+			  </a>
 		      <td>
 		      	{{remito.tipo_documento}}
 		      </td>
@@ -40,10 +73,13 @@
 		      <td>
 		        {{remito.cliente}}
 		      </td>
+			  <td>
+		        {{remito.conformado}}
+		      </td>
 		      <td>
 			      <a href="{% url 'venta:RemitoDetail' pk=remito.id %}">
 			      	<i class="pe-7s-angle-up-circle">
-			      			Ver
+			      			Conformar
 			      	</i>
 			      </a>
 		      </td>
@@ -67,5 +103,5 @@
 		<i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes"></i>Crear Remito
 </button>
 </a>
-
+{% include './js/remito_list.js' %}
 {% endblock %}
