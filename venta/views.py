@@ -1,10 +1,11 @@
 #imports Django
-from django.shortcuts import render
+from django.shortcuts import render, HttpResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, FormView, DetailView, UpdateView
 from django.db import DatabaseError, transaction
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+
 
 #Imports de la aplicación.
 from .models import (Cronograma, 
@@ -133,10 +134,25 @@ class RemitoDetail(LoginRequiredMixin, DetailView):
 		instance['remito_linea'] = lineasRM
 		return instance
 
+class RemitoUpdate(LoginRequiredMixin, UpdateView):
+	form_class = RemitoCabecera
+	template_name = 'venta/remito_form.html'
+	
 
 
+class RemitoConformador(LoginRequiredMixin, UpdateView):
+	model = Remito #Importamos el modelo
+	fields = '__all__'
+	template_name = 'venta/conformador_detail.html'
+	def get_context_data(self, **kwargs):
+		instance = super(RemitoConformador, self).get_context_data(**kwargs)
+		lineasRM = ProductoLineasRM.objects.filter(remito=instance['object'].pk)
+		instance['remito_linea'] = lineasRM
+		return instance
 
-
+def ConformarRemito(request):
+	print(request.GET.get('input_cantidad_confirmada'))
+	return HttpResponse("HolaMundo!")
 
 ################### LIST
 

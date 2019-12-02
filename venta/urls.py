@@ -18,7 +18,9 @@ from    .views import (CronogramaCreate,
                        RemitoCompletoView,
                        RemitoListView,
                        RemitoDetail,
-                       PreImpresion)
+                       PreImpresion,
+                       RemitoConformador,
+                       ConformarRemito)
 
 urlpatterns = [
     #Cronograma
@@ -36,6 +38,8 @@ urlpatterns = [
     path('remito/crear/', RemitoCompletoView.as_view(), name='RemitoCrear'),
     path('remito/listar/', RemitoListView.as_view(), name='RemitoListar'),
     path('remito/detail/<int:pk>', RemitoDetail.as_view(), name='RemitoDetail'),
+    path('remito/conformador/<int:pk>', RemitoConformador.as_view(), name='RemitoConformador'),
+    path('remito/conformado/', ConformarRemito, name='ConformarRemito'),
     #Ajax    
     path('ajax/get_cronogramas', get_cronogramas, name='get_cronogramas'),
     path('ajax/get_productos', get_productos, name='get_productos'),

@@ -1,8 +1,7 @@
 <script type="text/javascript">
 $(document).ready(function()
 	{
-	    	var request=$.ajax(
-	    	{
+	    	var request=$.ajax({
 		        type : "GET",
 		        url  : "{% url 'venta:get_clientes' %}",
 	    	});
@@ -118,5 +117,4 @@ $(document).ready(function()
 
 		}
 	}
-
 </script>

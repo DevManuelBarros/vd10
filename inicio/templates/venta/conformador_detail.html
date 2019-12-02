@@ -1,0 +1,83 @@
+{% extends '../base.html' %}
+{%  block cuerpo %}
+<div class="main-card mb-3 card">
+	<div class="card-body">
+		<h5 class="card-title">Conformador de {{ remito }}</h5>
+		<table class="table table-hover table-fixed">
+		<tr>
+			<th>
+				Campo
+			</th>
+			<th>
+				Detalle
+			</th>
+		</tr>
+		<tr>
+				<td>Referencia Externa: </td>
+				<td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
+		        </i>
+		        	{{ remito }}
+		      </td>
+		      </tr>
+			<tr>
+		      <td>Orden de Compra: </td>
+		      
+		      <td>
+		        {{ remito.ordencompra }}
+		      </td>
+		      </tr>
+			
+		      <tr>
+		      <td>Fecha de Emisión: </td>
+		      
+		      <td>
+		        {{ remito.fecha_emision }}
+		      </td>
+		      </tr>
+		      
+		      <tr>
+		      <td>Cliente: </td>
+		      <td>
+		        {{ remito.cliente }}
+		        </td>
+		      </tr>	
+		</table>
+	</div>
+		<div class="card-body">
+	<h5 class="card-title">Detalle Remito</h5>
+	
+		<table class="table table-hover table-fixed">
+		<tr>
+		<th>Producto (Código)</th>
+		<th>Cajas</th>
+		<th>Cantidad</th>
+		<th>Total</th>
+        <th>Total confirmado</th>
+        <th>Total</th>
+		</tr>
+		{% for lista in remito_linea %}
+		<form action="{% url 'venta:ConformarRemito' %}" method="get">
+        <tr>{% csrf_token %}
+			<td>{{ lista.producto.nombre_completo }}</td>
+			<td>{{ lista.cajas}} </td>
+			<td>{{ lista.cantidad}}</td>
+			<td>{{ lista.total_unidades }}</td>
+			<td><input name="input_cantidad_confirmada" type="number" value="{{ lista.cantidad_confirmada }}" id="{{ remito.id }}-{{ lista.producto.id }}" /></td>
+            <td><p>Conf</p></td>
+		</tr>
+			{% endfor %}
+           
+        </table>
+         <input type="submit" class="btn btn-primary" value="Conformar"/>
+    </div>
+</div>
+
+</form>
+<a href="{% url 'venta:RemitoListar' %}">    
+<button class="mb-2 mr-2 btn-transition btn btn-outline-primary btn-block">
+		<i class="pe-7s-angle-left-circle">Conformar</i>
+</button>
+</a>		 
+
+
+{% endblock %}

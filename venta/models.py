@@ -99,6 +99,7 @@ class Remito(models.Model):
 	ordencompra 			= models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
 	fecha_emision			= models.DateField(null=True, blank=True)
 	formato_de_impresion 	= models.ForeignKey(FormatodeImpresion, default=1, null=False, blank=False, on_delete=models.CASCADE)
+	cantidad_confirmada		= models.IntegerField(default=0)
 	conformado				= models.BooleanField(default=False)
 	anulado					= models.BooleanField(default=False)
 	def __str__(self):
@@ -146,10 +147,4 @@ class ProductoLineasOC(models.Model):
 	def __str__(self):
 		return str(self.OrdenCompra)
 
-class ConsolidadorRemito(models.Model):
-	remito_id = models.ForeignKey(Remito, null=False, on_delete=models.CASCADE)
-	producto = models.ForeignKey(Producto, null=False, on_delete=models.CASCADE)
-	cantidad_aceptada =  models.IntegerField()
-	def __str___(self):
-		return self.producto
 
