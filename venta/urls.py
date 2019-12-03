@@ -20,7 +20,8 @@ from    .views import (CronogramaCreate,
                        RemitoDetail,
                        PreImpresion,
                        RemitoConformador,
-                       ConformarRemito)
+                       ConformarRemito,
+                       OrdenCompraUpdate)
 
 urlpatterns = [
     #Cronograma
@@ -31,6 +32,7 @@ urlpatterns = [
     #Orden de compra
     path('ordencompra/listar/', OrdenCompraList.as_view(), name='OrdenCompraList'),
     path('ordencompra/detalle/<int:pk>', OrdenCompraDetail.as_view(), name='OrdenCompraDetail'),
+    path('ordencompra/actualizar/<int:pk>', OrdenCompraUpdate.as_view(), name='OrdenCompraUpdate'),
     path('ordencompra/crear/', OrdenCompraCompletoView.as_view(), name='OrdenCompraCompleto'),
     path('preimpresion/<int:id_remito>', PreImpresion, name='Preimpresion'),
     path('remitopdf/<int:id_remito>/<int:etiqueta>/<int:impresion>', remito, name='remitoPDF'),

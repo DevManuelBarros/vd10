@@ -86,6 +86,8 @@ class lineaProductoOCList(LoginRequiredMixin, ListView):
 
 ###################### CREATE
 
+
+
 class OrdenCompraCompletoView(LoginRequiredMixin, CreateView):
     form_class = OrdenCompraCabecera
     #model = OrdenCompra
@@ -109,6 +111,23 @@ class OrdenCompraCompletoView(LoginRequiredMixin, CreateView):
             	ordendecompramain.instance = self.object
             	ordendecompramain.save()
         return super(OrdenCompraCompletoView, self).form_valid(form)
+
+
+class OrdenCompraUpdate(LoginRequiredMixin, UpdateView):
+	model = OrdenCompra
+	form_class = OrdenCompraCabecera
+	formset_class = ProductoLineasOCFormSet
+	success_url = reverse_lazy('venta:OrdenCompraList')
+	template_name = 'venta/ordencompra_form.html'
+
+	def get_context_data(self, **kwargs):
+		data = super(OrdenCompraUpdate, self).get_context_data(**kwargs)
+		print(data)
+		if self.request.POST:
+			data['ordendecompramain'] = ProductoLineasOCFormSet(self.request.POST)
+		else:
+			data['ordendecompramain'] = ProductoLineasOCFormSet()
+		return data
 
 
 #class OrdenCompraCreate(CreateView):

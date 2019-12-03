@@ -4,4 +4,5 @@ configuraciones/__pycache__/*
 inicio/__pycache__/*
 gral/__pycache__/*
 vdenv/*
+venv/*
 .vscode/*
