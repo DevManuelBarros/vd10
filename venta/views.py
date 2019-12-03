@@ -107,29 +107,42 @@ class OrdenCompraCompletoView(LoginRequiredMixin, CreateView):
         with transaction.atomic():
             self.object = form.save()
             if ordendecompramain.is_valid():
-            	print(ordendecompramain)
             	ordendecompramain.instance = self.object
             	ordendecompramain.save()
         return super(OrdenCompraCompletoView, self).form_valid(form)
+
+
+###################### UPDATE
 
 
 class OrdenCompraUpdate(LoginRequiredMixin, UpdateView):
 	model = OrdenCompra
 	form_class = OrdenCompraCabecera
 	formset_class = ProductoLineasOCFormSet
-	success_url = reverse_lazy('venta:OrdenCompraList')
-	template_name = 'venta/ordencompra_form.html'
-
-	def get_context_data(self, **kwargs):
-		data = super(OrdenCompraUpdate, self).get_context_data(**kwargs)
-		print(data)
-		if self.request.POST:
-			data['ordendecompramain'] = ProductoLineasOCFormSet(self.request.POST)
-		else:
-			data['ordendecompramain'] = ProductoLineasOCFormSet()
-		return data
-
-
+	template_name = 'venta/cronograma_update.html'
+	def get_context_data(self, *args, **kwargs):
+		context = super(OrdenCompraUpdate, self).get_context_data(**kwargs)
+		#lineasOC = ProductoLineasOC.objects.filter(OrdenCompra=instance['object'].pk)
+		qs = ProductoLineasOC.objects.filter(OrdenCompra = self.get_object())
+		print(qs)
+		formset = ProductoLineasOCFormSet(queryset=qs)#queryset=qs)
+		context['meaning_formset'] = formset
+		return context
+	"""
+	def post(self, request, *args, **kwargs):
+		self.object = self.get_object()
+		form_class = self.get_form_class()
+		form = self.get_form(form_class)
+		print("EL get object: " , self.get_object())
+		qs = OrdenCompra.objects.filter(id=self.request.POST)
+		formsets = ProductoLineasOCFormSet(self.request.POST)#, queryset=qs)
+		if form.is_valid():
+			for fs in formsets:
+				if fs.is_valid():
+					fs.save()
+			return self.form_valid(form)
+		return self.form_invalid(form)
+	"""
 #class OrdenCompraCreate(CreateView):
     #model = OrdenCompra
 #    form_class = OrdenCompraCabecera

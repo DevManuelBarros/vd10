@@ -1,0 +1,12 @@
+# edit.html
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+
+    {{ meaning_formset.management_form }}
+    {% for meaning_form in meaning_formset %}
+        {{ meaning_form.as_p }}
+        <hr>
+    {% endfor %}
+    <input type="submit" value="Update"/>
+</form>
