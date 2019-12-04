@@ -56,7 +56,7 @@
         <th>Total</th>
 		</tr>
 		{% for lista in remito_linea %}
-		<form action="{% url 'venta:ConformarRemito' %}" method="get">
+		<form  method="post">
         <tr>{% csrf_token %}
 			<td>{{ lista.producto.nombre_completo }}</td>
 			<td>{{ lista.cajas}} </td>

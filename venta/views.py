@@ -20,7 +20,8 @@ from .forms  import (CronogramaCreateForm,
 					 ProductoLineasOCFormSet,
 					 ProductoLineasRMForm,
 					 ProductoLineasRMFormSet,
-					 RemitoCabecera)
+					 RemitoCabecera,
+					 ModelProductoLineasOCFormSet)
 					 
 from configuraciones.models import ConfigImpresionRemito
 ##
@@ -119,30 +120,33 @@ class OrdenCompraUpdate(LoginRequiredMixin, UpdateView):
 	model = OrdenCompra
 	form_class = OrdenCompraCabecera
 	formset_class = ProductoLineasOCFormSet
-	template_name = 'venta/cronograma_update.html'
+	template_name = 'venta/ordencompra_form.html'
+	success_url = reverse_lazy('venta:OrdenCompraList')
 	def get_context_data(self, *args, **kwargs):
 		context = super(OrdenCompraUpdate, self).get_context_data(**kwargs)
-		#lineasOC = ProductoLineasOC.objects.filter(OrdenCompra=instance['object'].pk)
+		#print(context['form']['fecha_emision'].value)
 		qs = ProductoLineasOC.objects.filter(OrdenCompra = self.get_object())
-		print(qs)
-		formset = ProductoLineasOCFormSet(queryset=qs)#queryset=qs)
-		context['meaning_formset'] = formset
+		formset = ModelProductoLineasOCFormSet(queryset=qs)
+		context['ordendecompramain'] = formset
 		return context
-	"""
+
 	def post(self, request, *args, **kwargs):
 		self.object = self.get_object()
 		form_class = self.get_form_class()
 		form = self.get_form(form_class)
-		print("EL get object: " , self.get_object())
-		qs = OrdenCompra.objects.filter(id=self.request.POST)
-		formsets = ProductoLineasOCFormSet(self.request.POST)#, queryset=qs)
+		qs = ProductoLineasOC.objects.filter(OrdenCompra=self.get_object())
+		formsets = ModelProductoLineasOCFormSet(self.request.POST, queryset=qs)#, queryset=qs)
+		resultado = formsets[-1:][0]
+		print(str(resultado.fields['producto']))
+		#print(formsets)
 		if form.is_valid():
+			
 			for fs in formsets:
 				if fs.is_valid():
 					fs.save()
 			return self.form_valid(form)
 		return self.form_invalid(form)
-	"""
+
 #class OrdenCompraCreate(CreateView):
     #model = OrdenCompra
 #    form_class = OrdenCompraCabecera
@@ -182,9 +186,7 @@ class RemitoConformador(LoginRequiredMixin, UpdateView):
 		instance['remito_linea'] = lineasRM
 		return instance
 
-def ConformarRemito(request):
-	print(request.GET.get('input_cantidad_confirmada'))
-	return HttpResponse("HolaMundo!")
+
 
 ################### LIST
 

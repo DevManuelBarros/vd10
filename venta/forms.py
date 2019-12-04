@@ -1,6 +1,6 @@
 #imports de Django
 from django import forms
-from django.forms import inlineformset_factory
+from django.forms import inlineformset_factory, modelformset_factory
 from django.contrib.admin import widgets  
 
 
@@ -89,7 +89,7 @@ class OrdenCompraCabecera(forms.ModelForm):
 					'referencia_externa' : forms.TextInput(attrs={'class' : 'form-control', 'type': 'text'}),
 					'cliente' : forms.Select(attrs={'class' : 'form-control'}),
 					'cronograma' : forms.Select(attrs={'class' : 'form-control'}),
-					'fecha_emision' : forms.DateInput(attrs={'class' : 'form-control', 'type' : 'date'}),
+					'fecha_emision' : forms.DateInput(format=('%Y-%m-%d'),attrs={'class' : 'form-control', 'type' : 'date'}),
 					'circuito' : forms.Select(attrs={'class' : 'form-control'}),}
 
 
@@ -108,6 +108,7 @@ class ProductoLineasOCForm(forms.ModelForm):
 ProductoLineasOCFormSet = inlineformset_factory(OrdenCompra, ProductoLineasOC,
                                             form=ProductoLineasOCForm, extra=1)
 
+ModelProductoLineasOCFormSet = modelformset_factory(ProductoLineasOC, fields=('producto', 'cantidad', 'precio_unitario', 'OrdenCompra'), extra=1)
 
 
 ###
