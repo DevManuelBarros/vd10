@@ -13,6 +13,11 @@
 			</th>
 		</tr>
 		<tr>
+		      <td>Id</td>
+		      
+		      <td id="td_remito_id">{{ remito.id }}</td>
+		      </tr>
+		<tr>
 				<td>Referencia Externa: </td>
 				<td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
 		        </i>
@@ -62,13 +67,13 @@
 			<td>{{ lista.cajas}} </td>
 			<td>{{ lista.cantidad}}</td>
 			<td>{{ lista.total_unidades }}</td>
-			<td><input name="input_cantidad_confirmada"  type="number" value="{{ lista.cantidad_confirmada }}" id="{{ remito.id }}-{{ lista.producto.id }}" /></td>
+			<td><input name="input_cantidad_confirmada"  type="number" value="{{lista.cantidad_confirmada}}" id="{{ lista.id }}" /></td>
             <td class="totalConf"><p>Conf</p></td>
 		</tr>
 			{% endfor %}
            
         </table>
-         <input type="submit" class="btn btn-primary" value="Conformar"/>
+         <input type="submit" class="btn btn-primary" value="Conformar" id="botonAjax"/>
     </div>
 </div>
 

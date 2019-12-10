@@ -1,7 +1,8 @@
 <script type="text/javascript">
         $(document).ready(function(){
             $(".totalConf").on("click", getConformadorTotal);
-            $("#totalComp").on("click", getTotalConf)
+            $("#totalComp").on("click", getTotalConf);
+            $("#botonAjax").on("click", conformarRemito);
         });
 
 
@@ -23,4 +24,32 @@
             });
         }
 
+
+        function conformarRemito()
+        {
+                valor = crearCadenaAjax();
+                var request = $.ajax({
+                    type: "GET",
+                    url: "{% url 'venta:conformarRemito' %}",
+                    data : {"valor": valor},
+                });	
+             request.done(function(response){
+                    alert(response.valor);
+                    window.location.href = "{% url 'venta:RemitoListar' %}" ;
+             });
+
+        }
+
+        function crearCadenaAjax()
+        {
+            var valor = "";
+            valor += $("#td_remito_id").text() + "!";
+            var lista = $("#tablaPrincipal").find("input");
+            
+            lista.each(function(index){
+                valor += $(this).attr("id") + "=" + $(this).val() + "@";
+               
+            });
+            return valor;
+        }
 </script>
