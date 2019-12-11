@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 
-from venta.reportesPDF import remito
+from venta.reportesPDF import remito, imprimir_etiqueta
 from venta.ajax import (get_cronogramas, 
                         get_ordenesdecompra, 
                         get_productos, 
@@ -35,7 +35,9 @@ urlpatterns = [
     path('ordencompra/actualizar/<int:pk>', OrdenCompraUpdate.as_view(), name='OrdenCompraUpdate'),
     path('ordencompra/crear/', OrdenCompraCompletoView.as_view(), name='OrdenCompraCompleto'),
     path('preimpresion/<int:id_remito>', PreImpresion, name='Preimpresion'),
-    path('remitopdf/<int:id_remito>/<int:etiqueta>/<int:impresion>', remito, name='remitoPDF'),
+    #Impresion
+    path('remitopdf/<int:id_remito>/<int:impresion>', remito, name='remitoPDF'),
+    path('etiquetapdf/<int:id_remito>/', imprimir_etiqueta, name='etiquetasPDF'),
     #Remito
     path('remito/crear/', RemitoCompletoView.as_view(), name='RemitoCrear'),
     path('remito/listar/', RemitoListView.as_view(), name='RemitoListar'),

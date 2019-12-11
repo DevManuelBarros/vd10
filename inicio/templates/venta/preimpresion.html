@@ -58,7 +58,8 @@
 		      <tr>
 		      <td>
 		      	
-		      	<a href="{% url 'venta:remitoPDF' id_remito=remito.pk etiqueta=1  impresion=1 %}" ><input type="button" class="btn btn-primary" value="Imprimir"></a>
+		      	<a href="{% url 'venta:remitoPDF' id_remito=remito.pk impresion=1 %}" ><input type="button" class="btn btn-primary" value="Imprimir"></a>
+				  <a href="{% url 'venta:etiquetasPDF' id_remito=remito.pk %}" ><input type="button" class="btn btn-primary" value="Imprimir Etiquetas"></a>
 			  	<a href="#"><input type="button" class="btn btn-primary" value="Modificar Remito"></a>
 				<a href="{% url 'venta:RemitoDetail' pk=remito.pk %}"><input type="button" class="btn btn-primary" value="Ver Detalles"></a>
 				

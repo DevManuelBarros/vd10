@@ -8,11 +8,14 @@ from configuraciones.models import ConfigImpresionRemito, Empresa
 from .models import Remito, ProductoLineasRM, OrdenCompra
 from gral.models import Cliente, Producto
 
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
 
-
+from django.conf import settings
 from django.http import HttpResponse
+from vd.settings import STATIC_ROOT
 
-def remito(request, id_remito, etiqueta, impresion):
+def remito(request, id_remito, impresion):
 	#recogemos la configuración de la impresion.
 	configImp = ConfigImpresionRemito.objects.filter(pk = impresion).last()
 	#Variables Cabecera
@@ -99,8 +102,6 @@ def remito(request, id_remito, etiqueta, impresion):
 	c.drawString(configImp.pos_x_ordencompra, configImp.pos_y_ordencompra, str(datos_remito.ordencompra))
 	c.drawString(configImp.pos_x_bultos, configImp.pos_y_bultos, 'Total Bultos: ' + str(bultos))	
 	c.drawString(configImp.pos_x_direccion_entrega, configImp.pos_y_direccion_entrega,'Se entrega en: ' + datos_cliente.direccion_entrega)
-
-	
 	c.save()
 	pdf = buffer.getvalue()
 	buffer.close()
@@ -108,13 +109,36 @@ def remito(request, id_remito, etiqueta, impresion):
 	filename= datos_remito.tipo_documento + "-" + datos_remito.referencia_externa + ".pdf"
 	response['Content-Disposition'] = 'attachament; filename=' + filename
 	response.write(pdf)
-	
 	return response
 
-def imprimir_etiqueta():
-	response = HttpResponse(content_type='application/pdf')
-	response['Content-Disposition'] = 'attachament; filename=etiquetas.pdf'
+def imprimir_etiqueta(request, id_remito):
+	#Datos iniciales
 	buffer = BytesIO()
 	c = canvas.Canvas(buffer, pagesize=A4)
+	#datos para calcular.
+	valoresA4 = A4
+	valor_ancho = int(valoresA4[0])
+	valor_alto  = int(valoresA4[1])
+	#juntamos los datos.
+	datos_remito = Remito.objects.filter(pk = id_remito).last()
+	lineas_remito = ProductoLineasRM.objects.filter(remito = datos_remito)
+	empresa = Empresa.objects.all()[0]
+	#Datos Fijos:
+	nombre_empresa = str(empresa)
+	numero_de_remito =  datos_remito.referencia_externa
+	cuit_empresa = empresa.cuit
 	
+	#Recorremos todos los registros del remito
+	for item in lineas_remito:
+		pass
+
+	#Seteo de los datos.
+	c.setFont("Helvetica", 20)
+	c.drawString(50, 50 , "lala")
+	c.save()
+	pdf = buffer.getvalue()
+	buffer.close()
+	response = HttpResponse(content_type='application/pdf')
+	response['Content-Disposition'] = 'attachament; filename=etiquetas.pdf' 
+	response.write(pdf)
 	return response
