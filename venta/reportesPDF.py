@@ -117,8 +117,10 @@ def imprimir_etiqueta(request, id_remito):
 	c = canvas.Canvas(buffer, pagesize=A4)
 	#datos para calcular.
 	valoresA4 = A4
-	valor_ancho = int(valoresA4[0])
-	valor_alto  = int(valoresA4[1])
+	valor_ancho = (int(valoresA4[0]) - 20) / 2
+	valor_alto  = (int(valoresA4[1]) - 20) / 6
+	x1 = 30
+	y1 = 820
 	#juntamos los datos.
 	datos_remito = Remito.objects.filter(pk = id_remito).last()
 	lineas_remito = ProductoLineasRM.objects.filter(remito = datos_remito)
@@ -127,18 +129,34 @@ def imprimir_etiqueta(request, id_remito):
 	nombre_empresa = str(empresa)
 	numero_de_remito =  datos_remito.referencia_externa
 	cuit_empresa = empresa.cuit
-	
 	#Recorremos todos los registros del remito
+	index = 1
+	ag = x1 + valor_ancho
+	int_etiq = (valor_alto - 10) / 4
+	factor = 0
 	for item in lineas_remito:
-		pass
-
+		cajas = item.cajas + 1
+		
+		for num in range(1,cajas):
+			if ((index % 2) == 0):
+				x_init = ag
+				factor = index / 2
+			else:
+				x_init = x1
+				factor = (index / 2) + 0.5	
+			c.drawString(x_init, y1 - ((factor - 1) * valor_alto), nombre_empresa + "(" + cuit_empresa + ")")
+			c.drawString(x_init, y1 - (((factor - 1) * valor_alto) + int_etiq), "Remito: " + numero_de_remito)
+			c.drawString(x_init, y1 - (((factor - 1) * valor_alto) + (int_etiq * 2)), "Codigo: " + str(item.producto))
+			c.drawString(x_init, y1 - (((factor - 1) * valor_alto) + (int_etiq * 3)), "Cantidad: " + str(item.cantidad))
+			index += 1
+		
 	#Seteo de los datos.
-	c.setFont("Helvetica", 20)
-	c.drawString(50, 50 , "lala")
 	c.save()
 	pdf = buffer.getvalue()
 	buffer.close()
-	response = HttpResponse(content_type='application/pdf')
-	response['Content-Disposition'] = 'attachament; filename=etiquetas.pdf' 
-	response.write(pdf)
+	response = []
+	for ind in range(1,3):
+		response[ind] = HttpResponse(content_type='application/pdf')
+		response[ind]['Content-Disposition'] = 'attachament; filename=etiquetas.pdf' 
+		response[ind].write(pdf)
 	return response
