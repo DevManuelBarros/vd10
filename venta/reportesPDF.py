@@ -1,6 +1,6 @@
 import os
 
-from io import BytesIO
+from io import BytesIO, StringIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4	
 
@@ -10,6 +10,7 @@ from gral.models import Cliente, Producto
 
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
+from PyPDF2 import PdfFileMerger, PdfFileWriter
 
 from django.conf import settings
 from django.http import HttpResponse
@@ -132,8 +133,11 @@ def imprimir_etiqueta(request, id_remito):
 	#Recorremos todos los registros del remito
 	index = 1
 	ag = x1 + valor_ancho
-	int_etiq = (valor_alto - 10) / 4
+	int_etiq = (valor_alto - 10) / 5
 	factor = 0
+	morePage = False
+	#creamos el archivo que contendra el pdf
+	pdf_merger = PdfFileMerger()
 	for item in lineas_remito:
 		cajas = item.cajas + 1
 		
@@ -144,19 +148,41 @@ def imprimir_etiqueta(request, id_remito):
 			else:
 				x_init = x1
 				factor = (index / 2) + 0.5	
-			c.drawString(x_init, y1 - ((factor - 1) * valor_alto), nombre_empresa + "(" + cuit_empresa + ")")
+			c.drawString(x_init, y1 - ((factor - 1) * valor_alto), nombre_empresa + "     (" + cuit_empresa + ")")
 			c.drawString(x_init, y1 - (((factor - 1) * valor_alto) + int_etiq), "Remito: " + numero_de_remito)
-			c.drawString(x_init, y1 - (((factor - 1) * valor_alto) + (int_etiq * 2)), "Codigo: " + str(item.producto))
-			c.drawString(x_init, y1 - (((factor - 1) * valor_alto) + (int_etiq * 3)), "Cantidad: " + str(item.cantidad))
+			c.drawString(x_init, y1 - (((factor - 1) * valor_alto) + (int_etiq * 2)), "Producto (Código) : ")
+			c.drawString(x_init, y1 - (((factor - 1) * valor_alto) + (int_etiq * 3)), str(item.producto.nombre_completo))
+			c.drawString(x_init, y1 - (((factor - 1) * valor_alto) + (int_etiq * 4)), "Cantidad: " + str(item.cantidad))
 			index += 1
-		
+	
+			if index == 13:
+				index = 1
+				morePage = True
+				c.save()
+				#buffer.seek(0)			
+				pdf_merger.append(buffer)
+				buffer = BytesIO()
+				c = canvas.Canvas(buffer, pagesize=A4)
+				x1 = 30
+				y1 = 820
+				ag = x1 + valor_ancho
+
 	#Seteo de los datos.
-	c.save()
-	pdf = buffer.getvalue()
-	buffer.close()
 	response = []
-	for ind in range(1,3):
-		response[ind] = HttpResponse(content_type='application/pdf')
-		response[ind]['Content-Disposition'] = 'attachament; filename=etiquetas.pdf' 
-		response[ind].write(pdf)
+	response = HttpResponse(content_type='application/pdf')
+	filename= "etiquetas-" + datos_remito.tipo_documento + "-" + datos_remito.referencia_externa + ".pdf"
+	response['Content-Disposition'] = 'attachament; filename=' + filename 
+	if morePage == False:
+		c.save()
+		pdf = buffer.getvalue()
+		response.write(pdf)
+		buffer.close()
+	else:
+		#response.write()
+		c.save()
+		#buffer.seek(0)			
+		pdf_merger.append(buffer)
+		pdf_merger.write(response)
+		buffer.close()
+
 	return response
