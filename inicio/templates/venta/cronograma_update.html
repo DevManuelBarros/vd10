@@ -1,0 +1,14 @@
+{% extends '../base.html' %}
+{% block cuerpo %}
+<form action="" method="post">
+    {% csrf_token %}
+    {{ form.as_table }}
+
+    {{ ordendecompramain.management_form }}
+    {% for formset in ordendecompramain %}
+        {{ formset.as_p }}
+        <hr>
+    {% endfor %}
+    <input type="submit" value="Update"/>
+</form>
+{% endblock %}

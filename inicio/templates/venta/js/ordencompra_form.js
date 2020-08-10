@@ -31,14 +31,15 @@ $(document).ready()
             //$(".col-md-4 mb-3").html("<a href='#' id='get_today'>Hoy</a>");
             
 /*            $('.col-md-4 mb-3').each(function(indice, elemento) {
-  					console.log(elemento);
+  					console.log(el	emento);
   					
 				});*/
             
             $("#get_today").on("click", get_today);
             //Vaciamos los select que traen valores por defecto.
             $("select#id_productolineasoc_set-0-producto").html("<option value='' selected='selected'>---------</option>");
-            $("#id_cronograma").html("<option value='' selected='selected'>---------</option>");
+			//Esta Linea debería ejecutarse solo y solo si un formulario vacio.
+			//$("#id_cronograma").html("<option value='' selected='selected'>---------</option>");
         });
 
 	

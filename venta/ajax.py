@@ -2,7 +2,8 @@ from django.http import JsonResponse
 
 from .models import (Cronograma, 
                      OrdenCompra, 
-                     ProductoLineasOC, 
+                     ProductoLineasOC,
+                     ProductoLineasRM, 
                      Remito)
 from gral.models import Cliente
 from gral.models import Producto
@@ -119,4 +120,29 @@ def cambiarValor(request):
     registro.save()
     response = {}
     response['valor'] = str(registro.terminada)
+    return JsonResponse(response) 
+
+def conformarRemito(request):
+    cadena = request.GET.get('valor')
+    remito_id = cadena.split("!")[0]
+    cadena = cadena.split("!")[1]
+    registros = cadena.split("@")[:-1]
+    lineasRM = ProductoLineasRM.objects.filter(remito_id = remito_id).count()
+    cambios = ""
+    if lineasRM == len(registros):
+        cambios += "Se esta modificando el remito 64 \n con los siguientes articulos: \n"
+        for reg in registros:
+            pk = reg.split("=")[0]
+            valor = reg.split("=")[1]
+            linea = ProductoLineasRM.objects.filter(pk = pk).last()
+            linea.cantidad_confirmada	= valor
+            cambios += str(linea.producto) + " = " + valor + "\n"
+            linea.save()
+        remito = Remito.objects.filter(pk = remito_id).last()
+        remito.conformado = True
+        remito.save()
+    else:
+        cambios = "Error, no coinciden las cantidades"
+    response = {}
+    response['valor'] = str(cambios)
     return JsonResponse(response) 
