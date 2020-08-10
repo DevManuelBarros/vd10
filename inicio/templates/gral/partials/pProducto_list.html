@@ -1,4 +1,4 @@
-   {% if object_list %}
+{% if object_list %}
 <div class="main-card mb-3 card">
 	<div class="card-body">
 	<h5 class="card-title">Listado de produtos.</h5>
@@ -12,7 +12,7 @@
 		      {% for producto in object_list %}
 		   <tr>
 		      <td><i class="pe-7s-box2 icon-gradient bg-amy-crisp">
-		        </i>
+			 </i>
 		        {{producto.codigo}}
 		      </td>
 		      <td>
