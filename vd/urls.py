@@ -23,6 +23,7 @@ from django.conf import settings
 
 urlpatterns = [
     path('', include(('inicio.urls', 'inicio'), namespace='inicio')),
+    path('upoc/', include(('upoc.urls', 'upoc'), namespace='upoc')),
     path('gral/', include(('gral.urls', 'gral'), namespace='gral')),
     path('venta/', include(('venta.urls', 'venta'), namespace='venta')),
     path('configuraciones/', include(('configuraciones.urls', 'configuraciones'), namespace='configuraciones')),

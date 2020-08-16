@@ -1,0 +1,23 @@
+{% extends '../base.html' %}
+{% block cuerpo %}
+
+
+<form enctype='multipart/form-data' method='post'>
+	{% csrf_token %}
+	<span class='label label-primary' > Seleccione un cliente:
+ 		<select name='select_cliente' class='form-control'>
+		{% for i in clientes %}
+			<option value={{ i.id }}>{{ i.nombre }}</option>
+		
+		{% endfor %}
+		</select>
+	</span>
+	<br />
+	<span class='label label-primary'>Seleccione la Orden de Compra
+		<input type='file' name='pdf_oc' class='form-control' />
+	</span>
+	<br />
+	<input type='submit' class='btn btn-primary' value='Subir OC'/>
+</form>
+
+{% endblock %}

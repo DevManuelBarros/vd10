@@ -1,0 +1,7 @@
+43018.pdf
+4500.pdf
+*.sw*
+OC01.pdf
+practExp.py
+OC*.pdf
+__pycache__/*
