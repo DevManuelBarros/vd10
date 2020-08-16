@@ -78,6 +78,7 @@ class OrdenCompra(models.Model):
         cronograma                      = models.ForeignKey(Cronograma, null=False, blank=False, on_delete=models.CASCADE)
         fecha_emision           = models.DateField(null=False, blank=False)
         circuito                        = models.CharField(max_length=12, choices=CIRCUITO_CHOICE, default='Facturar')
+        version = models.IntegerField(default=1)
         def __str__(self):
                 return "O.C: " + self.referencia_externa + " || Campaña: " + str(self.cronograma) 
 
@@ -145,6 +146,7 @@ class ProductoLineasOC(models.Model):
         cantidad = models.IntegerField()
         precio_unitario = models.DecimalField(max_digits=9, decimal_places=2)
         OrdenCompra = models.ForeignKey(OrdenCompra, null=False, blank=False, on_delete=models.CASCADE)
+        fecha_entrega = models.DateField(default='1983-01-17')
         @property
         def total(self):
                 return self.cantidad * self.precio_unitario
