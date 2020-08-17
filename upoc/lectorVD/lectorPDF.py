@@ -9,17 +9,14 @@ class lectorPDF:
     PDFText = []
     PDFALL = ""
     tmpBufferLineas = []
-    Ruta = ""
 
     def cargarPaginas(self):
         for inx in self.PDFText:
             self.PDFALL += inx
 
 
-    def cargarArchivo(self, ruta):
-        #self.Ruta = ruta
-        #with open(ruta, 'rb') as f:
-        archivoPDF = PdfFileReader(ruta)
+    def cargarArchivo(self, archivo):
+        archivoPDF = PdfFileReader(archivo)
         for pagina in range(archivoPDF.getNumPages()):
             self.PDFText.append(archivoPDF.getPage(pagina).extractText())
         self.cargarPaginas()

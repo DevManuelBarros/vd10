@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from gral.models import Cliente 
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 #from django.http import HttpResponse
 from django.shortcuts import render 
 from .lectorVD.lectorTsu import lectorTsu
@@ -8,15 +9,7 @@ from .lectorVD.lectorVioletta import lectorVioletta
 # Create your views here.
 import time
 
-def subir_oc(request, *args, **kwargs):
-    if request.method == 'POST':
-        if request.GET['select_cliente'] == '1':
-            print('procesa')
-            ruta = request.FILES.get('pdf_oc')
-            lector_gral = lectorTsu(ruta)
-            time.sleep(2) # como aparentemente el archivo 
-                          # que queda en memoria le damos tiempo para terminar la lectura
-                
+def subir_oc(request):
     clientes = Cliente.objects.all()
     listado_clientes = []
     for cliente in clientes:
@@ -27,4 +20,13 @@ def subir_oc(request, *args, **kwargs):
     return render(request, 'upoc/index.html', {'clientes' : listado_clientes })
 
 
-
+def subiendo_oc(request):
+    if request.method == 'POST':
+        cliente = request.POST['select_cliente']
+        if cliente  == '1':
+            print('procesa')
+            print(form.cleaned_data['pdf_oc'])
+            lector_gral = lectorTsu(request.FILES['pdf_oc'], cliente)
+            resultado = lector_gral.obtenerResumen()
+            print(resultado)
+            return render(request, 'upoc/index.html', {})

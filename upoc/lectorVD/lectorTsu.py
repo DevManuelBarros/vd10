@@ -8,19 +8,23 @@ class lectorTsu:
     __pagina = 0
     __lineas_producto = []
     #Otros datos
-    newObj = OrdenDeCompra()
-    newObject = lectorPDF()
-    def __init__(self, ruta):
-        self.newObject.cargarArchivo(ruta=ruta)
-        #self.__pagina = self.newObject.crearSeparador("Número de artículo europeo", almacenar=True)
+    newObj = 0
+    newObject = 0
+    resultado = ''
+    def __init__(self, archivo, cliente):
+        self.newObj = OrdenDeCompra()
+        self.newObject = lectorPDF()
+        self.newObject.cargarArchivo(archivo=archivo)
+        # separamos la primer pagina del resto así limpiamos el contenido.
         self.__pagina = self.newObject.PDFALL.split('CONDICIONES GENERALESLAS CONDI')[0]
-        #patron = re.compile('\d{5}-\d.{2,35}\d{2},\d{4}.{1,12}\d{2}\/\d{2}\/d{4}')
+        # este patrón correponde a las lineas de productos de las O.C
         patron = re.compile(r'\d{5}-\d{1}.{4,30}\d{1,8}?\d{2}\.\d{4}.{2,8}\.\d{2}\d{2}\/\d{2}\/\d{4}')
-        self.__lineas_productos = patron.findall(self.__pagina)
+        self.__lineas_productos = patron.findall(self.__pagina) #Guardamos las lineas de producto.
         # obtenemos orden de compra
         patron= re.compile(r'\d{6}\s{3,4}\d{1,2}')
         ordencompra = patron.search(self.__pagina).group()
         ordencompra, version = self.separar_orden_compra(ordencompra) 
+        # aquí guardamos la accion que hay que realizar con los archivo Tsu.
         if int(version) > 1:
             self.newObj.CabeceraOrdenDeCompra['actualizar'] = 1
             self.newObj.CabeceraOrdenDeCompra['version'] = version
@@ -35,12 +39,20 @@ class lectorTsu:
         campana = patron.search(self.__pagina).group()
         fecha_anio, campana = campana.split('-')
         campana = 'C' + campana + '-' + fecha_anio
+        # aquí generamos la cabecera.
         self.newObj.CabeceraOrdenDeCompra['campaña'] = campana
         self.newObj.CabeceraOrdenDeCompra['fecha_emision'] = fecha_emision
         self.newObj.CabeceraOrdenDeCompra['circuito'] = 'Facturar'
         self.newObj.CabeceraOrdenDeCompra['cliente'] = 'Tsu'
         self.obtenerLineas()
-        print(self.newObj.getRegistros())
+        self.resultado = self.newObj.getRegistros()
+        del self.newObj
+        del self.newObject 
+
+
+    def obtenerResumen(self):
+        return self.resultado
+
 
     def separar_orden_compra(self, ordencompra):
         separado = ordencompra.split(' ')
@@ -87,6 +99,7 @@ class lectorTsu:
                 min_descrip = inicio.split(str(a_buscar))[0] # es correcta... guardamos si quedo una parte de la descripción, esto agilizara 
                 return a_buscar, numero_prueba, min_descrip # la busqueda y división en la cadena.
         return 0,0,'Error' # Si esta retornando acá claramente hay un error en todo el proceso.
+
 
 
     def convertir_a_float(self, texto):

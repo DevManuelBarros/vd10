@@ -2,20 +2,21 @@
 {% block cuerpo %}
 
 
-<form enctype='multipart/form-data' method='post'>
+<form enctype='multipart/form-data' action="{% url 'upoc:SubiendoOC'  %}" method='post'>
 	{% csrf_token %}
-	<span class='label label-primary' > Seleccione un cliente:
+	<span class='label label-primary' > Seleccione un cliente:</span>
  		<select name='select_cliente' class='form-control'>
 		{% for i in clientes %}
-			<option value={{ i.id }}>{{ i.nombre }}</option>
-		
+			{% if i.id == 1 %}
+				<option value={{ i.id }} selected>{{ i.nombre }}</option>
+			{% else %}
+				<option value={{ i.id }}>{{ i.nombre }}</option>
+			{% endif %}	
 		{% endfor %}
 		</select>
-	</span>
 	<br />
-	<span class='label label-primary'>Seleccione la Orden de Compra
+	<span class='label label-primary'>Seleccione la Orden de Compra</span>
 		<input type='file' name='pdf_oc' class='form-control' />
-	</span>
 	<br />
 	<input type='submit' class='btn btn-primary' value='Subir OC'/>
 </form>
