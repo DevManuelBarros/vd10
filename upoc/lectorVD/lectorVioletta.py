@@ -14,9 +14,11 @@ class lectorVioletta:
     __pagina = ''
 
     #Otros datos
-    newObj = OrdenDeCompra()
-    newObject = lectorPDF()
+    newObj = 0
+    newObject = 0
     def __init__(self, ruta):
+        self.newObj = OrdenDeCompra()
+        self.newObject = lectorPDF()
         self.newObject.cargarArchivo(ruta=ruta)
         self.__pagina = self.newObject.crearSeparador("Número de artículo europeo", almacenar=True)
 
@@ -88,4 +90,5 @@ class lectorVioletta:
                 numero = index
             index +=1
         return numero
+
 

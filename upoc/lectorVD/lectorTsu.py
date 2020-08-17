@@ -6,25 +6,32 @@ import re
 class lectorTsu:
 
     __pagina = 0
-    __lineas_producto = []
+    __lineas_productos = []
     #Otros datos
     newObj = 0
     newObject = 0
-    resultado = ''
-    def __init__(self, archivo, cliente):
+    def __init__(self, ruta):
         self.newObj = OrdenDeCompra()
         self.newObject = lectorPDF()
-        self.newObject.cargarArchivo(archivo=archivo)
-        # separamos la primer pagina del resto así limpiamos el contenido.
+        self.newObject.cargarArchivo(ruta=ruta)
+        #self.__pagina = self.newObject.crearSeparador("Número de artículo europeo", almacenar=True)
         self.__pagina = self.newObject.PDFALL.split('CONDICIONES GENERALESLAS CONDI')[0]
-        # este patrón correponde a las lineas de productos de las O.C
+        #patron = re.compile('\d{5}-\d.{2,35}\d{2},\d{4}.{1,12}\d{2}\/\d{2}\/d{4}')
         patron = re.compile(r'\d{5}-\d{1}.{4,30}\d{1,8}?\d{2}\.\d{4}.{2,8}\.\d{2}\d{2}\/\d{2}\/\d{4}')
-        self.__lineas_productos = patron.findall(self.__pagina) #Guardamos las lineas de producto.
+        self.__lineas_productos = patron.findall(self.__pagina)
+        for i, value in enumerate(self.__lineas_productos):
+            self.__lineas_productos[i] = value.replace(',', '')
+            # en versiones viejas hay problemas de separación de espacio vacios entre los 
+            # números con esto lo resolvemos.
+            patron_busqueda = re.compile(r'\d\s\d')
+            grupos = patron_busqueda.findall(self.__lineas_productos[i])
+            for item in grupos:
+                new_value= item.replace(' ', '')
+                self.__lineas_productos[i] = self.__lineas_productos[i].replace(item,new_value)
         # obtenemos orden de compra
-        patron= re.compile(r'\d{6}\s{3,4}\d{1,2}')
+        patron = re.compile(r'\d{6}\s{3,4}\d{1,2}')
         ordencompra = patron.search(self.__pagina).group()
         ordencompra, version = self.separar_orden_compra(ordencompra) 
-        # aquí guardamos la accion que hay que realizar con los archivo Tsu.
         if int(version) > 1:
             self.newObj.CabeceraOrdenDeCompra['actualizar'] = 1
             self.newObj.CabeceraOrdenDeCompra['version'] = version
@@ -39,21 +46,16 @@ class lectorTsu:
         campana = patron.search(self.__pagina).group()
         fecha_anio, campana = campana.split('-')
         campana = 'C' + campana + '-' + fecha_anio
-        # aquí generamos la cabecera.
         self.newObj.CabeceraOrdenDeCompra['campaña'] = campana
         self.newObj.CabeceraOrdenDeCompra['fecha_emision'] = fecha_emision
         self.newObj.CabeceraOrdenDeCompra['circuito'] = 'Facturar'
         self.newObj.CabeceraOrdenDeCompra['cliente'] = 'Tsu'
         self.obtenerLineas()
-        self.resultado = self.newObj.getRegistros()
-        del self.newObj
-        del self.newObject 
+        #print(self.newObj.getRegistros())
 
-
-    def obtenerResumen(self):
-        return self.resultado
-
-
+    def get_registros(self):
+        return self.newObj.getRegistros()
+        
     def separar_orden_compra(self, ordencompra):
         separado = ordencompra.split(' ')
         return separado[0], separado[-1]
@@ -101,8 +103,9 @@ class lectorTsu:
         return 0,0,'Error' # Si esta retornando acá claramente hay un error en todo el proceso.
 
 
-
     def convertir_a_float(self, texto):
+        texto = texto.replace(' ', '')
         texto = texto.replace(',', '')
         return float(texto)
+
 

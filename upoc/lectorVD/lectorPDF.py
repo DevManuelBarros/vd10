@@ -6,19 +6,27 @@ from PyPDF2 import PdfFileReader
 
 
 class lectorPDF:
-    PDFText = []
-    PDFALL = ""
-    tmpBufferLineas = []
+    PDFText = 0
+    PDFALL = 0
+    tmpBufferLineas = 0
+    Ruta = 0
 
     def cargarPaginas(self):
         for inx in self.PDFText:
             self.PDFALL += inx
 
+    def __init__(self):
+        self.PDFText = []
+        self.PDFALL = ""
+        self.tmpBufferLineas = []
+        self.Ruta = ""
 
-    def cargarArchivo(self, archivo):
-        archivoPDF = PdfFileReader(archivo)
-        for pagina in range(archivoPDF.getNumPages()):
-            self.PDFText.append(archivoPDF.getPage(pagina).extractText())
+    def cargarArchivo(self, ruta):
+        self.Ruta = ruta
+        with open(ruta, 'rb') as f:
+            archivoPDF = PdfFileReader(f)
+            for pagina in range(archivoPDF.getNumPages()):
+                self.PDFText.append(archivoPDF.getPage(pagina).extractText())
         self.cargarPaginas()
 
 
@@ -47,28 +55,35 @@ class lectorPDF:
 
 
 class OrdenDeCompra:    
-    __codigo = []
-    __descripcion = []
-    __cantidad = []
-    __precio_unitario = []
-    __fecha_entrega = []
+    __codigo = 0
+    __descripcion = 0
+    __cantidad = 0
+    __precio_unitario = 0
+    __fecha_entrega = 0
 
 
-    CabeceraOrdenDeCompra = {
-    'fecha_emision' : '',
-    'referencia_oc'    : '',
-    'cliente'       : '',
-    'campaña'       : '',
-    'circuito'      : '',
-    'lineas'        : 0 ,
-    'actualizar'    : 0 ,
-    'version'       : 1
-    }
+    CabeceraOrdenDeCompra = {}
+
+    def __init__(self):
+        self.CabeceraOrdenDeCompra = {
+        'fecha_emision' : '',
+        'referencia_oc'    : '',
+        'cliente'       : '',
+        'campaña'       : '',
+        'circuito'      : '',
+        'lineas'        : 0 ,
+        'actualizar'    : 0 ,
+        'version'       : 1
+        }
+        self.__codigo = []
+        self.__descripcion = []
+        self.__cantidad = []
+        self.__precio_unitario = []
+        self.__fecha_entrega = []
 
     def setCodigo(self, codigo_completo):
         if ' ' in codigo_completo: 
             codigo_completo  = codigo_completo.split(" ")[1]
-
         self.__codigo.append(codigo_completo)
 
     def setDescripcion(self, descripcion):
