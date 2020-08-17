@@ -95,6 +95,9 @@ class lectorTsu:
         inicio = str(inicio) # lo convertimos a str para trabajarlo
         for i in range(len(inicio), 0, -1): # comenzamos a recorrerlo de forma inversa
             numero_prueba = float(inicio[i:] + '.' + resto) # extraemos los números para comenzar a realizar las pruebas-
+            # por si queda en cero.
+            if numero_prueba == 0:
+                numero_prueba = 1
             a_buscar = int(round(total / numero_prueba,0)) # comprobamos si este número de prueba dar el resultado que buscamos.
             #print(f'total: {total} / precio hipotetico: {numero_prueba} = {a_buscar}')
             if str(a_buscar) in inicio[:i]:       # si entra aquí la división es correcta por lo que podemos concluir que la extración 
