@@ -58,7 +58,7 @@ class subir_oc(LoginRequiredMixin, DetailView):
     def actualizar_campos_oc(self, dic, id_oc):
         log_a = []
         number_reg = int(dic['cabecera']['lineas'])
-        for index in| range(0, number_reg):
+        for index in range(0, number_reg):
             linea = dic[index]
             obj_lineas = ProductoLineasOC.objects.filter(OrdenCompra=id_oc, codigo=linea['codigo'])
             if obj_lineas:
@@ -77,7 +77,7 @@ class subir_oc(LoginRequiredMixin, DetailView):
                     result = self.crear_producto(dic['cabecera']['cliente'], linea['codigo'], linea['descripcion'])
                     log_a += result[0]
                     new_linea.produto = result[1]
-                    log_a.append('[+] Se crea la linea de articulos ya que no existia')
+                    log_a.append('[+] Se crea la linea de articulos porque no existía')
                 new_linea.update() 
         return log_a
         
@@ -93,10 +93,10 @@ class subir_oc(LoginRequiredMixin, DetailView):
                 obj_up = OrdenCompra.objects.filter(referencia_externa=cabecera['referencia_oc'])
                 if len(obj_up) == 0:
                     log.append(f'[Error] CUIDADO!, no existe la versión original, es precioso que cargue la version 1 de {cabecera["referencia_oc"], y luego actualice}')
-                    break
+                    return ''
                 elif obj_up.version != int(cabecera['version'])-1:
                     log.append(f'[Error] CUIDADO!, faltan versiones la version que quiere cargar es la {cabecera["version"]} y la última cargada es {obj_up.version}')
-                    break
+                    return ''
                 else:
                     obj_up.version = cabecera['version']
                     obj_up.fecha_emision = cabecera['fecha_emision']
@@ -107,9 +107,10 @@ class subir_oc(LoginRequiredMixin, DetailView):
             else:
        
                 log.append(f'[+] Se realizara una creacion de la orden de compra: {cabecera["referencia_oc"]}')
-
         except:
             print('')
+
+
 
     def post(self, request, *args, **kwargs):
         form = UpLoadFileOC(self.request.POST, self.request.FILES)
