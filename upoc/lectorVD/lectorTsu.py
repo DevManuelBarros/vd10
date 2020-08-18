@@ -10,7 +10,7 @@ class lectorTsu:
     #Otros datos
     newObj = 0
     newObject = 0
-    def __init__(self, ruta):
+    def __init__(self, ruta, num_cliente):
         self.newObj = OrdenDeCompra()
         self.newObject = lectorPDF()
         self.newObject.cargarArchivo(ruta=ruta)
@@ -39,7 +39,8 @@ class lectorTsu:
         # fecha emision.
         patron = re.compile(r'\d{8}')
         fecha_emision = patron.search(self.__pagina).group()
-        fecha_emision = fecha_emision[0:2] + '-' + fecha_emision[2:4] + '-' + fecha_emision[4:]
+        #fecha_emision = fecha_emision[0:2] + '-' + fecha_emision[2:4] + '-' + fecha_emision[4:]
+        fecha_emision = fecha_emision[4:] + '-' + fecha_emision[2:4] + '-' + fecha_emision[0:2]
         circuito = 'Facturar'
         # obtenemos la campaña
         patron = re.compile(r'\d{4}-\d{2}')
@@ -49,7 +50,7 @@ class lectorTsu:
         self.newObj.CabeceraOrdenDeCompra['campaña'] = campana
         self.newObj.CabeceraOrdenDeCompra['fecha_emision'] = fecha_emision
         self.newObj.CabeceraOrdenDeCompra['circuito'] = 'Facturar'
-        self.newObj.CabeceraOrdenDeCompra['cliente'] = 'Tsu'
+        self.newObj.CabeceraOrdenDeCompra['cliente'] = num_cliente
         self.obtenerLineas()
         #print(self.newObj.getRegistros())
 

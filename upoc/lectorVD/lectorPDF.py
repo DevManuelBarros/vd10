@@ -107,7 +107,8 @@ class OrdenDeCompra:
 
     def setFechaEntrega(self, fecha_entrega):
         if '/' in fecha_entrega:
-            fecha_entrega = fecha_entrega.replace('/', '-')
+            fecha_sep  = fecha_entrega.split('/')
+            fecha_entrega = fecha_sep[2] + '-' + fecha_sep[1] + '-'  +fecha_sep[0]
         self.__fecha_entrega.append(fecha_entrega)
 
 
