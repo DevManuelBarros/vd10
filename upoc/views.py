@@ -1,10 +1,11 @@
 from gral.models import Cliente, Producto
 from .forms import UpLoadFileOC
-from venta.models import OrdenCompra, ProductoLineasOC
+from venta.models import OrdenCompra, ProductoLineasOC, Cronograma
 
 #temporal formal
 import os
 from random import randint
+from datetime   import datetime 
 #temporal formal
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -16,17 +17,23 @@ from .lectorVD.lectorTsu import lectorTsu
 from .lectorVD.lectorVioletta import lectorVioletta
 
 
-
 class subir_oc(LoginRequiredMixin, DetailView):
     template_name = 'upoc/index.html'   
     success_url = reverse_lazy('index')
     success_message = "Was created successfully"
     form_class = UpLoadFileOC()
 
+    #Tipos de mensajes a interpretar
+    dict_info = {'[+]' : ['Agregado', '<span [+]'],
+                 '[I]' : ['Info', '<'],
+                 '[*]' : ['Actualizacion', '<'],
+                 }
+
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, {'form' : self.form_class,})
 
     def handle_uploaded_file(self, file, filename, num_cliente):
+        log = []
         path = 'upoc/lectorVD/upload/'
         number_azar = randint(1000,9999)
         filename = filename.replace('.pdf', str(number_azar) + '.pdf')
@@ -41,40 +48,48 @@ class subir_oc(LoginRequiredMixin, DetailView):
         if num_cliente == '1':
             gral_lector = lectorTsu(full_path, num_cliente)
             dict_oc = gral_lector.get_registros()
-            log = self.trabajar_oc(dict_oc)
+            log += self.trabajar_oc(dict_oc)
+            return log
 
 
     def crear_producto(self, cliente, codigo, descripcion):
         log_p = []
         obj_producto = Producto()
-        obj_producto.cliente = cliente
+        obj_producto.cliente = int(cliente)
         log_p.append(f'[+] Creando producto {codigo} --> {descripcion}')
         obj_producto.codigo = codigo
         obj_producto.descripcion =  descripcion
         obj_producto.save()
         log_p.append(f'[Success] Producto Creado {codigo}, bajo el ID: {obj_producto.id}')
-        return log_p, obj_producto.id
+        return log_p, obj_producto.id 
 
     def actualizar_campos_oc(self, dic, id_oc):
         log_a = []
+        # obtenemos la cantidad de registros
         number_reg = int(dic['cabecera']['lineas'])
+        #recorremos ...
         for index in range(0, number_reg):
+            # sacamos la linea con la que queremos trabajar
             linea = dic[index]
+            # recuperamos la linea y la orden de compra
             obj_lineas = ProductoLineasOC.objects.filter(OrdenCompra=id_oc, codigo=linea['codigo'])
             if obj_lineas:
                 obj_lineas.cantidad = obj_lineas.cantidad + linea['cantidad']
                 log_a.append('[X] Se actualiza el producto {obj_lineas.descripcion}  se solicitan {linea["cantidad"]} mas')
                 obj_lineas.update()
             else:
+                # si no existe se agrega una nueva linea.
                 new_linea = ProductoLineasOC()
                 new_linea.fecha_entrega = linea['fecha_entrega']
                 new_linea.precio_unitario = linea['precio_unitario']
                 new_linea.cantidad = linea['cantidad']
                 id_producto = Producto.objects.filter(nombre=linea['codigo'])
+                # si el producto existe entonces... 
                 if id_producto:
                     new_linea.producto = id_producto[0].id
                 else:
-                    result = self.crear_producto(dic['cabecera']['cliente'], linea['codigo'], linea['descripcion'])
+                    # no existe el producto debemos crear el producto.
+                    result = self.crear_producto(int(dic['cabecera']['cliente']), linea['codigo'], linea['descripcion'])
                     log_a += result[0]
                     new_linea.produto = result[1]
                     log_a.append('[+] Se crea la linea de articulos porque no existía')
@@ -84,39 +99,73 @@ class subir_oc(LoginRequiredMixin, DetailView):
     def trabajar_oc(self, orden_de_compra):
         log = []
         log.append('[*] Comenzamos leyendo leyendo la cabecera...')
+        obj_cronograma = 0
         try:
             cabecera = orden_de_compra['cabecera']
-            # comenzamos comprobando que proceso hay que realizar, si es una actualización
+            # comenzamos comprobando que proceso hay que realizar, si es una creación
             # o si es necesario una actualización.
             if cabecera['actualizar'] == 1:
                 log.append(f'[-] Se realizara una actualización de la orden de compra: {cabecera["referencia_oc"]}... ')
                 obj_up = OrdenCompra.objects.filter(referencia_externa=cabecera['referencia_oc'])
                 if len(obj_up) == 0:
-                    log.append(f'[Error] CUIDADO!, no existe la versión original, es precioso que cargue la version 1 de {cabecera["referencia_oc"], y luego actualice}')
-                    return ''
+                    # entramos en el error uno no esta la OC versión 1
+                    log.append(f'[Error] CUIDADO!, no existe la versión original, es precioso que cargue la version 1 de {cabecera["referencia_oc"]}, y luego actualice')
+                    return log
                 elif obj_up.version != int(cabecera['version'])-1:
+                    # error dos la versión no es consecutiva.
                     log.append(f'[Error] CUIDADO!, faltan versiones la version que quiere cargar es la {cabecera["version"]} y la última cargada es {obj_up.version}')
-                    return ''
+                    return log
                 else:
+                    # existe la o.c 1 y es consecutiva. Así que vamos a actualizar.
                     obj_up.version = cabecera['version']
                     obj_up.fecha_emision = cabecera['fecha_emision']
                     obj_up.update()
                     log.append('[*] Se ha actualizado la fecha de emisión y la versión de Orden de Compra...')
-                    log.append('[1] Procedemos a cargar los campos...')
-                    log += self.actualizar_campos_oc(orden_de_compra, obj_up)
+                    
             else:
-       
+                # Aquí se realiza la creación de la orden de compra.
                 log.append(f'[+] Se realizara una creacion de la orden de compra: {cabecera["referencia_oc"]}')
-        except:
-            print('')
-
+                obj_up = OrdenCompra()
+                obj_up.referencia_externa = cabecera['referencia_oc']
+                obj_up.cliente = Cliente.objects.filter(id=int(cabecera['cliente']))[0]
+                #comprobamos el cronograma.
+                obj_cronograma = Cronograma()
+                cronograma = Cronograma.objects.filter(nombre=cabecera['campaña'])
+                id_cronograma = 0
+                if not cronograma:
+                    log.append(f'[!] El cronograma no existe, generando cronograma, revisar luego...')
+                    obj_cronograma.nombre = cabecera['campaña']
+                    obj_cronograma.cliente = int(cabecera['cliente'])
+                    fecha = orden_de_compra[0]['fecha_entrega']
+                    obj_cronograma.fecha_inicio = fecha
+                    tmp_fecha = datetime.strptime(fecha, '%Y-%m-%d') + timedelta(days=14)
+                    obj_cronograma.fecha_finalizacion = tmp_fecha.year + '-' + tmp_fecha.month + '-' + tmp_fecha.day
+                    obj_cronograma.terminada = False
+                    obj_cronograma.save()
+                    id_cronograma = obj_cronograma.id
+                    log.append(f'[+] El conograma {obj_cronograma.nombre} ha sido generado correctamente')
+                else:
+                    id_cronograma = cronograma.id
+                log.append(f'[*] Se estan cargando todos lo datos.')
+                obj_up.cronograma = id_cronograma 
+                obj_up.version = cabecera['version']
+                obj_up.circuito = cabecera['circuito']
+                obj_up.fecha_emision = cabecera['fecha_emision']
+                obj_up.save()
+            log.append('[+] Procedemos a cargar los campos...')
+            log += self.actualizar_campos_oc(orden_de_compra, obj_up)
+        except ValueError as e:
+            # Existio un error en el procesamiento.
+            log.append(f'Encontramos un error, el log del proceso es: {e} \n Revisar el log enviado.')   
+        return log
 
 
     def post(self, request, *args, **kwargs):
         form = UpLoadFileOC(self.request.POST, self.request.FILES)
         if form.is_valid():
             num_cliente = request.POST.get('nombre_corto', False)
-            self.handle_uploaded_file(self.request.FILES['pdf_oc'], str(self.request.FILES['pdf_oc']), num_cliente)
+            log = self.handle_uploaded_file(self.request.FILES['pdf_oc'], str(self.request.FILES['pdf_oc']), num_cliente)
+            return render(request, 'upoc/log.html', {'log' : log})
         else:
             form = UpLoadFileOC(self.request.POST, self.request.FILES)
         return render(request, self.template_name, {'form' : self.form_class})
