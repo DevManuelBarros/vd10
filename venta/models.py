@@ -167,3 +167,11 @@ class Factura(models.Model):
     anulado             = models.BooleanField(default=False)
     def __str__(self):
         return self.referencia_externa
+
+class Movimientos(models.Model):
+        fecha           = models.DateField(default='1983-01-17')
+        orden_de_compra = models.ForeignKey(OrdenCompra, null=True, blank=True, on_delete=models.CASCADE)
+        producto_id     = models.ForeignKey(Producto, null=False, blank=False, on_delete=models.CASCADE)
+        cantidad        = models.IntegerField(blank=False, null=False, default=0)
+        tipo_documento  = models.CharField(max_length=10, default='sys')
+        cliente         = models.ForeignKey(Cliente, blank=False, null=False, on_delete=models.CASCADE)

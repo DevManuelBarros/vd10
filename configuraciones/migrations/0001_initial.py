@@ -6,7 +6,7 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    def valores_iniciales(apps, schema_editor):
+    def valores_iniciales(self, apps, schema_editor):
         ''' Cargamos los valores iniciales que necesitamos para poder trabajar '''
         
         # primero vamos a cargar las fuentes.

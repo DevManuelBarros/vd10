@@ -43,7 +43,8 @@ class ProductoCreatePartial(LoginRequiredMixin, CreateView):
 
 class ProductoListView(LoginRequiredMixin, ListView):
 	model = Producto
-	template_name = 'gral/partials/pProducto_list.html'
+	#template_name = 'gral/partials/pProducto_list.html'
+	template_name = 'gral/partials/producto_list.html'
 	context_object_name = 'producto'
 
 

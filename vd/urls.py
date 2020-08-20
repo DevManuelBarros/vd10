@@ -23,10 +23,10 @@ from django.conf import settings
 
 urlpatterns = [
     path('', include(('inicio.urls', 'inicio'), namespace='inicio')),
-    path('upoc/', include(('upoc.urls', 'upoc'), namespace='upoc')),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('gral/', include(('gral.urls', 'gral'), namespace='gral')),
     path('venta/', include(('venta.urls', 'venta'), namespace='venta')),
     path('configuraciones/', include(('configuraciones.urls', 'configuraciones'), namespace='configuraciones')),
-     path('accounts/', include('django.contrib.auth.urls')),
+    path('upoc/', include(('upoc.urls', 'upoc'), namespace='upoc')),
     path('admin/', admin.site.urls, name='admin'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

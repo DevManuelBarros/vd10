@@ -5,6 +5,34 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
+    def cargar_cliente_inicial(self, apps, schema_editor):
+            responsable = 'Responsable Inscripto'
+            cliente = apps.get_model('gral', 'Cliente')
+            array_cliente =[cliente(razon_social = 'Arca Distribuciones',
+                                    nombre_corto = 'Tsu',
+                                    cuit = '30-68630937-8',
+                                    direccion_fiscal = 'Francia 3553, Villa Lynch, Bs.As.',
+                                    direccion_entrega = 'Av. San Martin 1439',
+                                    condicion_iva =  responsable
+                                    ),
+                            cliente(razon_social = 'Lady Way S.R.L',
+                                    nombre_corto = 'Violeta',
+                                    cuit = '30-65146422-2',
+                                    direccion_fiscal = 'Agüero 568,P.1 Depto"C", CABA',
+                                    direccion_entrega = 'Av. Gral. Urquiza, Caseros, Bs.As',
+                                    condicion_iva =  responsable
+                                    ),
+                            cliente(razon_social = 'Matiz S.A',
+                                    nombre_corto = 'Gigot',
+                                    cuit = '30-62743503-3',
+                                    direccion_fiscal = 'Virrey Cavallos 1485, CABA',
+                                    direccion_entrega = 'Constitucion 1667, CABA',
+                                    condicion_iva =  responsable
+                                    )
+                            ]
+            for item_cliente in array_cliente:
+                obj = item_cliente()
+                obj.save()
 
     initial = True
 
@@ -146,4 +174,5 @@ class Migration(migrations.Migration):
                 ('valor', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, related_name='ValoresEconomicos_CondicionPago', to='gral.ValoresEconomicos')),
             ],
         ),
+        #migrations.RunPython(cargar_cliente_inicial),
     ]

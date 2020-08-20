@@ -4,7 +4,7 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
+    
     dependencies = [
         ('venta', '0010_auto_20200816_0303'),
     ]
@@ -15,4 +15,5 @@ class Migration(migrations.Migration):
             name='fecha_entrega',
             field=models.DateField(default='1983-01-17'),
         ),
+    
     ]
