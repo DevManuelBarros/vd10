@@ -6,6 +6,7 @@ from venta.models import OrdenCompra, ProductoLineasOC, Cronograma
 import os
 from random import randint
 from datetime   import datetime 
+from datetime import timedelta
 #temporal formal
 
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -55,13 +56,14 @@ class subir_oc(LoginRequiredMixin, DetailView):
     def crear_producto(self, cliente, codigo, descripcion):
         log_p = []
         obj_producto = Producto()
-        obj_producto.cliente = int(cliente)
+        obj_cliente = Cliente.objects.filter(id=int(cliente))[0]
+        obj_producto.cliente = obj_cliente
         log_p.append(f'[+] Creando producto {codigo} --> {descripcion}')
         obj_producto.codigo = codigo
         obj_producto.descripcion =  descripcion
         obj_producto.save()
         log_p.append(f'[Success] Producto Creado {codigo}, bajo el ID: {obj_producto.id}')
-        return log_p, obj_producto.id 
+        return log_p, obj_producto 
 
     def actualizar_campos_oc(self, dic, id_oc):
         log_a = []
@@ -72,7 +74,17 @@ class subir_oc(LoginRequiredMixin, DetailView):
             # sacamos la linea con la que queremos trabajar
             linea = dic[index]
             # recuperamos la linea y la orden de compra
-            obj_lineas = ProductoLineasOC.objects.filter(OrdenCompra=id_oc, codigo=linea['codigo'])
+            producto_filter = Producto.objects.filter(codigo=linea['codigo'])
+             # si el producto existe entonces... 
+            if not producto_filter:
+                # no existe el producto debemos crear el producto.
+                result = self.crear_producto(int(dic['cabecera']['cliente']), linea['codigo'], linea['descripcion'])
+                log_a += result[0]
+                producto_filter = result[1]
+                log_a.append('[+] Se crea la linea de articulos porque no existía')
+            else:
+                producto_filter = producto_filter[0]
+            obj_lineas = ProductoLineasOC.objects.filter(OrdenCompra=id_oc, producto=producto_filter)
             if obj_lineas:
                 obj_lineas.cantidad = obj_lineas.cantidad + linea['cantidad']
                 log_a.append('[X] Se actualiza el producto {obj_lineas.descripcion}  se solicitan {linea["cantidad"]} mas')
@@ -80,25 +92,17 @@ class subir_oc(LoginRequiredMixin, DetailView):
             else:
                 # si no existe se agrega una nueva linea.
                 new_linea = ProductoLineasOC()
+                new_linea.OrdenCompra = id_oc
                 new_linea.fecha_entrega = linea['fecha_entrega']
+                new_linea.producto = producto_filter
                 new_linea.precio_unitario = linea['precio_unitario']
                 new_linea.cantidad = linea['cantidad']
-                id_producto = Producto.objects.filter(nombre=linea['codigo'])
-                # si el producto existe entonces... 
-                if id_producto:
-                    new_linea.producto = id_producto[0].id
-                else:
-                    # no existe el producto debemos crear el producto.
-                    result = self.crear_producto(int(dic['cabecera']['cliente']), linea['codigo'], linea['descripcion'])
-                    log_a += result[0]
-                    new_linea.produto = result[1]
-                    log_a.append('[+] Se crea la linea de articulos porque no existía')
-                new_linea.update() 
+                new_linea.save() 
         return log_a
         
     def trabajar_oc(self, orden_de_compra):
         log = []
-        log.append('[*] Comenzamos leyendo leyendo la cabecera...')
+        log.append('[*] Comenzamos leyendo la cabecera...')
         obj_cronograma = 0
         try:
             cabecera = orden_de_compra['cabecera']
@@ -107,19 +111,20 @@ class subir_oc(LoginRequiredMixin, DetailView):
             if cabecera['actualizar'] == 1:
                 log.append(f'[-] Se realizara una actualización de la orden de compra: {cabecera["referencia_oc"]}... ')
                 obj_up = OrdenCompra.objects.filter(referencia_externa=cabecera['referencia_oc'])
-                if len(obj_up) == 0:
+                if not obj_up:
                     # entramos en el error uno no esta la OC versión 1
                     log.append(f'[Error] CUIDADO!, no existe la versión original, es precioso que cargue la version 1 de {cabecera["referencia_oc"]}, y luego actualice')
                     return log
                 elif obj_up.version != int(cabecera['version'])-1:
                     # error dos la versión no es consecutiva.
-                    log.append(f'[Error] CUIDADO!, faltan versiones la version que quiere cargar es la {cabecera["version"]} y la última cargada es {obj_up.version}')
+                    log.append(f'[Error] CUIDADO!, faltan versiones!! la version que quiere cargar es la {cabecera["version"]} y la última cargada es {obj_up.version}')
                     return log
                 else:
                     # existe la o.c 1 y es consecutiva. Así que vamos a actualizar.
+                    
                     obj_up.version = cabecera['version']
                     obj_up.fecha_emision = cabecera['fecha_emision']
-                    obj_up.update()
+                    obj_up.save()
                     log.append('[*] Se ha actualizado la fecha de emisión y la versión de Orden de Compra...')
                     
             else:
@@ -135,17 +140,17 @@ class subir_oc(LoginRequiredMixin, DetailView):
                 if not cronograma:
                     log.append(f'[!] El cronograma no existe, generando cronograma, revisar luego...')
                     obj_cronograma.nombre = cabecera['campaña']
-                    obj_cronograma.cliente = int(cabecera['cliente'])
+                    obj_cronograma.cliente = Cliente.objects.filter(id=int(cabecera['cliente']))[0]
                     fecha = orden_de_compra[0]['fecha_entrega']
                     obj_cronograma.fecha_inicio = fecha
                     tmp_fecha = datetime.strptime(fecha, '%Y-%m-%d') + timedelta(days=14)
-                    obj_cronograma.fecha_finalizacion = tmp_fecha.year + '-' + tmp_fecha.month + '-' + tmp_fecha.day
+                    obj_cronograma.fecha_finalizacion = str(tmp_fecha.year) + '-' + str(tmp_fecha.month) + '-' + str(tmp_fecha.day)
                     obj_cronograma.terminada = False
                     obj_cronograma.save()
-                    id_cronograma = obj_cronograma.id
+                    id_cronograma =  obj_cronograma
                     log.append(f'[+] El conograma {obj_cronograma.nombre} ha sido generado correctamente')
                 else:
-                    id_cronograma = cronograma.id
+                    id_cronograma = cronograma[0]
                 log.append(f'[*] Se estan cargando todos lo datos.')
                 obj_up.cronograma = id_cronograma 
                 obj_up.version = cabecera['version']

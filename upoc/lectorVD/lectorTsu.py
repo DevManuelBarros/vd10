@@ -10,14 +10,14 @@ class lectorTsu:
     #Otros datos
     newObj = 0
     newObject = 0
-    def __init__(self, ruta, num_cliente):
+    def __init__(self, ruta, num_cliente=1):
         self.newObj = OrdenDeCompra()
         self.newObject = lectorPDF()
         self.newObject.cargarArchivo(ruta=ruta)
         #self.__pagina = self.newObject.crearSeparador("Número de artículo europeo", almacenar=True)
         self.__pagina = self.newObject.PDFALL.split('CONDICIONES GENERALESLAS CONDI')[0]
         #patron = re.compile('\d{5}-\d.{2,35}\d{2},\d{4}.{1,12}\d{2}\/\d{2}\/d{4}')
-        patron = re.compile(r'\d{5}-\d{1}.{4,30}\d{1,8}?\d{2}\.\d{4}.{2,8}\.\d{2}\d{2}\/\d{2}\/\d{4}')
+        patron = re.compile(r'\d{5}-\d{1}.{4,33}\d{1,8}?\d{2}\.\d{4}.{2,8}\.\d{2}\d{2}\/\d{2}\/\d{4}')
         self.__lineas_productos = patron.findall(self.__pagina)
         for i, value in enumerate(self.__lineas_productos):
             self.__lineas_productos[i] = value.replace(',', '')
