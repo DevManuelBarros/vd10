@@ -16,12 +16,14 @@ class lectorVioletta:
     #Otros datos
     newObj = 0
     newObject = 0
-    def __init__(self, ruta):
+    num_cliente = 0
+    def __init__(self, ruta, num_cliente):
         self.newObj = OrdenDeCompra()
         self.newObject = lectorPDF()
         self.newObject.cargarArchivo(ruta=ruta)
         self.__pagina = self.newObject.crearSeparador("Número de artículo europeo", almacenar=True)
-
+        self.num_cliente = num_cliente
+        self.procesarArchivo()
 
     def procesarArchivo(self):
         resultado = []
@@ -43,7 +45,8 @@ class lectorVioletta:
         #Fecha Entrega
         patron_fecha_entrega = re.compile(r'entrega\s\d{2}\.\d{2}\.\d{4}')
         fecha_entrega = str(patron_fecha_entrega.search(self.newObject.PDFALL).group()).replace('entrega ', '')
-        fecha_entrega = fecha_entrega.replace('.','-')
+        tmp_fecha = fecha_entrega.split('.')
+        fecha_entrega = tmp_fecha[2] + '-' + tmp_fecha[1] + '-' + tmp_fecha[0]
         #self.newObj.CabeceraOrdenDeCompra['fecha_entrega'] = fecha_entrega
         for temp in final:
             self.newObj.setCodigo(temp[0])
@@ -76,11 +79,19 @@ class lectorVioletta:
         self.newObj.CabeceraOrdenDeCompra['cliente'] = 'Violetta'
         patron_fecha_emision = re.compile(r'\/ \d{2}\.\d{2}\.\d{4}')
         fecha_emision = str(patron_fecha_emision.search(texto).group()).replace('/ ', '')
-        fecha_emision = fecha_emision.replace('.', '-')
+        tmp_fecha_e = fecha_emision.split('.')
+        fecha_emision = tmp_fecha_e[2] + '-' + tmp_fecha_e[1] + '-' + tmp_fecha_e[0] 
         self.newObj.CabeceraOrdenDeCompra['fecha_emision'] = fecha_emision
+        self.newObj.CabeceraOrdenDeCompra['cliente'] = self.num_cliente
     
     def fullText(self):
         return self.__fullText
+
+    def get_registros(self):
+        resultado = self.newObj.getRegistros()
+        print(resultado)
+        return resultado
+
 
     def findLastChar(self, cadena, caracter):
         numero = 0

@@ -37,20 +37,32 @@ class subir_oc(LoginRequiredMixin, DetailView):
         log = []
         path = 'upoc/lectorVD/upload/'
         number_azar = randint(1000,9999)
+        
         filename = filename.replace('.pdf', str(number_azar) + '.pdf')
         if not os.path.exists(path):
             os.mkdir(path)
         full_path = path + filename
         with open(full_path, 'wb+') as destination:
             for chunk in file.chunks():
+                log.append('[Success] Proceso de carga correcta.')
                 destination.write(chunk)
         gral_lector = 0
+        dict_oc = 0
         # si el cliente es 1 es Tsu...
         if num_cliente == '1':
+            log.append('[*] El cliente es Tsu cosmeticos')
             gral_lector = lectorTsu(full_path, num_cliente)
             dict_oc = gral_lector.get_registros()
-            log += self.trabajar_oc(dict_oc)
-            return log
+        if num_cliente == '2':
+           log.append('[*] El cliente es Violetta Fabiani')
+           gral_lector = lectorVioletta(full_path, num_cliente)
+           
+           dict_oc = gral_lector.get_registros()
+        if dict_oc != 0:
+            log += self.trabajar_oc(dict_oc)    
+        else:
+            log.append('[!] No se encontró el cliente.')
+        return log
 
 
     def crear_producto(self, cliente, codigo, descripcion):
