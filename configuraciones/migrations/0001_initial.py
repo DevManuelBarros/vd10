@@ -2,51 +2,53 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
+from  django.apps import apps
+def valores_iniciales(apps, schema_editor):
+    ''' Cargamos los valores iniciales que necesitamos para poder trabajar '''
+    
+    # primero vamos a cargar las fuentes.
+    Fuentes = apps.get_model('configuraciones', 'Fuentes')
+    listFonts = ['Helvetica', 'Arial' ,'sans-serif']
+    for fonts in listFonts:
+        objFont = Fuentes(nombre = fonts)
+        objFont.save()
 
+    # Ahora vamos a cargar las configuraciones de impresion remito.
+    ConfigImpresion = apps.get_model('configuraciones', 'ConfigImpresionRemito')
+    if len(ConfigImpresion.objects.all()) == 0:
+        obj = ConfigImpresion(nombre = 'Impresora Default', 
+                                size_font_cabecera = 11, 
+                                type_font_cabecera_id = 1, 
+                                size_font_cuerpo = 10, 
+                                type_font_cuerpo_id = 1, 
+                                size_font_pie = 9, 
+                                type_font_pie_id = 1, 
+                                pos_x_fecha = 385, 
+                                pos_y_fecha = 735, 
+                                pos_x_razon_social = 100, 
+                                pos_y_razon_social = 655, 
+                                pos_x_condicion = 100, 
+                                pos_y_condicion = 635, 
+                                pos_x_direccion_f = 390, 
+                                pos_y_direccion_f = 655, 
+                                pos_x_cuit = 390, 
+                                pos_y_cuit = 635, 
+                                pos_y_comienzo_cuerpo = 560, 
+                                pos_x_comienzo_cuerpo = 45, 
+                                pos_y_bultos = 180, 
+                                pos_x_bultos = 315, 
+                                pos_y_direccion_entrega = 168, 
+                                pos_x_direccion_entrega = 315, 
+                                pos_y_ordencompra = 152, 
+                                pos_x_ordencompra= 315
+                                )
+        obj.save()
+        print('Se ha creado una impresion por defecto')
 
+        
 class Migration(migrations.Migration):
 
-    def valores_iniciales(self, apps, schema_editor):
-        ''' Cargamos los valores iniciales que necesitamos para poder trabajar '''
-        
-        # primero vamos a cargar las fuentes.
-        Fuentes = apps.get_model('configuraciones', 'Fuentes')
-        listFonts = ['Helvetica', 'Arial' ,'sans-serif']
-        for fonts in listFonts:
-            objFont = Fuentes(nombre = fonts)
-            objFont.save()
-
-        # Ahora vamos a cargar las configuraciones de impresion remito.
-        ConfigImpresion = apps.get_model('configuraciones', 'ConfigImpresionRemito')
-        if len(ConfigImpresion.objects.all()) == 0:
-            obj = ConfigImpresion(nombre = 'Impresora Default', 
-                                  size_font_cabecera = 11, 
-                                  type_font_cabecera_id = 1, 
-                                  size_font_cuerpo = 10, 
-                                  type_font_cuerpo_id = 1, 
-                                  size_font_pie = 9, 
-                                  type_font_pie_id = 1, 
-                                  pos_x_fecha = 385, 
-                                  pos_y_fecha = 735, 
-                                  pos_x_razon_social = 100, 
-                                  pos_y_razon_social = 655, 
-                                  pos_x_condicion = 100, 
-                                  pos_y_condicion = 635, 
-                                  pos_x_direccion_f = 390, 
-                                  pos_y_direccion_f = 655, 
-                                  pos_x_cuit = 390, 
-                                  pos_y_cuit = 635, 
-                                  pos_y_comienzo_cuerpo = 560, 
-                                  pos_x_comienzo_cuerpo = 45, 
-                                  pos_y_bultos = 180, 
-                                  pos_x_bultos = 315, 
-                                  pos_y_direccion_entrega = 168, 
-                                  pos_x_direccion_entrega = 315, 
-                                  pos_y_ordencompra = 152, 
-                                  pos_x_ordencompra= 315
-                                  )
-            obj.save()
-            print('Se ha creado una impresion por defecto')
+   
 
     initial = True
 
