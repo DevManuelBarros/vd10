@@ -93,16 +93,18 @@ class subir_oc(LoginRequiredMixin, DetailView):
                 result = self.crear_producto(int(dic['cabecera']['cliente']), linea['codigo'], linea['descripcion'])
                 log_a += result[0]
                 producto_filter = result[1]
-                log_a.append('[+] Se crea la linea de articulos porque no existía')
+                log_a.append(f'[+] Se crea la linea de articulos porque no existía')
             else:
                 producto_filter = producto_filter[0]
             obj_lineas = ProductoLineasOC.objects.filter(OrdenCompra=id_oc, producto=producto_filter)
             if obj_lineas:
+                obj_lineas = obj_lineas[0]
                 obj_lineas.cantidad = obj_lineas.cantidad + linea['cantidad']
-                log_a.append('[X] Se actualiza el producto {obj_lineas.descripcion}  se solicitan {linea["cantidad"]} mas')
-                obj_lineas.update()
+                log_a.append(f'[X] Se actualiza el producto {obj_lineas.producto.descripcion}  se solicitan {linea["cantidad"]} mas')
+                obj_lineas.save()
             else:
                 # si no existe se agrega una nueva linea.
+                log_a.append(f'[+] Procederemos a crear un nuevo campo. Producto: {producto_filter.nombre_completo}')
                 new_linea = ProductoLineasOC()
                 new_linea.OrdenCompra = id_oc
                 new_linea.fecha_entrega = linea['fecha_entrega']
@@ -110,6 +112,7 @@ class subir_oc(LoginRequiredMixin, DetailView):
                 new_linea.precio_unitario = linea['precio_unitario']
                 new_linea.cantidad = linea['cantidad']
                 new_linea.save() 
+                log_a.append(f'[Success] Creado correctamente') 
         return log_a
         
     def trabajar_oc(self, orden_de_compra):
@@ -127,13 +130,14 @@ class subir_oc(LoginRequiredMixin, DetailView):
                     # entramos en el error uno no esta la OC versión 1
                     log.append(f'[Error] CUIDADO!, no existe la versión original, es precioso que cargue la version 1 de {cabecera["referencia_oc"]}, y luego actualice')
                     return log
-                elif obj_up.version != int(cabecera['version'])-1:
+                else:
+                    obj_up = obj_up[0]
+                if obj_up.version != int(cabecera['version'])-1:
                     # error dos la versión no es consecutiva.
                     log.append(f'[Error] CUIDADO!, faltan versiones!! la version que quiere cargar es la {cabecera["version"]} y la última cargada es {obj_up.version}')
                     return log
                 else:
                     # existe la o.c 1 y es consecutiva. Así que vamos a actualizar.
-                    
                     obj_up.version = cabecera['version']
                     obj_up.fecha_emision = cabecera['fecha_emision']
                     obj_up.save()

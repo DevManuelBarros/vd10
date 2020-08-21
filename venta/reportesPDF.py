@@ -125,7 +125,7 @@ def imprimir_etiqueta(request, id_remito):
 	#juntamos los datos.
 	datos_remito = Remito.objects.filter(pk = id_remito).last()
 	lineas_remito = ProductoLineasRM.objects.filter(remito = datos_remito)
-	empresa = Empresa.objects.all()[0]
+	empresa = Empresa.objects.all().last()
 	#Datos Fijos:
 	nombre_empresa = str(empresa)
 	numero_de_remito =  datos_remito.referencia_externa

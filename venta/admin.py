@@ -6,7 +6,8 @@ from .models import (Cronograma,
                      ProductoLineasOC,
                      Remito,
                      ProductoLineasRM,
-                     FormatodeImpresion)
+                     FormatodeImpresion,
+                     Movimientos)
 
 admin.site.register(Cronograma)
 admin.site.register(OrdenCompra)
@@ -14,3 +15,4 @@ admin.site.register(ProductoLineasOC)
 admin.site.register(Remito)
 admin.site.register(ProductoLineasRM)
 admin.site.register(FormatodeImpresion)
+admin.site.register(Movimientos)

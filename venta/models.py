@@ -1,9 +1,13 @@
+from datetime import date
+
 #Imports de Django
 from django.db import models
 
 #Imports de la aplicación
 from gral.models import Cliente, Producto
 from django.template.defaultfilters import default
+from django.db.models.signals import post_save
+from gral.models import Cliente
 
 #Determina un circuito que dara cual sera el tipo de documento a 
 #realizar.
@@ -175,3 +179,62 @@ class Movimientos(models.Model):
         cantidad        = models.IntegerField(blank=False, null=False, default=0)
         tipo_documento  = models.CharField(max_length=10, default='sys')
         cliente         = models.ForeignKey(Cliente, blank=False, null=False, on_delete=models.CASCADE)
+        id_registro     = models.IntegerField(default=0)
+
+
+        def __str__(self):
+            return f' {self.producto_id.descripcion:<45s} ({self.producto_id.codigo:^10s}) || {self.tipo_documento:<10s} -> {self.cliente.nombre_corto:^10s}'
+
+##########################################################################################################
+#                                          SIGNALS                                                       #
+##########################################################################################################
+
+
+def movimiento_oc(sender, instance, **kwargs):
+    ordencompra = 'orden_de_compra'
+    print(f'[*] Vamos a comprobar si existe el registro. movimiento_oc')
+    registro = Movimientos.objects.filter(id_registro=instance.id, tipo_documento=ordencompra).last()
+    if registro:
+        print(f'[*] El registro {registro.id} en {ordencompra} existe, lo actualizaremos')
+        registro.cantidad = -(instance.cantidad)
+        registro.save()
+    else:
+        print(f'[+] El registro no existe procederemos a crearlo')
+        objMovimiento = Movimientos()
+        objMovimiento.fecha = date.today()
+        objMovimiento.cantidad = -(instance.cantidad)
+        objMovimiento.producto_id = instance.producto
+        objMovimiento.tipo_documento = ordencompra
+        objMovimiento.id_registro = instance.id
+        objMovimiento.orden_de_compra = instance.OrdenCompra
+        objMovimiento.cliente = Cliente.objects.filter(id=instance.OrdenCompra.cliente.id).last()
+        objMovimiento.save()
+    print(f'[Success] El proceso ha terminado')
+
+
+
+def movimiento_rm(sender, instance, **kwargs):
+    remito = 'remito'
+    print(f'[*] Vamos a comprobar que no sea una modificación del remito')
+    registro = Movimientos.objects.filter(id_registro=instance.id, tipo_documento=remito).last()
+    if registro: 
+        print(f'[*] El registro {registro.id} en {remito} existe, lo actualizaremos')
+        registro.cantidad = -(instance.cantidad)
+        registro.cantidad = instance.total_unidades
+        registro.save()
+    else:
+        print(f'[+] El registro no existe procederemos a crearlo')
+        objMovimiento = Movimientos()
+        objMovimiento = Movimientos()
+        objMovimiento.fecha = date.today()
+        objMovimiento.cantidad = instance.total_unidades
+        objMovimiento.producto_id = instance.producto
+        objMovimiento.tipo_documento = remito
+        objMovimiento.id_registro = instance.id
+        objMovimiento.orden_de_compra = instance.remito.ordencompra
+        objMovimiento.cliente = Cliente.objects.filter(id=instance.remito.ordencompra.cliente.id).last()
+        objMovimiento.save()
+    print(f'[Success] El proceso ha terminado')
+
+post_save.connect(movimiento_oc, sender = ProductoLineasOC)
+post_save.connect(movimiento_rm, sender = ProductoLineasRM)
