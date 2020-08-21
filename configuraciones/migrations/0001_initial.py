@@ -6,13 +6,24 @@ from  django.apps import apps
 def valores_iniciales(apps, schema_editor):
     ''' Cargamos los valores iniciales que necesitamos para poder trabajar '''
     
-    # primero vamos a cargar las fuentes.
+    #Cargamos los valores de empresa por Default.
+    Empresa = apps.get_model('configuraciones', 'empresa')
+    empresa = Empresa( razon_social = 'Default',
+                       cuit = '30-00000000-0',
+                       direccion_fiscal = 'Av. Siempreviva 742',
+                       direccion_deposito = 'Av. Siempreviva 730, (Flnds)',
+                       ingresos_brutos = '303030'
+                        )
+    empresa.save()
+    print('\n[+] Se ha creado la empresa Default...')
+
+    # cargamos las fuentes.
     Fuentes = apps.get_model('configuraciones', 'Fuentes')
     listFonts = ['Helvetica', 'Arial' ,'sans-serif']
     for fonts in listFonts:
         objFont = Fuentes(nombre = fonts)
         objFont.save()
-
+    print('[+] Se han cargado una serie estandar de fuentes...')
     # Ahora vamos a cargar las configuraciones de impresion remito.
     ConfigImpresion = apps.get_model('configuraciones', 'ConfigImpresionRemito')
     if len(ConfigImpresion.objects.all()) == 0:
@@ -43,7 +54,7 @@ def valores_iniciales(apps, schema_editor):
                                 pos_x_ordencompra= 315
                                 )
         obj.save()
-        print('Se ha creado una impresion por defecto')
+        print('[+] Se ha creado una plantilla de impresión por defecto...')
 
         
 class Migration(migrations.Migration):

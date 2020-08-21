@@ -2,7 +2,16 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
+from django.apps import apps
 
+def valores_iniciales(apps, schema_editor):
+    ''' Cargamos los valores iniciales que necesitamos para poder trabajar '''
+    impresion = apps.get_model('venta', 'FormatodeImpresion')
+    nuevo_registro = impresion(nombre = 'Default')
+    nuevo_registro.save()
+    print('\n[+] Se ha creado un FormatodeImpresion Default...')
+
+    
 
 class Migration(migrations.Migration):
 
@@ -105,4 +114,5 @@ class Migration(migrations.Migration):
                 ('formato_de_impresion', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='venta.FormatodeImpresion')),
             ],
         ),
+        migrations.RunPython(valores_iniciales)
     ]

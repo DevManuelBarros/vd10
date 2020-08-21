@@ -32,6 +32,8 @@ def cargar_cliente_inicial(apps, schema_editor):
     for item_cliente in array_cliente:
         obj = item_cliente
         obj.save()
+    
+    
 
 
 class Migration(migrations.Migration):

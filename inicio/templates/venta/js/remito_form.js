@@ -40,10 +40,14 @@ $(document).ready()
     //Cuando carga el documento incrustando las funciones en el documento.
 	$(document).ready(function() 
 	{
+		//id_productolineasrm_set-0-remito
+		alert(prefix_global);
+		//$("select[id$='-producto']").on("change", function(){alert('asd')});
         $("#id_cliente").on("change", getDatos);
         $("#confirm-data").on("click", getProductos);
         $("input[id^='id_" + prefix_global + "-']").on("change", calcularTotal);
 		$("input[id$='-total_unidades']").prop('readonly', 'readonly');
+		$("input[id$='-pendientes']").prop('readonly', 'readonly');
 		$("#button-submit").on("click", actDatos);
 		$("#get_today").on("click", get_today);
 		$("#id_tipo_documento").on("change",controlarNumeracion);

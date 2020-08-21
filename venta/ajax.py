@@ -4,9 +4,12 @@ from .models import (Cronograma,
                      OrdenCompra, 
                      ProductoLineasOC,
                      ProductoLineasRM, 
-                     Remito)
+                     Remito,
+                     Movimientos)
 from gral.models import Cliente
 from gral.models import Producto
+
+
 
 def get_cronogramas(request):
     """get_cronogramas
@@ -146,3 +149,11 @@ def conformarRemito(request):
     response = {}
     response['valor'] = str(cambios)
     return JsonResponse(response) 
+
+def get_pendientes_oc(request):
+    orden_de_compra = request.GET.get('oc')
+    codigo = request.GET.get('codigo')
+    pendientes = Movimientos.objects.pendientes_oc(codigo, oc)
+    response = {}
+    response['pendientes'] = pendientes
+    return JsonResponde(response)

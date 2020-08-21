@@ -25,6 +25,42 @@ DOCUMENTOS_CHOICES = (
 
 
 
+##########################################################################################################
+#                                       Custom QuerySet                                                  #
+##########################################################################################################
+
+class MovimientoManager(models.Manager):
+        def pendientes_oc(self, producto_id, orden_de_compra_id):
+                ''' Recuperamos los pendientes de un codigo según una O.C'''
+                movimientos = self.filter(producto_id=producto_id, orden_de_compra=orden_de_compra_id)
+                resultado = 0
+                for reg in movimientos:
+                        resultado += reg.cantidad
+                return resultado
+
+        def pendientes(self, producto_id):
+                ''' Recuéramos los pendientes de un producto en general '''
+                movimientos = self.filter(producto_id=producto_id)
+                resultado = 0
+                for reg in movimientos:
+                        resultado += reg.cantidad
+                return resultado
+        def entregas_total(self, producto_id, remito_id='remito'):
+                ''' Devolvemos lo que se entrego del producto '''
+
+                movimientos = self.filter(producto_id=producto_id, tipo_documento=remito_id)
+                resultado = 0
+                for reg in movimientos:
+                        resultado += reg.cantidad
+                return resultado
+        
+
+
+##########################################################################################################
+#                                       Modelo                                                           #
+##########################################################################################################
+
+
 
 class FormatodeImpresion(models.Model):
         """FormatodeImpresion
@@ -98,6 +134,7 @@ class Remito(models.Model):
                 fecha_de_emision (DataField)    : Fecha de emision.
                 confomado (BooleanField)                : Si la orden de translado esta completada, es decir conformada y lista para facturar.
                 anulado (BooleanField)                  : si la orden de translado es anulada.
+                pendientes (IntegerField)       : un campo para mostrar los pendientes, podemos grabarlo cosa de ver cuanto entregamos y cuanto faltaba historicamente.
         Returns:
                 __str__:
                         returns "Remito: " + self.refencia
@@ -130,6 +167,7 @@ class ProductoLineasRM(models.Model):
         remito = models.ForeignKey(Remito, null=False, blank=False, on_delete=models.CASCADE)
         total_unidades = models.IntegerField()
         cantidad_confirmada             = models.IntegerField(default=0)
+        pendientes = models.IntegerField(default=0)
         def __str__(self):
                 return str(self.remito)
         
@@ -173,6 +211,7 @@ class Factura(models.Model):
         return self.referencia_externa
 
 class Movimientos(models.Model):
+        
         fecha           = models.DateField(default='1983-01-17')
         orden_de_compra = models.ForeignKey(OrdenCompra, null=True, blank=True, on_delete=models.CASCADE)
         producto_id     = models.ForeignKey(Producto, null=False, blank=False, on_delete=models.CASCADE)
@@ -180,6 +219,7 @@ class Movimientos(models.Model):
         tipo_documento  = models.CharField(max_length=10, default='sys')
         cliente         = models.ForeignKey(Cliente, blank=False, null=False, on_delete=models.CASCADE)
         id_registro     = models.IntegerField(default=0)
+        objects         = MovimientoManager()
 
 
         def __str__(self):
@@ -238,3 +278,4 @@ def movimiento_rm(sender, instance, **kwargs):
 
 post_save.connect(movimiento_oc, sender = ProductoLineasOC)
 post_save.connect(movimiento_rm, sender = ProductoLineasRM)
+

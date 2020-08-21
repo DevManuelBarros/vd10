@@ -8,7 +8,8 @@ from venta.ajax import (get_cronogramas,
                         get_nextNumberRemito,
                         get_clientes,
                         cambiarValor,
-                        conformarRemito)
+                        conformarRemito,
+                        get_pendientes_oc)
 from    .views import (CronogramaCreate, 
                        CronogramaList,
                        CronogramaDetail,
@@ -51,4 +52,5 @@ urlpatterns = [
     path('ajax/get_clientes', get_clientes, name='get_clientes'),
     path('ajax/cambiarValor', cambiarValor, name='cambiarValor'),
     path('ajax/conformarRemito', conformarRemito, name='conformarRemito'),
+    path('ajax/get_pendientes_oc', get_pendientes_oc, name='get_pendientes_oc'),
 ]

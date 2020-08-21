@@ -134,12 +134,13 @@ class ProductoLineasRMForm(forms.ModelForm):
 	class Meta:
 		model = ProductoLineasRM
 		exclude = ()
-		fields = ['producto', 'cajas', 'cantidad', 'remito', 'total_unidades']
+		fields = ['producto', 'cajas', 'cantidad', 'remito', 'total_unidades', 'pendientes']
 		widgets = 	{
 						'producto' : forms.Select(attrs={'class': 'form-control'}),
 						'cajas' : forms.TextInput(attrs={'class' : 'form-control', 'type': 'number'}),
 						'cantidad' : forms.TextInput(attrs={'class' : 'form-control', 'type': 'number'}),
 						'total_unidades' : forms.TextInput(attrs={'class' : 'form-control', 'type' : 'decimal'}),
+						'pendientes' : forms.TextInput(attrs={'class' : 'form-control', 'type' : 'number'}),
 
 					}
 
