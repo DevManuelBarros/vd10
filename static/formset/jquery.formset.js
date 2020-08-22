@@ -201,16 +201,25 @@
                     updateElementIndex($(this), options.prefix, formCount);
 				
                 });
-				
-                if(options.instancia=='ordencompra'){
-				getCronograma(formCount);
-				}else
-				{
-					getDatosProducts(formCount);
-			        $("input[id^='id_" + options.prefix + "-']").on("change", calcularTotal);
-					$("input[id$='-total_unidades']").prop('readonly', 'readonly');
-
-				}
+		//Funcion personalizada...
+                if(options.instancia=='ordencompra')
+		    {
+			//si la linea la estamos generando en la creación de la orden
+			//de compra.
+			getCronograma(formCount);
+		    }
+		    else
+		    {
+			// En caso contrario estamos trabajando en la creación de remito
+			// por lo tanto agregamos los campos necesarios.
+			getDatosProducts(formCount);
+			$("input[id^='id_" + options.prefix + "-']").on("change", calcularTotal);
+			$("input[id$='-total_unidades']").prop('readonly', 'readonly');
+			$("select[id='id_productolineasrm_set-" + formCount + "-producto']").on("change", getPendientes);
+			$("input[id$='-pendientes']").prop('readonly', 'readonly');
+		    
+		    
+		    }
                 totalForms.val(formCount + 1);
                 // Check if we're above the minimum allowed number of forms -> show all delete link(s)
                 if (showDeleteLinks()){

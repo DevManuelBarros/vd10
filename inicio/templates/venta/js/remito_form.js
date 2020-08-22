@@ -41,8 +41,7 @@ $(document).ready()
 	$(document).ready(function() 
 	{
 		//id_productolineasrm_set-0-remito
-		alert(prefix_global);
-		//$("select[id$='-producto']").on("change", function(){alert('asd')});
+	$("select[id$='-producto']").on("change", getPendientes);
         $("#id_cliente").on("change", getDatos);
         $("#confirm-data").on("click", getProductos);
         $("input[id^='id_" + prefix_global + "-']").on("change", calcularTotal);
@@ -295,7 +294,52 @@ $(document).ready()
 	 function get_today()
 	 {
 	 	var f = new Date();
-		var today = f.getFullYear() + "-" + (f.getMonth() +1) + "-" + f.getDate();
-		$("#id_fecha_emision").val(today);
+		mes = (f.getMonth() + 1);
+		if (mes < 10)
+		 {
+			 mes = '0' + mes;
+		 }
+		var today = f.getFullYear() + "-" + mes + "-" + f.getDate();
+		 $("#id_fecha_emision").val(today);
 	 }
+
+
+	//Funcion para recuperar el total de producto que se deben dentro 
+	//de la orden de compra que estamos trabajando.
+	function getPendientes(valor) 
+	{
+		// Obtenes el valor del cliente seleccionado.
+		var producto = $(this).val();
+		var orden_de_compra = $("#id_ordencompra").val();
+		
+				reg = this.id.split('-');
+		//Obtenemos el número de fila con el que estamos trabajando
+
+			//Agregamos un llamado ajax.
+			// el tipo es GET
+			// la url según lo que se determina en la documentación
+			// data: pasamos el valor del cliente.
+			var request = $.ajax(
+			{
+				type: "GET",
+				url: "{% url 'venta:get_pendientes_oc' %}",
+				data: {"oc": orden_de_compra, 'codigo': producto},
+			});
+
+			//Luego de haber realizado la llamada mediante Ajax, 
+			//trabajamos con los valores devueltos.
+			request.done(function(response) 
+			{
+				// Tomamos el resultado
+				pendientes = response['pendientes'];
+				
+				$("input#" + reg[0] + '-' + reg[1] + '-pendientes').val(pendientes);
+				
+			});
+
+
+		
+
+	}
+			
 </script>

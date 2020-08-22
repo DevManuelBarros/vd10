@@ -153,7 +153,7 @@ def conformarRemito(request):
 def get_pendientes_oc(request):
     orden_de_compra = request.GET.get('oc')
     codigo = request.GET.get('codigo')
-    pendientes = Movimientos.objects.pendientes_oc(codigo, oc)
+    pendientes = Movimientos.objects.pendientes_oc(codigo, orden_de_compra)
     response = {}
     response['pendientes'] = pendientes
-    return JsonResponde(response)
+    return JsonResponse(response)
