@@ -61,7 +61,7 @@ class lectorVioletta:
         texto = self.newObject.PDFALL
         
         #Campaña 01/2020
-        patron_camp = re.compile(r'\d{2}/\d{4}')
+        patron_camp = re.compile(r'\d{4}/\d{2}')
         pCamp = patron_camp.search(texto)
         campana = texto[pCamp.start():pCamp.end()].replace('/','-')
         campana = 'C' + campana

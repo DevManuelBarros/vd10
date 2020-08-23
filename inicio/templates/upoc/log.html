@@ -1,6 +1,7 @@
 {% extends '../base.html' %}
 {% block cuerpo %}
-    {% for item in log %}
-        <p>{{item}}</p>
-    {% endfor %}
+
+
+		{{ log|safe }}
+       
 {% endblock %}
