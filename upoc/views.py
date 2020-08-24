@@ -94,12 +94,13 @@ class subir_oc(LoginRequiredMixin, DetailView):
             # recuperamos la linea y la orden de compra
             producto_filter = Producto.objects.filter(codigo=linea['codigo']).last()
              # si el producto existe entonces... 
+            
             if not producto_filter:
                 # no existe el producto debemos crear el producto.
                 result = self.crear_producto(int(dic['cabecera']['cliente']), linea['codigo'], linea['descripcion'])
                 producto_filter = result
                 self.__log.intro('Agregar', 'Se crea la linea de articulos porque no existía')
-                obj_lineas = ProductoLineasOC.objects.filter(OrdenCompra=id_oc, producto=producto_filter).last()
+            obj_lineas = ProductoLineasOC.objects.filter(OrdenCompra=id_oc, producto=producto_filter).last()    
             if obj_lineas:
                 obj_lineas.cantidad = obj_lineas.cantidad + linea['cantidad']
                 self.__log.intro('Proceso', f'Se actualiza el producto {obj_lineas.producto.descripcion}  se solicitan {linea["cantidad"]} mas')

@@ -66,12 +66,11 @@ class lectorVioletta:
         campana = texto[pCamp.start():pCamp.end()].replace('/','-')
         campana = 'C' + campana
         self.newObj.CabeceraOrdenDeCompra['campaña'] = campana
-                #OrdenCompra.
-        
+        #OrdenCompra.
         patron_orden_compra =  re.compile(r'\d{10}\/\d')
-        arrayOC = str(patron_orden_compra.search(texto).group()).split('/')
-        self.newObj.CabeceraOrdenDeCompra['referencia_oc'] = arrayOC[0]
-        if arrayOC == '1':
+        arrayOC = str(patron_orden_compra.search(texto).group())
+        self.newObj.CabeceraOrdenDeCompra['referencia_oc'] = arrayOC.replace('/', '-')
+        if arrayOC[-1:] == '1':
             self.newObj.CabeceraOrdenDeCompra['circuito'] = 'Facturar'
         else:
             self.newObj.CabeceraOrdenDeCompra['circuito'] = 'Consignacion'

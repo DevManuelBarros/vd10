@@ -2,7 +2,7 @@ from datetime import date
 
 #Imports de Django
 from django.db import models
-
+from django.db.models import Q
 #Imports de la aplicación
 from gral.models import Cliente, Producto
 from django.template.defaultfilters import default
@@ -37,6 +37,27 @@ class MovimientoManager(models.Manager):
                 for reg in movimientos:
                         resultado += reg.cantidad
                 return resultado
+        
+        def pendientes_cronograma(self, cronograma_id):
+                ocs = OrdenCompra.objects.filter(cronograma=cronograma_id).only('id')
+                queries = [Q(orden_de_compra=value.id) for value in ocs]
+                query = queries.pop()
+                for item in queries:
+                        query |= item
+                resultado = Movimientos.objects.filter(query)
+                valores = [{item.producto_id.nombre_completo : item.cantidad} for item in resultado]
+                final = {}
+                for valor in valores:
+                        for key, value in valor.items():
+                                if key in final:
+                                        final[key] += value
+                                else:
+                                        final[key] = value
+                return final
+                                
+                
+
+
 
         def pendientes(self, producto_id):
                 ''' Recuéramos los pendientes de un producto en general '''

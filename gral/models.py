@@ -278,7 +278,13 @@ class Producto(models.Model):
     etiqueta_id         = models.ForeignKey('Etiqueta', null=True, blank=True, on_delete=models.CASCADE)
     @property
     def nombre_completo(self):
-        return self.descripcion + " (" + self.codigo + ")"
+        tmp_cad = ''
+        if len(self.descripcion) > 27:
+            tmp_cad = self.descripcion[:28]
+        else:
+            tmp_cad = self.descripcion
+        tmp_cad += f'. ({self.codigo})'
+        return tmp_cad
     def __str__(self):
         return self.codigo
 

@@ -91,9 +91,9 @@ class OrdenDeCompra:
         self.__descripcion.append(descripcion)
 
     def setCantidad(self, cantidad):
-        if ',' in cantidad:
-            cantidad = cantidad.split(',')[0]
         if not isinstance(cantidad, int):
+            if ',' in cantidad:
+                cantidad = cantidad.split(',')[0]
             cantidad = cantidad.replace(".", "")
             int_cantidad = int(cantidad)
             self.__cantidad.append(int_cantidad)

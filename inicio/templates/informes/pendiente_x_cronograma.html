@@ -1,8 +1,29 @@
 {% extends '../base.html' %}
 {% block cuerpo %}
 
-	{{ context }}
+	<select id='clientes' class='form-class'>
 
+		{% for cliente in context.cliente %}
+			<option value='{{ cliente.id }}'>{{ cliente.nombre_corto }}</option>
+		{% endfor %}
+	</select>
+	<table>
+		<tr>
+			<th>Id Cliente</th>
+			<th>Orden de Compra</th>
+			<th>Ver</th>
+		</tr>
+		
+		{% for oc in context.cronograma.items %}
+		
+			{% for item in oc.1 %}
+			<tr>
+				<td>{{ oc.0 }}</td><td>{{ item }}</td><td><a href="{% url 'informes:obtener_productos' id_cronograma=item.id %}">Ver</a></td>
+			</tr>
+			{% endfor %}
+		{% endfor %}	
+		
+	</table>
 	
 
 {% endblock %}

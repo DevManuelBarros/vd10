@@ -2,14 +2,48 @@
 
 {%  block cuerpo %}
 <div class="app-page-title">
-<div class="page-title-heading">
-   <div class="page-title-icon">
-                                        <i class="pe-7s-menu icon-gradient bg-ripe-malin">
-                                        </i>
-                                    </div>
-<div>Listado de Ordenes de Compra</div>
-                                     
-                                    </div>
+  <div class="page-title-heading">
+    <div class="page-title-icon">
+      <i class="pe-7s-menu icon-gradient bg-ripe-malin"></i>
+    </div>
+    <div>Listado de Ordenes de Compra</div>
+  </div>
+
+	<!-- Inicio Filtros -->
+	<hr/>
+	<div class="main-card mb-2 card">
+		<div class="card-body">
+			<h5 class="card-title">Filtros</h5>
+			<table class="table table-hover table-fixed">
+				<tr>
+					<td>
+						<label for="filtroOrdenCompra">Orden de compra:</label>
+						<input type="text" class="form-control" id="filtroOrdenCompra"
+							onkeyup="filtroOrdenCompra()"
+							placeholder="Ingrese una Orden de Compra..." /></td>
+					<td>
+						<label for="clientes_select">Cliente:</label>
+						<select id="clientes_select" class="form-control"
+							onchange="filtroOrdenCompra()">
+					</td>
+					<td>
+						<label for="filtroCircuito">Estados</label>
+						<select class="form-control" id="filtroCircuito"
+							onchange="filtroOrdenCompra()">
+							<option value="*">Todos</option>
+							<option value="Consignacion">Consignacion</option>
+							<option value="Facturar">Facturar</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<!-- Fin Filtros 	-->
+
+
+
+
 </div>
 
   {% include './partials/pOrdencompra_list.html'%}
@@ -24,5 +58,7 @@
 		<i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes"></i>Crear Orden de Compra
 </button>
 </a>
+
+{% include "./js/ordencompra_list.js" %}
 
 {% endblock %}
