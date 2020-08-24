@@ -11,4 +11,5 @@ class UpLoadFileOC(forms.Form):
         for item in clientes:
             options.append((item.pk, item.nombre_corto))
         nombre_corto = forms.ChoiceField(choices=options, required=True)
-        pdf_oc = forms.FileField(required=True)       
+        pdf_oc = forms.FileField(required=True)
+        nombre_oc = forms.CharField(required=False, help_text='Solo valida para Gigot')

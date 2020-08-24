@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'bootstrap_modal_forms',
     'upoc',
     'utils',
+    'informes',
 
 ]
 

@@ -29,4 +29,5 @@ urlpatterns = [
     path('configuraciones/', include(('configuraciones.urls', 'configuraciones'), namespace='configuraciones')),
     path('upoc/', include(('upoc.urls', 'upoc'), namespace='upoc')),
     path('admin/', admin.site.urls, name='admin'),
+    path('informes/', include(('informes.urls', 'informes'), namespace='informes')),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

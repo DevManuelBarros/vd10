@@ -2,17 +2,38 @@
 {% block cuerpo %}
 
 
+<div class="app-page-title">
+<div class="page-title-heading">
+   <div class="page-title-icon">
+         <i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes"></i>
+    </div>
+		<div>Subir Orden de Compra (Upoc)</div>
+                                     
+</div>
+</div>
+   
+<div class="main-card mb-3 card">
+   <div class="card-body">
+   <h5 class="card-title">UPOC sistem de subidas de Ordenes de Compras.</h5>
+
+
 <form enctype='multipart/form-data' action="" method='post'>
 	{% csrf_token %}
-	<span class='label label-primary' > Seleccione un cliente:</span>
-
+		<span class='label label-primary'> Seleccione un cliente:</span>
 		{{ form.nombre_corto }}
-		<br />
+		<br>
+		<span class='label label-primary'> Seleccion un archivo:</span>
 		{{ form.pdf_oc}}
-
+		<br>
+		<span class='label label-primary'>Seleccione un nombre de O.C:</span>
+		{{ form.nombre_oc }}
 	
 	<br />
+
 	<input type='submit' class='btn btn-primary' value='Subir OC'/>
 </form>
+
+	</div>
+</div>
 
 {% endblock %}

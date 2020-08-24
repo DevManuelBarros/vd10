@@ -1,0 +1,17 @@
+{% extends '../base.html' %}
+{% block cuerpo %}
+<div class="row">
+  {% for title, values in context.items %}
+<div class="col-sm-6">  
+  <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">{{ title }}</h5>
+        <p class="card-text">{{ values.0 }}</p>
+        <a href="{{ values.1 }}" class="btn btn-primary">Generar</a>
+      </div>
+    </div>
+  </div>	
+  {% endfor %}
+</div>
+  {% endblock %}
+
