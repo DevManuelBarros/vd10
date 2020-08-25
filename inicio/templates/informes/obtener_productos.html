@@ -1,11 +1,39 @@
 {% extends '../base.html' %}
 {% block cuerpo %}
+<!-- inicio cabecera-->
+<div class="app-page-title">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="pe-7s-menu icon-gradient bg-ripe-malin"></i>
+        </div>
+    <div>Detalle de Pendientes por Cronograma</div>
+</div>
+<!-- fin cabecera -->
+
+   <!--  -->
+   <hr/>
+   <div class="main-card mb-2 card">
+    <table>
+    <tr>
+        <ht class="text-center"><h3>Encabezado Cronograma</h3></ht>
+    </tr>
+        <tr>
+    <td id='cronograma-id'><span class="text-primary">Id:</span> {{ cronograma.id }}</td>
+    <td id='cronograma-nombre'><span class="text-primary">Nombre:</span> {{ cronograma.nombre }}</td>
+    <td id='cronograma-nombre'><span class="text-primary">Fecha Inicio:</span> {{ cronograma.fecha_inicio }}</td>
+    <td id='cronograma-nombre'><span class="text-primary">Fecha Finalización:</span> {{ cronograma.fecha_finalizacion }}</td>
+    <td id='cronograma-nombre'><span class="text-primary">Terminada:</span>{{ cronograma.terminada }}</td>
+        </tr>
+    </table>
+    </div>
+    <hr/>
+   <!--  -->
 
 
-         {{ productos }}
 
-        <br>
+    {% include './partials/pObtener_productos.html'%}
 
-        {{ cronograma }}
+
+
 
 {% endblock %}

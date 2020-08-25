@@ -27,4 +27,5 @@ def pendiente_x_cronograma(request):
 def obtener_productos(request, id_cronograma):
     productos = Movimientos.objects.pendientes_cronograma(id_cronograma)
     cronograma  = Cronograma.objects.filter(pk=id_cronograma)
+    cronograma = cronograma.values()[0]
     return render(request, 'informes/obtener_productos.html', {'productos' : productos, 'cronograma' : cronograma})

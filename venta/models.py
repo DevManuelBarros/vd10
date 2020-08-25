@@ -45,14 +45,24 @@ class MovimientoManager(models.Manager):
                 for item in queries:
                         query |= item
                 resultado = Movimientos.objects.filter(query)
-                valores = [{item.producto_id.nombre_completo : item.cantidad} for item in resultado]
+                #item.cantidad, oc, pedido, entregado
+                valores = [{item.producto_id.nombre_completo : [item.cantidad, item.orden_de_compra.referencia_externa, 0,0]} for item in resultado]
+                print(valores)
                 final = {}
                 for valor in valores:
                         for key, value in valor.items():
                                 if key in final:
-                                        final[key] += value
+                                        final[key][0] += value[0]
+                                        if value[0] < 0:
+                                                final[key][2] += value[0]
+                                        else:
+                                                final[key][3] += value[0]
                                 else:
                                         final[key] = value
+                                        if value[0] < 0:
+                                                final[key][2] = value[0]
+                                        else:
+                                                final[key][3] = value[0]
                 return final
                                 
                 

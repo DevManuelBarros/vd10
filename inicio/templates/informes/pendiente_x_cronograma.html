@@ -1,30 +1,55 @@
 {% extends '../base.html' %}
 {% block cuerpo %}
+<!-- inicio cabecera-->
+<div class="app-page-title">
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="pe-7s-menu icon-gradient bg-ripe-malin"></i>
+        </div>
+        <div>Pendientes por Cronograma</div>
+    </div>
+   
 
-	<select id='clientes' class='form-class'>
-
+   <!-- filtro -->
+   <hr/>
+	<div class="main-card mb-2 card">
+	<label for="clientes">Cliente</label>
+   	<select id='clientes' class='form-class'>
 		{% for cliente in context.cliente %}
 			<option value='{{ cliente.id }}'>{{ cliente.nombre_corto }}</option>
 		{% endfor %}
 	</select>
-	<table>
-		<tr>
-			<th>Id Cliente</th>
-			<th>Orden de Compra</th>
-			<th>Ver</th>
-		</tr>
-		
-		{% for oc in context.cronograma.items %}
-		
-			{% for item in oc.1 %}
-			<tr>
-				<td>{{ oc.0 }}</td><td>{{ item }}</td><td><a href="{% url 'informes:obtener_productos' id_cronograma=item.id %}">Ver</a></td>
-			</tr>
-			{% endfor %}
-		{% endfor %}	
-		
-	</table>
-	
+	<input type="button" class="btn btn-primary" value="Filtrar" onclick="filtros()"/>
+	</div>
+	<!-- fin filtro-->
 
+
+</div>
+<!-- fin cabecera -->
+<div class="main-card mb-3 card">
+	<div class="card-body">
+	<h5 class="card-title">Listado de produtos.</h5>
+		<table class="table table-hover table-fixed" id="tablaResultado">
+			<tr>
+				<th>Id Cliente</th>
+				<th>Cronograma</th>
+				<th>Ver</th>
+			</tr>
+
+			{% for oc in context.cronograma.items %}
+				{% for item in oc.1 %}
+					<tr>
+						<td>{{ oc.0 }}</td>
+						<td>{{ item }}</td>
+						<td><a href="{% url 'informes:obtener_productos' id_cronograma=item.id %}">Ver</a></td>
+					</tr>
+				{% endfor %}
+			{% endfor %}	
+
+		</table>
+	</div>
+</div>	
+
+{% include "./js/pendiente_x_cronograma.js" %}
 {% endblock %}
 

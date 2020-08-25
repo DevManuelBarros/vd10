@@ -2,14 +2,43 @@
 
 {%  block cuerpo %}
 <div class="app-page-title">
-<div class="page-title-heading">
-   <div class="page-title-icon">
-                                        <i class="pe-7s-menu icon-gradient bg-ripe-malin">
-                                        </i>
-                                    </div>
-<div>Listado de Producto</div>
-                                     
-                                    </div>
+    <div class="page-title-heading">
+        <div class="page-title-icon">
+            <i class="pe-7s-menu icon-gradient bg-ripe-malin"></i>
+        </div>
+        <div>Listado de Producto</div>
+    </div>
+    <!-- Inicio Filtros -->
+	<hr/>
+	<div class="main-card mb-2 card">
+		<div class="card-body">
+			<h5 class="card-title">Filtros</h5>
+			<table class="table table-hover table-fixed">
+				<tr>
+					<td>
+						<label for="filtroCodigo">Código:</label>
+						<input type="text" class="form-control" id="filtroCodigo"
+							onkeyup="filtros()"
+							placeholder="Ingrese un Código..." />
+                    </td>
+                    <td>
+						<label for="filtroDescripcion">Descripción:</label>
+						<input type="text" class="form-control" id="filtroDescripcion"
+							onkeyup="filtros()"
+							placeholder="Ingrese una descripción..." />
+				    </td>
+				<td>
+						<label for="clientes_select">Cliente:</label>
+						<select id="clientes_select" class="form-control"
+							onchange="filtros()">
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<!-- Fin Filtros 	-->
+
+
 </div>
 
 {% include './partials/pProducto_list.html'%}
@@ -24,5 +53,5 @@
 		<i class="pe-7s-magic-wand icon-gradient bg-mixed-hopes"></i>Crear Producto
 </button>
 </a>
-
+{% include "./js/producto_list.js" %}
 {% endblock %}
