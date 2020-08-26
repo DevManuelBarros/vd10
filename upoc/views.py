@@ -94,7 +94,6 @@ class subir_oc(LoginRequiredMixin, DetailView):
             # recuperamos la linea y la orden de compra
             producto_filter = Producto.objects.filter(codigo=linea['codigo']).last()
              # si el producto existe entonces... 
-            
             if not producto_filter:
                 # no existe el producto debemos crear el producto.
                 result = self.crear_producto(int(dic['cabecera']['cliente']), linea['codigo'], linea['descripcion'])
@@ -116,7 +115,7 @@ class subir_oc(LoginRequiredMixin, DetailView):
                 new_linea.precio_unitario = linea['precio_unitario']
                 new_linea.cantidad = linea['cantidad']
                 new_linea.save() 
-                self.__log.intro('exito', 'Creado correctamente...') 
+                self.__log.intro('exito', 'Creado correctamente linea de O.C...') 
         return 0
         
     def trabajar_oc(self, orden_de_compra):
@@ -137,7 +136,7 @@ class subir_oc(LoginRequiredMixin, DetailView):
                     return self.__log
                 elif obj_up.version != int(cabecera['version'])-1:
                     # error dos la versión no es consecutiva.
-                    self__log.intro('error', f'CUIDADO!, faltan versiones!! la version que quiere cargar es la {cabecera["version"]} y la última cargada es {obj_up.version}')
+                    self.__log.intro('error', f'CUIDADO!, faltan versiones!! la version que quiere cargar es la {cabecera["version"]} y la última cargada es {obj_up.version}')
                     return self.__log
                 else:
                     # existe la o.c 1 y es consecutiva. Así que vamos a actualizar.
@@ -145,6 +144,9 @@ class subir_oc(LoginRequiredMixin, DetailView):
                     obj_up.fecha_emision = cabecera['fecha_emision']
                     obj_up.save()
                     self.__log.intro('Proceso', 'Se ha actualizado la fecha de emisión y la versión de Orden de Compra...')
+                    obj_up = OrdenCompra.objects.filter(referencia_externa=cabecera['referencia_oc']).last()
+                    self.__log.intro('proceso', 'Procedemos a actualizar los campos...')
+                    self.actualizar_campos_oc(orden_de_compra, obj_up)
             else: 
                 obj_up = OrdenCompra.objects.filter(referencia_externa=cabecera['referencia_oc']).last()
                 if not obj_up:

@@ -47,7 +47,6 @@ class MovimientoManager(models.Manager):
                 resultado = Movimientos.objects.filter(query)
                 #item.cantidad, oc, pedido, entregado
                 valores = [{item.producto_id.nombre_completo : [item.cantidad, item.orden_de_compra.referencia_externa, 0,0]} for item in resultado]
-                print(valores)
                 final = {}
                 for valor in valores:
                         for key, value in valor.items():
