@@ -145,4 +145,5 @@ class ProductoLineasRMForm(forms.ModelForm):
 					}
 
 ProductoLineasRMFormSet = inlineformset_factory(Remito, ProductoLineasRM,
-												form=ProductoLineasRMForm, extra=1)
+				                    form=ProductoLineasRMForm, extra=1)
+ModelProductoLineasRMFormSet = modelformset_factory(ProductoLineasRM, fields=('producto', 'cajas', 'cantidad', 'remito', 'total_unidades', 'pendientes'), extra=1)

@@ -21,7 +21,8 @@ from .forms  import (CronogramaCreateForm,
 					 ProductoLineasRMForm,
 					 ProductoLineasRMFormSet,
 					 RemitoCabecera,
-					 ModelProductoLineasOCFormSet)
+					 ModelProductoLineasOCFormSet,
+                                         ModelProductoLineasRMFormSet)
 					 
 from configuraciones.models import ConfigImpresionRemito
 ##
@@ -124,7 +125,6 @@ class OrdenCompraUpdate(LoginRequiredMixin, UpdateView):
 	success_url = reverse_lazy('venta:OrdenCompraList')
 	def get_context_data(self, *args, **kwargs):
 		context = super(OrdenCompraUpdate, self).get_context_data(**kwargs)
-		#print(context['form']['fecha_emision'].value)
 		qs = ProductoLineasOC.objects.filter(OrdenCompra = self.get_object())
 		formset = ModelProductoLineasOCFormSet(queryset=qs)
 		context['ordendecompramain'] = formset
@@ -137,10 +137,7 @@ class OrdenCompraUpdate(LoginRequiredMixin, UpdateView):
 		qs = ProductoLineasOC.objects.filter(OrdenCompra=self.get_object())
 		formsets = ModelProductoLineasOCFormSet(self.request.POST, queryset=qs)#, queryset=qs)
 		resultado = formsets[-1:][0]
-		print(str(resultado.fields['producto']))
-		#print(formsets)
 		if form.is_valid():
-			
 			for fs in formsets:
 				if fs.is_valid():
 					fs.save()
@@ -170,9 +167,9 @@ class RemitoDetail(LoginRequiredMixin, DetailView):
 		instance['remito_linea'] = lineasRM
 		return instance
 
-class RemitoUpdate(LoginRequiredMixin, UpdateView):
-	form_class = RemitoCabecera
-	template_name = 'venta/remito_form.html'
+#class RemitoUpdate(LoginRequiredMixin, UpdateView):
+#	form_class = RemitoCabecera
+#	template_name = 'venta/remito_form.html'
 	
 
 
@@ -226,6 +223,34 @@ class RemitoCompletoView(LoginRequiredMixin, CreateView):
 	
 	def get_success_url(self):
 		return reverse_lazy('venta:Preimpresion', kwargs={'id_remito': self.object.pk})
+
+class RemitoUpdate(LoginRequiredMixin, UpdateView):
+    model = Remito
+    form_class = RemitoCabecera
+    formset_class = ProductoLineasRMFormSet
+    template_name = 'venta/remito_form.html'
+    success_url = reverse_lazy('venta:RemitoListar')
+    def get_context_data(self, *args, **kwargs):
+            context = super(RemitoUpdate, self).get_context_data(**kwargs)
+            qs = ProductoLineasRM.objects.filter(remito=self.get_object())
+            formset = ModelProductoLineasRMFormSet(queryset=qs)
+            context['remitomain'] = formset
+            return context
+    
+    def post(self, request, *args, **kwargs):
+            self.object = self.get_object()
+            form_class = self.get_form_class()
+            form = self.get_form(form_class)
+            qs = ProductoLineasRM.objects.filter(remito=self.get_object())
+            formsets = ModelProductoLineasRMFormSet(self.request.POST, queryset=qs)#, queryset=qs)
+            resultado = formsets[-1:][0]
+            if form.is_valid():
+                for fs in formsets:
+                    if fs.is_valid():
+                        fs.save()
+                    return self.form_valid(form)
+            return self.form_invalid(form)
+
 
 #class RemitoCreate(CreateView):
 #	form_class = RemitoCabecera
